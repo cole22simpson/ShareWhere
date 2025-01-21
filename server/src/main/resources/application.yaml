@@ -1,0 +1,30 @@
+#spring.application.name=ShareWhere
+#
+#spring.datasource.url=jdbc:h2:mem:sharewhere
+#spring.datasource.driver-class-name=org.h2.Driver
+#spring.datasource.username=sa
+#spring.datasource.password=
+#spring.h2.console.enabled=true
+#
+#spring.jpa.show-sql=true
+
+spring:
+    application:
+        name: ShareWhere
+
+    datasource:
+        url: jdbc:h2:mem:sharewhere
+        driver-class-name: org.h2.Driver
+        username: sa
+        password:
+    h2:
+        console:
+            enabled: true
+
+    jpa:
+        show-sql: true
+
+    security:
+        jwt:
+            secret-key: whoisthisguymrballoonsmrballoonhandsnowaynowaygetreal
+

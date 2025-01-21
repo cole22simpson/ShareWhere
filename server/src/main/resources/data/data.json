@@ -1,0 +1,71 @@
+{
+  "tags": [
+    "Plenty of parking", "Some parking", "No parking", "Free", "Cheap", "Expensive",
+    "Crowded", "Not too crowded", "Not crowded", "Loud", "Quiet", "Better at night",
+    "Better in the day", "Long hike", "Short hike", "Can swim", "No swimming",
+    "Dog friendly", "No dogs allowed", "Great view", "No cell service", "Good sunsets"
+  ],
+  "comments": [
+    {
+      "userId": 3,
+      "locationId": 1,
+      "commentText": "This place is awesome! We had so much fun.",
+      "tags": [5, 14]
+    },
+    {
+      "userId": 2,
+      "locationId": 1,
+      "commentText": "I think this is my new favorite hangout spot!",
+      "tags": [15, 20]
+    }
+  ],
+  "locations": [
+    {
+      "name": "The Hideout",
+      "description": "Fun place in San Diego where you can go swimming with some friends.",
+      "latitude": 120.4,
+      "longitude": 84.1,
+      "address": "5401 Main Street",
+      "tags": [1, 11, 16],
+      "comments": [1,2]
+    },
+    {
+      "name": "The Painted Cave",
+      "description": "This place is hidden just off the path of a hike in Ramona. Inside the cave are some cool paintings.",
+      "latitude": 153.0,
+      "longitude": -12.9,
+      "address": "21932 Hiking Trail Way",
+      "tags": [2, 8, 20],
+      "comments": []
+    }
+  ],
+  "users": [
+    {
+      "firstName": "Cole",
+      "lastName": "Simpson",
+      "email": "cole22simpson@gmail.com",
+      "username": "cole22simpson",
+      "password": "password",
+      "userPosts": [1],
+      "savedLocations": [2]
+    },
+    {
+      "firstName": "Logan",
+      "lastName": "Simpson",
+      "email": "logan44simpson@gmail.com",
+      "username": "logan44simpson",
+      "password": "password",
+      "userPosts": [2],
+      "savedLocations": []
+    },
+    {
+      "firstName": "Steve",
+      "lastName": "Simpson",
+      "email": "stevesimpsonhomelender@gmail.com",
+      "username": "steve_simpson",
+      "password": "password",
+      "userPosts": [],
+      "savedLocations": [1, 2]
+    }
+  ]
+}

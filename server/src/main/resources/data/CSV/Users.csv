@@ -1,0 +1,4 @@
+firstName,lastName,email,username,password,userPosts,savedLocations
+Cole,Simpson,cole22simpson@gmail.com,cole22simpson,password,"1","2"
+Logan,Simpson,logan44simpson@gmail.com,logan44simpson,password,"2",
+Steve,Simpson,stevesimpsonhomelender@gmail.com,steve_simpson,password,"1,2"
