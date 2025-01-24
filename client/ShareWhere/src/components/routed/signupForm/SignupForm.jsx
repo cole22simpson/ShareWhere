@@ -2,6 +2,7 @@ import "./signupForm.css";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../authContext/useAuth";
 
 function SignupForm({ onBackToBasic }) {
 
@@ -11,6 +12,7 @@ function SignupForm({ onBackToBasic }) {
     const [passwordHash, setPasswordHash] = useState('');
     const [location, setLocation] = useState('');
     const navigate = useNavigate();
+    const { setUserLoggedIn } = useAuth();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -34,6 +36,9 @@ function SignupForm({ onBackToBasic }) {
                 const data = await response.json(); 
                 console.log("Signup successful!");
                 console.log("Bearer Token:", data.token);
+
+                localStorage.setItem("jwtToken", data.token);
+                setUserLoggedIn(true);
 
                 setTimeout(() => {
                     navigate("/");

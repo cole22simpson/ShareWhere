@@ -5,10 +5,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../authContext/useAuth";
 
-// API functions -- being used for testing currently
-// import signIn from "../../../api/users/signIn"
-// import { useEffect, useState } from "react"
-
 function Login () {
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
