@@ -62,6 +62,10 @@ public class User {
     // Constructors
     protected User() {}
 
+    public User(String email, String password, String username, String name, String location) {
+        this(email, password, username, name, location, "User");
+    }
+
     public User(String email, String password, String username, String name, String location, String role) {
         this.username = validateNotEmpty(username, "Username");
         this.email = validateNotEmpty(email, "Email");

@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Alatsi&display=swap');@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300&family=Outfit:wght@300&family=Righteous&display=swap');
+.navbar {
+    padding: 1em 0 0.75em 0.5em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    display: flex;
+    gap: 0.5em;
+}
+
+.logo {
+    margin-top: 10px;
+}
+
+.title {
+    font-family: 'Alatsi', sans-serif;
+    color: black;
+}
+
+.hamburger-menu-wrap {
+    width: 10%;
+}
+
+.hamburger-menu-img {
+    width:100%;
+    border-radius: 15px;
+}
+  
+.nav {
+    background-color: var(--main-color);
+    width: 250px;
+    height: 100vh;
+    display: flex;
+    justify-content: start;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    transition: 650ms;
+}
+
+.nav.active {
+    left: 0;
+    transition: 350ms;
+}
+
+.nav-menu-items {
+    width: 100%;
+    padding: 10px;
+    list-style: none;
+}
+
+.nav-icon {
+    font-size: 25px;
+    margin-right: 15px;
+}
+
+.nav-item a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    transition: 250ms ease-in;
+}
+
+.nav-item a:hover {
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+}
+
+/* .nav-item:hover .nav-item a {
+    mix-blend-mode: multiply;
+} */
+
+/* @keyframes stripes {
+    to {
+        background-size: 100% 100%;
+    }  
+} */
+
+.navbar-toggle {
+    background-color: #F3F5F4;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding-right: 30px;
+    font-size: 25px;
+}
+
+.img-wrap {
+    width: 45%;
+    padding-top: 1px;
+    text-decoration: none;
+}
+
+.img {
+    width: 100%;
+}
+.pc-nav {
+    display: none;
+}
+
+@media (min-width: 900px) {
+    .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: none;
+        padding: 0 0.5em 0 1em;
+        height: 66px;
+    }
+
+    .hamburger-menu-wrap {
+        display: none;
+    }
+    .nav {
+        display: none;
+    }
+    .pc-nav {
+        display: inline;
+    }
+    .img-wrap{
+        width: 13%;
+    }
+    .nav-menu-items {
+        margin: 0;
+        display: flex;
+    }
+    .nav-item span{
+        font-size: 1rem;
+    }
+}

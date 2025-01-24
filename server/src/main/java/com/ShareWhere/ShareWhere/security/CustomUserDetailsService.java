@@ -17,12 +17,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepo userRepo;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = userRepo.findByUsername(username)
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        var user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return UserPrincipal.builder()
                 .userId(user.getUserID())
-                .username(user.getUsername())
+                .email(user.getEmail())
                 .authorities(List.of(new SimpleGrantedAuthority(user.getRole())))
                 .password(user.getPasswordHash())
                 .build();
