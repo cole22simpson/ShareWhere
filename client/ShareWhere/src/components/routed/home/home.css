@@ -1,0 +1,17 @@
+.banner-container {
+    background-color: var(--secondary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 23vh;
+}
+
+.greeting {
+    flex-direction: row;
+    width: 100%;
+}
+
+.home-search-form {
+    flex-direction: row;
+    width: 100%;
+}

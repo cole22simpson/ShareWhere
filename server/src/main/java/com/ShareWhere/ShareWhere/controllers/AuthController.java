@@ -12,16 +12,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/auth")
 @RequiredArgsConstructor
+@CrossOrigin
 public class AuthController {
 
     private final JwtIssuer jwtIssuer;
@@ -41,7 +38,7 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 
-        var token = jwtIssuer.issue(principal.getUserId(), principal.getUsername(), roles);
+        var token = jwtIssuer.issue(principal.getUserId(), principal.getEmail(), roles);
         return LoginResponse.builder()
                 .accessToken(token)
                 .build();
@@ -64,13 +61,12 @@ public class AuthController {
                 encodedPassword,
                 request.getUsername(),
                 request.getName(),
-                request.getLocation(),
-                request.getRole()
+                request.getLocation()
         );
 
         userService.createUser(newUser);
 
-        String token = jwtIssuer.issue(newUser.getUserID(), newUser.getUsername(), List.of("USER"));
+        String token = jwtIssuer.issue(newUser.getUserID(), newUser.getEmail(), List.of(newUser.getRole()));
 
         SignupResponse response = SignupResponse.builder()
                 .username(newUser.getUsername())

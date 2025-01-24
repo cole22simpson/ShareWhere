@@ -1,6 +1,7 @@
 package com.ShareWhere.ShareWhere.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,9 +12,10 @@ import java.util.List;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class UserPrincipal implements UserDetails {
     private final int userId;
-    private final String username;
+    private final String email;
     @JsonIgnore
     private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
@@ -30,7 +32,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
