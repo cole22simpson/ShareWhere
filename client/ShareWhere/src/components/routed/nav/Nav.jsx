@@ -8,6 +8,7 @@ import { GiTreeSwing } from "react-icons/gi";
 import { FiLogIn } from "react-icons/fi";
 import { AiFillHome } from "react-icons/ai"
 import { MdOutlineLogout } from 'react-icons/md'
+import useAuth from '../authContext/useAuth';
 // import signOut from "../../../api/users/signOut"
 
 
@@ -15,9 +16,15 @@ import { MdOutlineLogout } from 'react-icons/md'
 function Nav() {
 
     const [sidebar, setSidebar] = useState(false);
+    const { userLoggedIn, setUserLoggedIn } = useAuth();
 
     const showSidebar = () => {
         setSidebar(!sidebar);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("jwtToken");
+        setUserLoggedIn(false);
     };
     
     return (
@@ -42,13 +49,6 @@ function Nav() {
                                 <span>Home</span>
                             </Link>
                         </li>
-
-                        {/* <li className="nav-item">
-                            <Link to='/add-location'>
-                                <FaIcons.FaPlusCircle className='nav-icon' />
-                                <span>Add location</span>
-                            </Link>
-                        </li> */}
                     
                         <li className="nav-item">
                             <Link to='/discover'>
@@ -57,74 +57,44 @@ function Nav() {
                             </Link>
                         </li>
 
-                        
+                        {userLoggedIn ? (
+                            <>
+                                <li className="nav-item">
+                                    <Link to='/add-location'>
+                                        <FaIcons.FaPlusCircle className='nav-icon' />
+                                        <span>Add location</span>
+                                    </Link>
+                                </li>
 
-                        {/* make this a drop down with "saved" as one of the options */}
-                        {/* <li className="nav-item">
-                            <Link to='/profile'>
-                                <FaIcons6.FaCircleUser className='nav-icon' />
-                                <span>Profile</span>
-                            </Link>
-                        </li> */}
-                        {(() => {
-                            if (localStorage.userIsLoggedIn === "true") {
-                                return (
-                                    <>
-                                        <li className="nav-item">
-                                            <Link to='/add-location'>
-                                                <FaIcons.FaPlusCircle className='nav-icon' />
-                                                <span>Add location</span>
-                                            </Link>
-                                        </li>
+                                <li className="nav-item">
+                                    <Link to='/saved'>
+                                        <FaIcons.FaBookmark className='nav-icon' />
+                                        <span>Saved</span>
+                                    </Link>
+                                </li>
 
-                                        <li className="nav-item">
-                                            <Link to='/saved'>
-                                                <FaIcons.FaBookmark className='nav-icon' />
-                                                <span>Saved</span>
-                                            </Link>
-                                        </li>
+                                <li className="nav-item">
+                                    <Link to='/profile'>
+                                        <FaIcons6.FaCircleUser className='nav-icon' />
+                                        <span>Profile</span>
+                                    </Link>
+                                </li>
 
-                                        <li className="nav-item">
-                                            <Link to='/profile'>
-                                                <FaIcons6.FaCircleUser className='nav-icon' />
-                                                <span>Profile</span>
-                                            </Link>
-                                        </li>
-
-                                        <li className="nav-item">
-                                            <a href="" >
-                                                <MdOutlineLogout className='nav-icon' />
-                                                <span>Logout</span>
-                                            </a>
-                                        </li>
-                                    </>
-                                )
-                            } else {
-                                return (
-                                    <>
-                                        <li className='nav-item'>
-                                            <Link to='/login'>
-                                                <FiLogIn className="nav-icon" />
-                                                <span>Login</span>
-                                            </Link>
-                                        </li>
-                                    </>
-                                )
-                            }
-                        })()}
-                        {/* <li className="nav-item">
-                            <Link to='/saved'>
-                                <FaIcons.FaBookmark className='nav-icon' />
-                                <span>Saved</span>
-                            </Link>
-                        </li> */}
-
-                        {/* <li className='nav-item'>
-                            <Link to='/login'>
-                                <FiLogIn className="nav-icon" />
-                                <span>Login</span>
-                            </Link>
-                        </li> */}
+                                <li className="nav-item">
+                                    <a href="/" onClick={handleLogout}>
+                                        <MdOutlineLogout className='nav-icon' />
+                                        <span>Logout</span>
+                                    </a>
+                                </li>
+                            </>
+                            ) : (
+                                <li className='nav-item'>
+                                    <Link to='/login'>
+                                        <FiLogIn className="nav-icon" />
+                                        <span>Login</span>
+                                    </Link>
+                                </li>
+                            )} 
                     </ul>
                 </nav>
             </div>
@@ -150,20 +120,6 @@ function Nav() {
                             <span>Add location</span>
                         </Link>
                     </li>
-                    
-                    {/* <li className="nav-item">
-                        <Link to='/discover'>
-                            <FaIcons.FaGlobeAmericas className='nav-icon' />
-                            <span>Discover</span>
-                        </Link>
-                    </li> */}
-
-                    {/* <li className="nav-item">
-                        <Link to='/saved'>
-                            <FaIcons.FaBookmark className='nav-icon' />
-                            <span>Saved</span>
-                        </Link>
-                    </li> */}
 
                     <li className="nav-item">
                         <Link to='/profile'>

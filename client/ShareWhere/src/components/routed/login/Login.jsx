@@ -3,14 +3,16 @@ import { FcGoogle } from "react-icons/fc"
 import { BsFacebook, BsApple } from "react-icons/bs"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../authContext/useAuth";
 
 // API functions -- being used for testing currently
 // import signIn from "../../../api/users/signIn"
 // import { useEffect, useState } from "react"
 
 function Login () {
-    const [ email, setEmail ] = useState();
-    const [ password, setPassword ] = useState();
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
+    const { setUserLoggedIn } = useAuth();
 
     const navigate = useNavigate();
     
@@ -35,9 +37,15 @@ function Login () {
                 console.log("Login successful!");
                 console.log("Bearer Token:", data.accessToken);
 
+                localStorage.setItem("jwtToken", data.accessToken);
+                setUserLoggedIn(true);
+
                 setTimeout(() => {
                     navigate("/");
                 }, 2000);
+            }
+            else if (response.status === 401) {
+                console.error("Unauthorized: Invalid email or password.");
             }
             else {
                 console.error("Login failed: ", await response.text());
