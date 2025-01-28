@@ -45,6 +45,7 @@
 .local-favorites {
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
     margin-bottom: 10px;
 }
 
@@ -61,14 +62,18 @@
     font-size: 20px;
 }
 
+.home-see-more:hover {
+    text-decoration: underline;
+}
+
 .local-posts {
     display: flex;
     justify-content: space-between;
 }
 
-.local-post {
+/* .local-post {
     
-}
+} */
 
 .local-post-img {
     height: 16vh;

@@ -61,7 +61,8 @@ public class AuthController {
                 encodedPassword,
                 request.getUsername(),
                 request.getName(),
-                request.getLocation()
+                request.getLatitude(),
+                request.getLongitude()
         );
 
         userService.createUser(newUser);

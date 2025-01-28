@@ -28,3 +28,9 @@ spring:
         jwt:
             secret-key: whoisthisguymrballoonsmrballoonhandsnowaynowaygetreal
 
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+

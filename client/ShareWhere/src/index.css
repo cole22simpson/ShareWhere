@@ -1,6 +1,7 @@
 :root {
   --main-color: #D9E7E3;
   --secondary-color: #C5D1CD;
+  --black-color: #001514;
 }
 
 *, *::before, *::after {
