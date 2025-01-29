@@ -24,6 +24,7 @@ function Nav() {
 
     const handleLogout = () => {
         localStorage.removeItem("jwtToken");
+        localStorage.removeItem("userData");
         setUserLoggedIn(false);
     };
     

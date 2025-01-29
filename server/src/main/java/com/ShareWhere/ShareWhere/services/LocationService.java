@@ -46,9 +46,6 @@ public class LocationService {
             if (location.getLongitude() != null || !isPartial) {
                 existingLocation.setLongitude(location.getLongitude());
             }
-            if (location.getAddress() != null || !isPartial) {
-                existingLocation.setAddress(location.getAddress());
-            }
 
             return locationRepo.save(existingLocation);
         });

@@ -5,19 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="094d4d6e-c9c5-4d5f-ab14-99a0d7800aef" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/home/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/home/home.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/server/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocation/AddLocation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocation/AddLocation.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocation/addLocation.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocation/addLocation.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/login/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/login/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/nav/Nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/nav/Nav.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signupForm/SignupForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signupForm/SignupForm.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/config/Initialization.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/config/Initialization.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/SignupRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/SignupRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/LoginResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/LoginResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/SignupResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/SignupResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/LocationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/LocationService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +149,7 @@
       <workItem from="1737425036413" duration="158000" />
       <workItem from="1737425215541" duration="63000" />
       <workItem from="1737425565694" duration="39537000" />
-      <workItem from="1738026809839" duration="2362000" />
+      <workItem from="1738026809839" duration="17128000" />
     </task>
     <servers />
   </component>

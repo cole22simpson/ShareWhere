@@ -4,11 +4,13 @@ import { BsFacebook, BsApple } from "react-icons/bs"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../authContext/useAuth";
+// import { useUser } from "../userContext/useUser";
 
 function Login () {
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
     const { setUserLoggedIn } = useAuth();
+    // const { setUserInfo } = useUser();
 
     const navigate = useNavigate();
     
@@ -32,6 +34,8 @@ function Login () {
                 const data = await response.json(); 
                 console.log("Login successful!");
                 console.log("Bearer Token:", data.accessToken);
+
+                // setUserInfo(data.user);
 
                 localStorage.setItem("jwtToken", data.accessToken);
                 setUserLoggedIn(true);

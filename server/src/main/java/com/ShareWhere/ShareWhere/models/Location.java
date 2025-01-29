@@ -27,9 +27,6 @@ public class Location {
     @Column(nullable = false)
     private Double longitude;
 
-    @Column(nullable = false)
-    private String address;
-
     private int saves = 0;
 
 //    private final int createdBy;
@@ -74,7 +71,6 @@ public class Location {
         this.locationDescription = locationDescription;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.address = address;
         this.tags.addAll(tags);
         this.comments.addAll(comments);
     }

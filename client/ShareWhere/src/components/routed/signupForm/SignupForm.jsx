@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../authContext/useAuth";
+import { getLocation } from "../../../assets/helpers/getLocation";
+// import { useUser } from "../userContext/useUser";
 
 function SignupForm({ onBackToBasic }) {
 
@@ -16,48 +18,17 @@ function SignupForm({ onBackToBasic }) {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const { setUserLoggedIn } = useAuth();
+    // const { setUserInfo } = useUser();
+    
 
     const handleLocationPermission = async () => {
         try {
-            const permission = await navigator.permissions.query({ name: 'geolocation' });
-
-            if (permission.state === 'granted') {
-                navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lng = position.coords.longitude;
-                    setLatitude(lat);
-                    setLongitude(lng);
-                    console.log("Lat: ", lat);
-                    console.log("Lng: ", lng);
-                    setLocation({ lat: lat, lng: lng });
-                },
-                (error) => {
-                    setError("Error getting location. Please try again."), error;
-                }
-                );
-            } else if (permission.state === 'denied') {
-                setError("Location access denied. Please enable location services in your browser settings.")
-            } else if (permission.state === 'prompt') {
-                if (window.confirm("Would you like to share your location?")) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const lat = position.coords.latitude;
-                            const lng = position.coords.longitude;
-                            setLatitude(lat);
-                            setLongitude(lng);
-                            console.log("Lat: ", lat);
-                            console.log("Lng: ", lng);
-                            setLocation({ lat: lat, lng: lng });
-                        },
-                        (error) => {
-                            setError("Error getting location. Please try again."), error;
-                        }
-                    );
-                }
-            }
-            } catch (error) {
-            console.error(error);
+            const coords = await getLocation();
+            setLocation(coords);
+            setLatitude(coords.lat);
+            setLongitude(coords.lng);
+        } catch (error) {
+            setError(error.message);
         }
     };
 
@@ -84,8 +55,10 @@ function SignupForm({ onBackToBasic }) {
                 const data = await response.json(); 
                 console.log("Signup successful!");
                 console.log("Bearer Token:", data.token);
-
+                // setUserInfo(data.user);
                 localStorage.setItem("jwtToken", data.token);
+                localStorage.setItem("userData", data.user);
+                // setUserInfo(data.user);
                 setUserLoggedIn(true);
 
                 setTimeout(() => {
