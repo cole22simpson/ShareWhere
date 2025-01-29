@@ -13,9 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -39,15 +37,22 @@ public class Initialization implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        List<String> tagNames = Arrays.asList(
-                "Plenty of parking", "Some parking", "No parking", "Free", "Cheap", "Expensive",
-                "Crowded", "Not too crowded", "Not crowded", "Loud", "Quiet", "Better at night",
-                "Better in the day", "Long hike", "Short hike", "Can swim", "No swimming",
-                "Dog friendly", "No dogs allowed", "Great view", "No cell service", "Good sunsets"
-        );
+        Map<String, Integer> tagGroups = new HashMap<>();
+        tagGroups.putAll(Map.ofEntries(
+                Map.entry("Plenty of parking", 1), Map.entry("Some parking", 1), Map.entry("No parking", 1),
+                Map.entry("Free", 2), Map.entry("Cheap", 2), Map.entry("Expensive", 2),
+                Map.entry("Crowded", 3), Map.entry("Not too crowded", 3), Map.entry("Not crowded", 3),
+                Map.entry("Loud", 4), Map.entry("Moderate noise", 4), Map.entry("Quiet", 4),
+                Map.entry("Better at night", 5), Map.entry("Better midday", 5), Map.entry("Better in the morning", 5),
+                Map.entry("Long hike", 6), Map.entry("Medium hike", 6), Map.entry("Short hike", 6),
+                Map.entry("Can swim", 7), Map.entry("No swimming", 7),
+                Map.entry("Dog friendly", 8), Map.entry("No dogs allowed", 8),
+                Map.entry("Great view", 9), Map.entry("Good sunsets", 9),
+                Map.entry("No cell service", 10)
+        ));
 
-        List<Tag> tags = tagNames.stream()
-                .map(Tag::new)
+        List<Tag> tags = tagGroups.entrySet().stream()
+                .map(entry -> new Tag(entry.getKey(), entry.getValue()))
                 .toList();
 
         tags.forEach(tagService::createTag);

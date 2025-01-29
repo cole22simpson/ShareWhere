@@ -1,15 +1,9 @@
 import "./addLocation.css";
 import { useState, useEffect, useRef } from "react";
-import { createRoot } from "react-dom/client";
-import ReactDom from "react-dom";
 import {
     APIProvider,
     Map,
     AdvancedMarker,
-    ControlPosition,
-    MapControl,
-    useMap,
-    useMapsLibrary,
     useAdvancedMarkerRef,
     // MapCameraChangedEvent,
     Pin,
@@ -27,6 +21,8 @@ function AddLocation () {
     const [isLoading, setIsLoading] = useState(true);
     const [selectedPlace, setSelectedPlace] = useState(null);
     const [images, setImages] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [selectedTags, setSelectedTags] = useState([]);
 
     function updateCharCount(inputId, counterId, maxLength) {
         const inputEl = document.getElementById(inputId);
@@ -82,6 +78,77 @@ function AddLocation () {
         setIsLoading(false);
     }, [latitude, longitude]);
 
+    // useEffect(() => {
+    //     const fetchTags = async () => {
+    //         try {
+    //             const token = localStorage.getItem("jwtToken");
+    //             const response = await fetch("http://localhost:8080/tags", {
+    //                 method: "GET",
+    //                 headers: {
+    //                     Authorization: `Bearer ${token}`,
+    //                 },
+    //             });
+    //             if (!response.ok) {
+    //                 throw new Error("Failed to fetch tags");
+    //             }
+    //             const data = await response.json();
+    //             setTags(data);
+    //         } catch (error) {
+    //             console.error("Error fetching tags: ", error);
+    //         }
+    //     };
+    //     fetchTags();
+    // }, []);
+
+    // const toggleTagSelection = (tag) => {
+    //     console.log(selectedTags);
+    //     setSelectedTags((prevSelectedTags) => {
+    //         if (prevSelectedTags.includes(tag)) {
+    //             return prevSelectedTags.filter((t) => t !== tag);
+    //         } else {
+    //             return [...prevSelectedTags, tag];
+    //         }
+    //     });
+    // };
+
+    useEffect(() => {
+        const fetchTags = async () => {
+            try {
+                const token = localStorage.getItem("jwtToken");
+                const response = await fetch("http://localhost:8080/tags", {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                if (!response.ok) {
+                    throw new Error("Failed to fetch tags");
+                }
+                const data = await response.json();
+                const grouped = data.reduce((acc, tag) => {
+                    if (!acc[tag.tagGroup]) {
+                        acc[tag.tagGroup] = [];
+                    }
+                    acc[tag.tagGroup].push(tag);
+                    return acc;
+                }, {});
+
+                setTags(grouped);
+            } catch (error) {
+                console.error("Error fetching tags: ", error);
+            }
+        };
+        fetchTags();
+    }, []);
+
+    const toggleTagSelection = (tagGroup, tag) => {
+        setSelectedTags((prevSelectedTags) => ({
+            ...prevSelectedTags,
+            [tagGroup]: prevSelectedTags[tagGroup] === tag ? null : tag,
+        }));
+    };
+
+
     return (
         <>
             {isLoading ? (
@@ -95,6 +162,7 @@ function AddLocation () {
                             <label htmlFor="input1" className="addloc-label">Name your location</label>
                             <input
                                 type="text"
+                                placeholder="Come up with something fun"
                                 id="input1"
                                 className="addloc-input"
                                 maxLength="80"
@@ -105,22 +173,13 @@ function AddLocation () {
                             <label htmlFor="input2" className="addloc-label">Include some details about this location</label>
                             <textarea
                                 type="text"
+                                placeholder="You can include information like directions or tips"
                                 id="input2"
                                 className="addloc-input big-input"
                                 maxLength="1200"
                                 onInput={(e) => updateCharCount("input2", "charCount2", 1200)}
                             />
                             <p className="char-count" id="charCount2">0 / 1200</p>
-
-                            <label htmlFor="input3" className="addloc-label">Provide directions to the location</label>
-                            <textarea
-                                type="text"
-                                id="input3"
-                                className="addloc-input big-input"
-                                maxLength="300"
-                                onInput={(e) => updateCharCount("input3", "charCount3", 300)}
-                            />
-                            <p className="char-count" id="charCount3">0 / 300</p>
 
                             <div className="upload-container">
                                 <input
@@ -147,8 +206,29 @@ function AddLocation () {
                                 </div>
                                 <p className="photo-count">{countImages(images)} / 10 photos uploaded</p>
                             </div>
+                            <div className="tags-container">
+                                <p className="addloc-label">Select tags:</p>
+                                    <div className="tags-only">
+                                        {Object.entries(tags).map(([tagGroup, groupTags]) => (
+                                            <div key={tagGroup} className="tag-group">
+                                                <div className="tags">
+                                                    {groupTags.map((tag) => {
+                                                        return (
+                                                            <button
+                                                                key={tag.tagId}
+                                                                className={`tag-btn ${selectedTags[tagGroup] === tag.tagName ? "selected" : ""}`}
+                                                                onClick={() => toggleTagSelection(tagGroup, tag.tagName)}
+                                                            >
+                                                                {tag.tagName}
+                                                            </button>
+                                                        );
+                                                    })}
+                                                    </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                            </div>
 
-                            
                             
                         </div>
                         <div className="addloc-map-container">

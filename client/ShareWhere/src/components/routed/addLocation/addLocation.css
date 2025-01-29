@@ -122,3 +122,39 @@
     overflow: hidden;
     margin: 10px;
 }
+
+.tags-container {
+    margin: 20px;
+}
+
+.tags-only {
+    border: 3px solid var(--black-color);
+    border-radius: 15px;
+    padding: 5px;
+}
+
+.tag-group {
+    
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tag-btn {
+    background-color:var(--secondary-color);
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 13px;
+    margin: 5px;
+    border: none;
+    font-family: "Outfit", sans-serif;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.tag-btn.selected {
+    background-color:var(--black-color);
+    color: white;
+}

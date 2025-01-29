@@ -1,7 +1,7 @@
 import "./login.css"
 import { FcGoogle } from "react-icons/fc"
 import { BsFacebook, BsApple } from "react-icons/bs"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../authContext/useAuth";
 // import { useUser } from "../userContext/useUser";
@@ -10,9 +10,20 @@ function Login () {
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
     const { setUserLoggedIn } = useAuth();
+    const [backgroundImage, setBackgroundImage] = useState("");
     // const { setUserInfo } = useUser();
 
+    const images = [
+        "url('/public/assets/images/login-background.PNG'",
+        "url('/public/assets/images/mixed-nature.PNG'",
+        "url('/public/assets/images/mixed-sunsets.PNG'"
+    ]
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const randomImage = images[Math.floor(Math.random() * images.length)];
+        setBackgroundImage(randomImage);
+    }, []);
     
 
     const handleLogin = async (event) => {
@@ -56,7 +67,9 @@ function Login () {
     };
 
     return (
-        <div className="page page__login">
+        <div
+            className="page page__login"
+            style={{backgroundImage: backgroundImage}}>
 
                 <div className="login-component">
                     

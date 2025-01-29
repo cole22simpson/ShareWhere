@@ -2,10 +2,11 @@ import "./signup.css"
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook, BsApple } from "react-icons/bs";
 import SignupForm from "../signupForm/SignupForm.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Signup () {
     const [showBasicForm, setShowBasicForm] = useState(false);
+    const [backgroundImage, setBackgroundImage] = useState("");
 
     const handleBasicClick = () => {
         setShowBasicForm(true);
@@ -15,8 +16,21 @@ function Signup () {
         setShowBasicForm(false); 
       };
 
+    const images = [
+        "url('/public/assets/images/tree-yosemite.PNG'",
+        "url('/public/assets/images/mixed-chill.PNG'",
+        "url('/public/assets/images/surf-paint.PNG'"
+    ]
+
+    useEffect(() => {
+        const randomImage = images[Math.floor(Math.random() * images.length)];
+        setBackgroundImage(randomImage);
+    }, []);
+
     return (
-        <div className="page signup-page">
+        <div
+            className="page signup-page"
+            style={{backgroundImage: backgroundImage}}>
 
             <div className="signup-component">
 

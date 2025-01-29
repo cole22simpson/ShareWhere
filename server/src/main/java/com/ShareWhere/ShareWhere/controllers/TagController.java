@@ -1,5 +1,6 @@
 package com.ShareWhere.ShareWhere.controllers;
 
+import com.ShareWhere.ShareWhere.models.Location;
 import com.ShareWhere.ShareWhere.models.Tag;
 import com.ShareWhere.ShareWhere.services.TagService;
 import org.apache.coyote.Response;
@@ -44,7 +45,14 @@ public class TagController {
 
     @PutMapping("/{tagId}")
     public ResponseEntity<Tag> updateTag(@PathVariable("tagId") int tagId, @RequestBody Tag tag) {
-        Optional<Tag> updatedTag = tagService.updateTag(tagId, tag);
+        Optional<Tag> updatedTag = tagService.updateTag(tagId, tag, false);
+        return updatedTag.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping("/{tagId}")
+    public ResponseEntity<Tag> updateTagFields(@PathVariable("tagId") int tagId, @RequestBody Tag tagUpdates) {
+        Optional<Tag> updatedTag = tagService.updateTag(tagId, tagUpdates, true);
         return updatedTag.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
