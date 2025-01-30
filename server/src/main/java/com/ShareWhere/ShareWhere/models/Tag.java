@@ -19,12 +19,16 @@ public class Tag {
     @Column(nullable = false)
     private String tagName;
 
+    @Column(nullable = false)
+    private Integer tagGroup;
+
     private LocalDateTime timeCreated;
 
     public Tag() {}
 
-    public Tag(String tagName) {
+    public Tag(String tagName, Integer tagGroup) {
         this.tagName = tagName;
+        this.tagGroup = tagGroup;
         this.timeCreated = LocalDateTime.now();
     }
 }

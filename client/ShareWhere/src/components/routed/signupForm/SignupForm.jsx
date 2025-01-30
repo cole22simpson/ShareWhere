@@ -2,6 +2,9 @@ import "./signupForm.css";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../authContext/useAuth";
+import { getLocation } from "../../../assets/helpers/getLocation";
+// import { useUser } from "../userContext/useUser";
 
 function SignupForm({ onBackToBasic }) {
 
@@ -9,8 +12,25 @@ function SignupForm({ onBackToBasic }) {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [passwordHash, setPasswordHash] = useState('');
-    const [location, setLocation] = useState('');
+    const [location, setLocation] = useState(null);
+    const [latitude, setLatitude] = useState(0.0);
+    const [longitude, setLongitude] = useState(0.0);
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const { setUserLoggedIn } = useAuth();
+    // const { setUserInfo } = useUser();
+    
+
+    const handleLocationPermission = async () => {
+        try {
+            const coords = await getLocation();
+            setLocation(coords);
+            setLatitude(coords.lat);
+            setLongitude(coords.lng);
+        } catch (error) {
+            setError(error.message);
+        }
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -26,7 +46,8 @@ function SignupForm({ onBackToBasic }) {
                     name,
                     email,
                     passwordHash,
-                    location,
+                    latitude,
+                    longitude
                 }),
             });
 
@@ -34,6 +55,11 @@ function SignupForm({ onBackToBasic }) {
                 const data = await response.json(); 
                 console.log("Signup successful!");
                 console.log("Bearer Token:", data.token);
+                // setUserInfo(data.user);
+                localStorage.setItem("jwtToken", data.token);
+                localStorage.setItem("userData", data.user);
+                // setUserInfo(data.user);
+                setUserLoggedIn(true);
 
                 setTimeout(() => {
                     navigate("/");
@@ -48,11 +74,14 @@ function SignupForm({ onBackToBasic }) {
     };
 
     return (
-        <div>
+        <>
             <button onClick={ onBackToBasic }>Back</button>
-            <h2>Sign up to do some exploring</h2>
-            <form onSubmit={ handleSubmit }>
+            <h2 className="signup-form-header">Sign up to do some exploring</h2>
+            <form
+                className="signup-form-container"
+                onSubmit={ handleSubmit }>
                 <input
+                    className="signup-form-input"
                     type="text"
                     placeholder="Name"
                     id="name"
@@ -63,6 +92,7 @@ function SignupForm({ onBackToBasic }) {
                 />
                 <br />
                 <input
+                    className="signup-form-input"
                     type="text"
                     placeholder="Username"
                     id="username"
@@ -73,6 +103,7 @@ function SignupForm({ onBackToBasic }) {
                 />
                 <br/>
                 <input
+                    className="signup-form-input"
                     type="email"
                     placeholder="Email"
                     id="email"
@@ -83,6 +114,7 @@ function SignupForm({ onBackToBasic }) {
                 />
                 <br/>
                 <input
+                    className="signup-form-input"
                     type="password"
                     placeholder="Password"
                     id="password"
@@ -92,19 +124,18 @@ function SignupForm({ onBackToBasic }) {
                     onChange={(e) => setPasswordHash(e.target.value)}
                 />
                 <br/>
-                <input
-                    type="text"
-                    placeholder="Location"
-                    id="location"
-                    name="location"
-                    required
-                    value = {location}
-                    onChange={(e) => setLocation(e.target.value)}
-                />
+                <div>
+                    {location ? (
+                    <p>Location: {latitude}, {longitude}</p> 
+                    ) : (
+                    <button type="button" className="signup-form-btn" onClick={handleLocationPermission}>Allow Location</button>
+                    )}
+                    {error && <p className="error">{error}</p>}
+                </div>
                 <br/>
-                <input type="submit" value="Submit"></input>
+                <input className="signup-form-btn" type="submit" value="Submit"></input>
             </form>
-        </div>
+        </>
     );
 }
 

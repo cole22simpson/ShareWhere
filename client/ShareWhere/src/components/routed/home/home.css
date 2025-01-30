@@ -1,17 +1,84 @@
 .banner-container {
-    background-color: var(--secondary-color);
+    background: url("/public/assets/images/haleakala-sunset.jpg");
+    background-size: cover;
+    background-position: 0% 50%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 23vh;
+    height: 25vh;
+    position: relative;
 }
 
 .greeting {
-    flex-direction: row;
-    width: 100%;
+    font-size: 5vh;
+    color: white;
 }
 
 .home-search-form {
-    flex-direction: row;
-    width: 100%;
+    display: flex;
+    position: absolute;
+    bottom: -10%;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.home-search-form input[type="search"] {
+    height: 5vh;
+    width: 25vw;
+    border: none;
+    border-radius: 100px;
+    padding-left: 25px;
+    font-size: 20px;
+}
+
+.home-post-container {
+    background-color: var(--secondary-color);
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    height: 70vh;
+    width: 50%;
+}
+
+.local-post-container {
+    margin-top: 7vh;
+}
+
+.local-favorites {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 10px;
+}
+
+.favorites-title {
+    font-size: 35px;
+}
+
+.favorites-title span {
+    text-decoration: underline;
+}
+
+.home-see-more {
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.home-see-more:hover {
+    text-decoration: underline;
+}
+
+.local-posts {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* .local-post {
+    
+} */
+
+.local-post-img {
+    height: 16vh;
+    border-radius: 25px;
 }

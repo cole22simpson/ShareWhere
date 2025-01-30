@@ -2,6 +2,7 @@ package com.ShareWhere.ShareWhere.services;
 
 import com.ShareWhere.ShareWhere.models.Tag;
 import com.ShareWhere.ShareWhere.repositories.TagRepo;
+import jakarta.transaction.Transactional;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,9 +37,15 @@ public class TagService {
         return tagRepo.findById(tagId);
     }
 
-    public Optional<Tag> updateTag(int tagId, Tag updatedField) {
+    @Transactional
+    public Optional<Tag> updateTag(int tagId, Tag tag, boolean isPartial) {
         return tagRepo.findById(tagId).map(existingTag -> {
-            existingTag.setTagName(updatedField.getTagName());
+            if (tag.getTagName() != null || !isPartial) {
+                existingTag.setTagName(tag.getTagName());
+            }
+            if (tag.getTagGroup() != null || !isPartial) {
+                existingTag.setTagGroup(tag.getTagGroup());
+            }
 
             return tagRepo.save(existingTag);
         });

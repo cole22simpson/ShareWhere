@@ -14,6 +14,7 @@ import java.util.Optional;
 public class LocationService {
 
     private final LocationRepo locationRepo;
+    private final String uploadDir = "uploads/locations/";
 
     public LocationService(LocationRepo locationRepo) {
         this.locationRepo = locationRepo;
@@ -45,9 +46,6 @@ public class LocationService {
             }
             if (location.getLongitude() != null || !isPartial) {
                 existingLocation.setLongitude(location.getLongitude());
-            }
-            if (location.getAddress() != null || !isPartial) {
-                existingLocation.setAddress(location.getAddress());
             }
 
             return locationRepo.save(existingLocation);

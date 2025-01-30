@@ -26,8 +26,11 @@ public class SignupRequest {
     @Size(min = 6, message = "Password must be at least 6 characters long")
     private String passwordHash;
 
-    @NotBlank(message = "Location is required")
-    private String location;
+    @NotBlank(message = "Latitude is required")
+    private Double latitude;
+
+    @NotBlank(message = "Longitude is required")
+    private Double longitude;
 
     private String role = "USER"; // Default role is USER if not specified
 }

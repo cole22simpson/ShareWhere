@@ -31,8 +31,14 @@ public class User {
     @Column(nullable = false, name = "password")
     private String passwordHash;
 
+//    @Column(nullable = false)
+//    private String location;
+
     @Column(nullable = false)
-    private String location;
+    private Double latitude;
+
+    @Column(nullable = false)
+    private Double longitude;
 
     @Column(nullable = false)
     private String role;
@@ -62,17 +68,18 @@ public class User {
     // Constructors
     protected User() {}
 
-    public User(String email, String password, String username, String name, String location) {
-        this(email, password, username, name, location, "User");
+    public User(String email, String password, String username, String name, Double latitude, Double longitude) {
+        this(email, password, username, name, latitude, longitude, "User");
     }
 
-    public User(String email, String password, String username, String name, String location, String role) {
-        this.username = validateNotEmpty(username, "Username");
-        this.email = validateNotEmpty(email, "Email");
-        this.passwordHash = validateNotEmpty(password, "Password");
-        this.name = validateNotEmpty(name, "Name");
-        this.location = validateNotEmpty(location, "Location");
-        this.role = validateNotEmpty(role, "Role");
+    public User(String email, String password, String username, String name, Double latitude, Double longitude, String role) {
+        this.username = validateNotEmptyString(username, "Username");
+        this.email = validateNotEmptyString(email, "Email");
+        this.passwordHash = validateNotEmptyString(password, "Password");
+        this.name = validateNotEmptyString(name, "Name");
+        this.latitude = validateNotEmptyDouble(latitude, "Latitude");
+        this.longitude = validateNotEmptyDouble(longitude, "Longitude");
+        this.role = validateNotEmptyString(role, "Role");
     }
 
     @PrePersist
@@ -86,26 +93,17 @@ public class User {
         this.updatedAt = LocalDateTime.now();
     }
 
-    private static String validateNotEmpty(String value, String fieldName) {
+    private static String validateNotEmptyString(String value, String fieldName) {
         if (value == null || value.isEmpty()) {
             throw new IllegalArgumentException(fieldName + " cannot be null or empty");
         }
         return value;
     }
-//
-//    public void setPassword(String password) {
-//        this.passwordHash = hashPassword(password);
-//    }
-//
-//    private String hashPassword(String password) {
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        return encoder.encode(password);
-//    }
 
-//    public void setProfile(UserProfile profile) {
-//        this.profile = profile;
-//        if (profile != null) {
-//            profile.setUser(this);
-//        }
-//    }
+    private static Double validateNotEmptyDouble(Double value, String fieldName) {
+        if (value == null || value == 0.0) {
+            throw new IllegalArgumentException(fieldName + " cannot be null or empty");
+        }
+        return value;
+    }
 }

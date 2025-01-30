@@ -13,6 +13,7 @@ public class SignupResponse {
     private String role;
     private String token;
     private String message;
+    private User user;
 
     public SignupResponse(String message) {
         this.message = message;
