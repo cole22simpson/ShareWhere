@@ -1,8 +1,13 @@
 import PropTypes from "prop-types";
+import { useState, useCallback } from "react";
 import "./addLocMap.css";
-import { Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
+import { Map, AdvancedMarker, Pin, MapControl, ControlPosition, InfoWindow } from "@vis.gl/react-google-maps";
 
-const AddLocMap = ({ latitude, longitude }) => {
+const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
+    const [center, setCenter] = useState({ lat: latitude, lng: longitude });
+
+    
+
     return (
         <div className="addloc-map-container">
             <Map
@@ -12,9 +17,11 @@ const AddLocMap = ({ latitude, longitude }) => {
                 disableDefaultUI={true}
                 mapTypeId={"terrain"}
                 mapId={"8556750882f0b69f"}>
-                <AdvancedMarker position={{ lat: latitude, lng: longitude }}>
-                    <Pin background="red" borderColor="black" glyphColor="red" />
-                </AdvancedMarker>
+                <MapControl position={ControlPosition.TOP_LEFT}>
+                    <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}>
+                        <Pin background="red" borderColor="black" glyphColor="red" />
+                    </AdvancedMarker>
+                </MapControl>
             </Map>
         </div>
     );
@@ -23,6 +30,7 @@ const AddLocMap = ({ latitude, longitude }) => {
 AddLocMap.propTypes = {
     latitude: PropTypes.number.isRequired,
     longitude: PropTypes.number.isRequired,
+    onLocationChange: PropTypes.func.isRequired,
 };
 
 export default AddLocMap;

@@ -270,8 +270,8 @@ import LocationForm from "../locationForm/LocationForm.jsx";
 
 function AddLocation() {
     const positionRef = useRef({ lat: 0.0, lng: 0.0 });
-    const [latitude, setLatitude] = useState(positionRef.current.lat);
-    const [longitude, setLongitude] = useState(positionRef.current.lng);
+    const [initialLatitude, setInitialLatitude] = useState(positionRef.current.lat);
+    const [initialLongitude, setInitialLongitude] = useState(positionRef.current.lng);
     const [isLoading, setIsLoading] = useState(true);
     const [tags, setTags] = useState({});
     const [selectedTags, setSelectedTags] = useState({});
@@ -282,8 +282,8 @@ function AddLocation() {
             try {
                 const coords = await getLocation();
                 positionRef.current = coords;
-                setLatitude(coords.lat);
-                setLongitude(coords.lng);
+                setInitialLatitude(coords.lat);
+                setInitialLongitude(coords.lng);
                 localStorage.setItem("userCoordinates", JSON.stringify(coords));
             } catch (error) {
                 console.error(error);
@@ -294,8 +294,8 @@ function AddLocation() {
         const storedCoords = localStorage.getItem("userCoordinates");
         if (storedCoords) {
             const coords = JSON.parse(storedCoords);
-            setLatitude(coords.lat);
-            setLongitude(coords.lng);
+            setInitialLatitude(coords.lat);
+            setInitialLongitude(coords.lng);
             setIsLoading(false);
         } else {
             fetchLocation();
@@ -334,8 +334,8 @@ function AddLocation() {
                 <div>Loading...</div>
             ) : (
                 <LocationForm
-                    latitude={latitude}
-                    longitude={longitude}
+                    initialLatitude={initialLatitude}
+                    initialLongitude={initialLongitude}
                     tags={tags}
                     selectedTags={selectedTags}
                     setSelectedTags={setSelectedTags}

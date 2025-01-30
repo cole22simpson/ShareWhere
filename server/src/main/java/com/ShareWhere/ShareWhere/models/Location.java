@@ -2,6 +2,8 @@ package com.ShareWhere.ShareWhere.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,10 +17,10 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int locationId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 80)
     private String locationName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1200)
     private String locationDescription;
 
     @Column(nullable = false)
@@ -41,7 +43,13 @@ public class Location {
             inverseJoinColumns = @JoinColumn(name = "comment_id")
     )
     private List<Comment> comments = new ArrayList<>();
-//    private List<String> images;
+
+    @ElementCollection
+    @CollectionTable(
+            name= "location_images",
+            joinColumns = @JoinColumn(name = "location_id"))
+    @Column(name = "image_url", nullable = false)
+    private List<String> images = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -49,29 +57,19 @@ public class Location {
             joinColumns = @JoinColumn(name = "location_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @Column(nullable = false)
     private List<Tag> tags = new ArrayList<>();
 
     public Location() {}
 
     public Location(String locationName, String locationDescription,
-                    double latitude, double longitude, String address) {
-        this(locationName, locationDescription, latitude, longitude, address, new ArrayList<>(), new ArrayList<>());
-    }
-
-    public Location(String locationName, String locationDescription,
-                    double latitude, double longitude, String address,
-                    List<Tag> tags) {
-        this(locationName, locationDescription, latitude, longitude, address, tags, new ArrayList<>());
-    }
-
-    public Location(String locationName, String locationDescription,
-                    double latitude, double longitude, String address,
-                    List<Tag> tags, List<Comment> comments) {
+                    double latitude, double longitude,
+                    List<String> images, List<Tag> tags) {
         this.locationName = locationName;
         this.locationDescription = locationDescription;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.tags.addAll(tags);
-        this.comments.addAll(comments);
+        this.images = images;
+        this.tags = tags;
     }
 }

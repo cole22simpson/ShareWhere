@@ -18,13 +18,20 @@ const ImageUploader = ({ images, setImages }) => {
 
     return (
         <div className="upload-container">
-            <input type="file" multiple accept="image/*" onChange={handleImageUpload} hidden />
-            <label className="custom-upload-button">Upload Photos</label>
+            <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageUpload}
+                hidden
+                id="image-input"
+                />
+            <label className="custom-upload-button" htmlFor="image-input">Upload Photos</label>
             <div className="image-preview-container">
                 {images.map((src, index) => (
                     <div key={index} className="image-wrapper">
                         <img src={src} alt={`Uploaded ${index}`} />
-                        <button onClick={() => removeImage(index)}>✖</button>
+                        <button className="remove-btn" onClick={() => removeImage(index)}>✖</button>
                     </div>
                 ))}
             </div>

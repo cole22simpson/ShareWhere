@@ -6,8 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="094d4d6e-c9c5-4d5f-ab14-99a0d7800aef" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/AddLocMap.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/AddLocMap.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocation/AddLocation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocation/AddLocation.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocation/addLocation.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocation/addLocation.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/imageUploader/ImageUploader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/imageUploader/ImageUploader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationForm/LocationForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationForm/LocationForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationForm/locationForm.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationForm/locationForm.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/LocationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/LocationService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +143,7 @@
       <workItem from="1737425036413" duration="158000" />
       <workItem from="1737425215541" duration="63000" />
       <workItem from="1737425565694" duration="39537000" />
-      <workItem from="1738026809839" duration="23537000" />
+      <workItem from="1738026809839" duration="27004000" />
     </task>
     <servers />
   </component>
