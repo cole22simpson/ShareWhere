@@ -1,0 +1,40 @@
+.addloc-container {
+    display: flex;
+    justify-content: space-between;
+    height: 95vh;
+}
+
+.addloc-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    margin-left: 10px;
+}
+
+.addloc-label {
+    color: var(--black-color);
+    font-size: 20px;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.addloc-input {
+    border: 3px solid var(--black-color);
+    font-size: 20px;
+    height: 50px;
+    width: 100%;
+    padding-left: 1rem;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    font-family: "Outfit", sans-serif;
+    resize: none;
+}
+
+.char-count {
+    text-align: right;
+}
+
+.big-input {
+    height: 200px;
+    padding: 10px;
+}
