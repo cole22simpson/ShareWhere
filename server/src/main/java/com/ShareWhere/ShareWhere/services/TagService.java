@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,18 @@ public class TagService {
 
     public List<Tag> getAllTags() {
         return tagRepo.findAll();
+    }
+
+    public List<Tag> getTagsByName(List<String> tagNames) {
+        List<Tag> tags = new ArrayList<>();
+        for (String tagName : tagNames) {
+            tagRepo.findByTagName(tagName).ifPresent(tags::add);
+        }
+        return tags;
+    }
+
+    public Optional<Tag> getTagByTagName(String tagName) {
+        return tagRepo.findByTagName(tagName);
     }
 
     public Tag createTag(Tag tag) {

@@ -39,14 +39,18 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.sameOrigin()))
 //                .exceptionHandling(h -> h.authenticationEntryPoint(unauthorizedHandler))
                 .securityMatcher("/**")
                 .authorizeHttpRequests(registry -> registry
+                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/signup").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+//                        .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 );
 
 

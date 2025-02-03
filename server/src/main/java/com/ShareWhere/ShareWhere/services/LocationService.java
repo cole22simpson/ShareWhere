@@ -1,23 +1,41 @@
 package com.ShareWhere.ShareWhere.services;
 
+import com.ShareWhere.ShareWhere.models.Image;
 import com.ShareWhere.ShareWhere.models.Location;
+//import com.ShareWhere.ShareWhere.models.LocationRequest;
+import com.ShareWhere.ShareWhere.models.Tag;
+import com.ShareWhere.ShareWhere.models.UserProfile;
 import com.ShareWhere.ShareWhere.repositories.LocationRepo;
+import com.ShareWhere.ShareWhere.repositories.TagRepo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class LocationService {
 
     private final LocationRepo locationRepo;
+    private final TagRepo tagRepo;
     private final String uploadDir = "uploads/locations/";
+    private final TagService tagService;
+    private final UserService userService;
 
-    public LocationService(LocationRepo locationRepo) {
+    public LocationService(LocationRepo locationRepo, TagRepo tagRepo, TagService tagService, UserService userService) {
         this.locationRepo = locationRepo;
+        this.tagRepo = tagRepo;
+        this.tagService = tagService;
+        this.userService = userService;
     }
 
     public List<Location> getAllLocations() {
@@ -26,6 +44,43 @@ public class LocationService {
 
     public Location createLocation(Location location) {
         return locationRepo.save(location);
+    }
+
+    public Location createLocation(
+            String locationName, String locationDescription, Double latitude, Double longitude, List<String> tagNames, List<MultipartFile> imageFiles
+    ) throws IOException {
+
+//         Convert image files to Image objects
+
+        Location location = new Location(
+                locationName,
+                locationDescription,
+                latitude,
+                longitude,
+                tagService.getTagsByName(tagNames)
+        );
+
+        List<Image> images = new ArrayList<>();
+        for (MultipartFile imageFile : imageFiles) {
+            Image image = new Image(
+                    imageFile.getOriginalFilename(),
+                    imageFile.getContentType(),
+                    imageFile.getBytes()
+            );
+            image.setLocation(location);
+            images.add(image);
+        }
+        location.setImages(images);
+
+        Optional<UserProfile> profile = userService.getUserProfileById(1);
+        profile.ifPresent(location::setCreatedBy);
+
+        return locationRepo.save(location);
+//
+//        images.forEach(image -> image.setLocation(savedLocation));
+//
+//        // Create Location object
+//        return savedLocation;
     }
 
     public Optional<Location> getLocationById(int locationId) {

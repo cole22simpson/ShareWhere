@@ -6,19 +6,19 @@ import { Map, AdvancedMarker, Pin, MapControl, ControlPosition, InfoWindow } fro
 const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
     const [center, setCenter] = useState({ lat: latitude, lng: longitude });
 
-    
-
     return (
         <div className="addloc-map-container">
             <Map
                 defaultZoom={15}
-                defaultCenter={{ lat: latitude, lng: longitude }}
+                // defaultCenter={{ lat: latitude, lng: longitude }}
+                center={{ lat: 10.45796, lng: -84.64281 }}
                 gestureHandling={"greedy"}
                 disableDefaultUI={true}
                 mapTypeId={"terrain"}
                 mapId={"8556750882f0b69f"}>
                 <MapControl position={ControlPosition.TOP_LEFT}>
-                    <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}>
+                    {/* <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}> */}
+                    <AdvancedMarker position={{ lat: 10.45796, lng: -84.64281 }}>
                         <Pin background="red" borderColor="black" glyphColor="red" />
                     </AdvancedMarker>
                 </MapControl>

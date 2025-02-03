@@ -8,8 +8,8 @@ const ImageUploader = ({ images, setImages }) => {
             alert("You can only upload up to 10 photos.");
             return;
         }
-        const newImages = files.map((file) => URL.createObjectURL(file));
-        setImages((prev) => [...prev, ...newImages]);
+        // const newImages = files.map((file) => URL.createObjectURL(file));
+        setImages((prev) => [...prev, ...files]);
     };
 
     const removeImage = (index) => {

@@ -1,5 +1,7 @@
 package com.ShareWhere.ShareWhere.controllers;
 
+import com.ShareWhere.ShareWhere.DTOs.UserDTO;
+import com.ShareWhere.ShareWhere.DTOs.UserProfileDTO;
 import com.ShareWhere.ShareWhere.models.*;
 import com.ShareWhere.ShareWhere.security.JwtDecoder;
 import com.ShareWhere.ShareWhere.security.JwtIssuer;
@@ -62,7 +64,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<SignupResponse> signup(@RequestBody @Validated SignupRequest request) {
+    public ResponseEntity<?> signup(@RequestBody @Validated SignupRequest request) {
         if (userService.existsByEmail(request.getEmail())) {
             return ResponseEntity.badRequest().body(
                     SignupResponse.builder()
@@ -87,12 +89,9 @@ public class AuthController {
         String token = jwtIssuer.issue(newUser.getUserID(), newUser.getEmail(), List.of(newUser.getRole()));
 
         SignupResponse response = SignupResponse.builder()
-                .username(newUser.getUsername())
-                .email(newUser.getEmail())
-                .role(newUser.getRole())
                 .token(token)
-                .message("User created successfully")
-                .user(newUser)
+                .message("Signed up successfully")
+                .user(new UserDTO(newUser))
                 .build();
 
         return ResponseEntity.ok(response);
