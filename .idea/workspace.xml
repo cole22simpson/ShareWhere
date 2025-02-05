@@ -5,32 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="094d4d6e-c9c5-4d5f-ab14-99a0d7800aef" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/ImageDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/LocationDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/TagDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/UserDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/UserProfileDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Image.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/utils/FileUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/AddLocMap.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/AddLocMap.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationForm/LocationForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationForm/LocationForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/assets/images/RHM00665.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/images/RHM00665.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/assets/images/default_image.png" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/images/default_image.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/LocationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/LocationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/TagController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/TagController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Location.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/SignupResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/SignupResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/UserProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/UserProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/repositories/TagRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/repositories/TagRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/security/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/security/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/LocationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/LocationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/TagService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/TagService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +145,7 @@
       <workItem from="1737425565694" duration="39537000" />
       <workItem from="1738026809839" duration="29945000" />
       <workItem from="1738358479885" duration="30298000" />
-      <workItem from="1738532455318" duration="11717000" />
+      <workItem from="1738532455318" duration="19794000" />
     </task>
     <servers />
   </component>

@@ -16,6 +16,11 @@ const ImageUploader = ({ images, setImages }) => {
         setImages(images.filter((_, i) => i !== index));
     };
 
+    const getPreviewURL = (file) => {
+        if (typeof file === "string") return file;
+        return URL.createObjectURL(file);
+    };
+
     return (
         <div className="upload-container">
             <input
@@ -28,9 +33,9 @@ const ImageUploader = ({ images, setImages }) => {
                 />
             <label className="custom-upload-button" htmlFor="image-input">Upload Photos</label>
             <div className="image-preview-container">
-                {images.map((src, index) => (
+                {images.map((file, index) => (
                     <div key={index} className="image-wrapper">
-                        <img src={src} alt={`Uploaded ${index}`} />
+                        <img src={getPreviewURL(file)} alt={`Uploaded ${index}`} />
                         <button className="remove-btn" onClick={() => removeImage(index)}>✖</button>
                     </div>
                 ))}

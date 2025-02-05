@@ -23,8 +23,6 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
         const selectedTagsArray = Object.values(selectedTags)
             .filter(tagName => tagName !== null);
 
-        console.log("selectedTagsArray (after): ", selectedTagsArray);
-
         event.preventDefault();
 
         const formData = new FormData();
