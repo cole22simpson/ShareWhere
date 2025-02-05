@@ -1,9 +1,16 @@
 package com.ShareWhere.ShareWhere.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +19,8 @@ import java.util.List;
 @Data
 @Table(name = "user_profile")
 public class UserProfile {
-
-    private static final String DEFAULT_PROFILE_PIC = "../assets/images/default_image.png";
-
     @Id
-    private int profileID;
+    private int profileId;
 
     @OneToOne
     @MapsId
@@ -26,7 +30,9 @@ public class UserProfile {
 
     private String bio = "";
 
-    private String profilePicName = DEFAULT_PROFILE_PIC;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_pic_id", referencedColumnName = "imageId")
+    private Image profilePic;
 //    private String profilePicImgType;
 //    @Lob
 //    private byte[] imageData;
@@ -35,13 +41,13 @@ public class UserProfile {
     of order and duplicates. If duplicates are allowed, then a list is acceptable.
     If dupes are not allowed, but order is needed, then a sorted set is fine.
      */
-    @ManyToMany
-    @JoinTable(
-            name = "user_posted_locations",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "location_id")
+    @OneToMany(
+            mappedBy = "createdBy",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    private List<Location> userPosts;
+    @JsonBackReference
+    private List<Location> userPosts = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -49,7 +55,7 @@ public class UserProfile {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "location_id")
     )
-    private List<Location> savedLocations;
+    private List<Location> savedLocations = new ArrayList<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -61,8 +67,6 @@ public class UserProfile {
 
     public UserProfile(User user) {
         this.user = user;
-        this.userPosts = new ArrayList<>();
-        this.savedLocations = new ArrayList<>();
     }
 
     @PrePersist

@@ -8,12 +8,17 @@ const ImageUploader = ({ images, setImages }) => {
             alert("You can only upload up to 10 photos.");
             return;
         }
-        const newImages = files.map((file) => URL.createObjectURL(file));
-        setImages((prev) => [...prev, ...newImages]);
+        // const newImages = files.map((file) => URL.createObjectURL(file));
+        setImages((prev) => [...prev, ...files]);
     };
 
     const removeImage = (index) => {
         setImages(images.filter((_, i) => i !== index));
+    };
+
+    const getPreviewURL = (file) => {
+        if (typeof file === "string") return file;
+        return URL.createObjectURL(file);
     };
 
     return (
@@ -28,9 +33,9 @@ const ImageUploader = ({ images, setImages }) => {
                 />
             <label className="custom-upload-button" htmlFor="image-input">Upload Photos</label>
             <div className="image-preview-container">
-                {images.map((src, index) => (
+                {images.map((file, index) => (
                     <div key={index} className="image-wrapper">
-                        <img src={src} alt={`Uploaded ${index}`} />
+                        <img src={getPreviewURL(file)} alt={`Uploaded ${index}`} />
                         <button className="remove-btn" onClick={() => removeImage(index)}>✖</button>
                     </div>
                 ))}

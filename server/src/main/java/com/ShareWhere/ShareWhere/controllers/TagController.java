@@ -43,6 +43,14 @@ public class TagController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/tagName")
+    public ResponseEntity<Tag> getTagByTagName(@RequestParam String tagName) {
+        String noHyphens = tagName.replaceAll("-", " ");
+        return tagService.getTagByTagName(noHyphens)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PutMapping("/{tagId}")
     public ResponseEntity<Tag> updateTag(@PathVariable("tagId") int tagId, @RequestBody Tag tag) {
         Optional<Tag> updatedTag = tagService.updateTag(tagId, tag, false);

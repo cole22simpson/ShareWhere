@@ -1,5 +1,6 @@
 package com.ShareWhere.ShareWhere.controllers;
 
+import com.ShareWhere.ShareWhere.DTOs.UserDTO;
 import com.ShareWhere.ShareWhere.models.User;
 import com.ShareWhere.ShareWhere.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -22,8 +23,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 

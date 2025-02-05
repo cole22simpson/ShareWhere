@@ -1,13 +1,18 @@
 package com.ShareWhere.ShareWhere.services;
 
+import com.ShareWhere.ShareWhere.DTOs.ImageDTO;
+import com.ShareWhere.ShareWhere.DTOs.UserDTO;
+import com.ShareWhere.ShareWhere.models.Image;
 import com.ShareWhere.ShareWhere.models.User;
 import com.ShareWhere.ShareWhere.models.UserProfile;
 import com.ShareWhere.ShareWhere.repositories.UserRepo;
+import com.ShareWhere.ShareWhere.utils.FileUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,14 +26,28 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public List<User> getAllUsers() {
-        return userRepo.findAll();
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepo.findAll();
+        List<UserDTO> userDTOs = new ArrayList<>();
+        for (User user : users) {
+            userDTOs.add(new UserDTO(user));
+        }
+        return userDTOs;
     }
 
     @Transactional
     public User createUser(User user) {
         try {
-            user.setProfile(new UserProfile(user));
+            byte[] defaultProfilePicData = FileUtils.loadDefaultProfilePicture();
+            Image defaultProfilePic = new Image(
+                    "default_profile_pic.png",
+                    "image/png",
+                    defaultProfilePicData
+            );
+            UserProfile profile = new UserProfile(user);
+            profile.setProfilePic(defaultProfilePic);
+            defaultProfilePic.setUserProfile(profile);
+            user.setProfile(profile);
             return userRepo.save(user);
         } catch (Exception e) {
             throw new RuntimeException("Failed to create User or UserProfile", e);
@@ -43,6 +62,10 @@ public class UserService {
 
     public Optional<User> getUserById(int userId) {
         return userRepo.findById(userId);
+    }
+
+    public Optional<UserProfile> getUserProfileById(int userId) {
+        return getUserById(userId).map(User::getProfile);
     }
 
     public Optional<User> getUserByUsername(String username) {

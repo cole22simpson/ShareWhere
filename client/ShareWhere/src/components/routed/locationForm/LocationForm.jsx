@@ -18,8 +18,41 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
         setLongitude(lng);
     };
 
-    const handleSubmit = () => {
-        console.log("Form Submitted:", { name, details, latitude, longitude, selectedTags, images });
+    const handleSubmit = async (event) => {
+
+        const selectedTagsArray = Object.values(selectedTags)
+            .filter(tagName => tagName !== null);
+
+        event.preventDefault();
+
+        const formData = new FormData();
+
+        formData.append("locationName", name);
+        formData.append("locationDescription", details);
+        formData.append("latitude", parseFloat(latitude));
+        formData.append("longitude", parseFloat(longitude));
+        formData.append("tagNames", selectedTagsArray.join(","));
+        images.forEach(image => {
+            formData.append("imageFiles", image);
+        });
+
+        try {
+            const response = await fetch("http://localhost:8080/locations/post", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+    
+            alert("Location submitted successfully!");
+        } catch (error) {
+            console.error("Error submitting location:", error);
+        }
     };
 
     return (
