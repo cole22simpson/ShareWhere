@@ -49,6 +49,7 @@ public class LocationController {
 
     @PostMapping(value = "/post", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createLocation(
+            @RequestParam(value = "userId") String userId,
             @RequestParam(value = "locationName") String locationName,
             @RequestParam(value = "locationDescription") String locationDescription,
             @RequestParam(value = "latitude") String latitude,
@@ -72,8 +73,11 @@ public class LocationController {
         tagNames = tagNames.replaceAll("-", " ");
         List<String> tagNamesList = Arrays.asList(tagNames.split(","));
 
+        int intUserId = Integer.parseInt(userId);
+        System.out.println("Id: " + intUserId);
+
         Location location = locationService.createLocation(
-                locationName, locationDescription, latitudeDouble, longitudeDouble, tagNamesList, imageFiles
+                intUserId, locationName, locationDescription, latitudeDouble, longitudeDouble, tagNamesList, imageFiles
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new LocationDTO(location));

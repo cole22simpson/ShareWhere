@@ -1,19 +1,17 @@
 package com.ShareWhere.ShareWhere.models;
 
+import com.ShareWhere.ShareWhere.DTOs.UserDTO;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
-@Getter
+@Data
 @Builder
+@AllArgsConstructor
 public class LoginResponse {
 
     private String token;
     private String message;
-    private User user;
-
-    public LoginResponse(String token, String message, User user) {
-        this.token = token;
-        this.message = message;
-        this.user = user;
-    }
+    private UserDTO userDTO;
 }

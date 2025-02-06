@@ -48,12 +48,13 @@ function Login () {
 
                 // setUserInfo(data.user);
 
-                localStorage.setItem("jwtToken", data.accessToken);
+                localStorage.setItem("jwtToken", data.token);
+                localStorage.setItem("userId", JSON.parse(data.user.userID));
                 setUserLoggedIn(true);
 
                 setTimeout(() => {
                     navigate("/");
-                }, 2000);
+                }, 1500);
             }
             else if (response.status === 401) {
                 console.error("Unauthorized: Invalid email or password.");

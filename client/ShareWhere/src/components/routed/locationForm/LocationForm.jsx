@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import "./locationForm.css";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import TagSelector from "../tagSelector/TagSelector.jsx";
 import ImageUploader from "../imageUploader/ImageUploader";
@@ -10,6 +11,7 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
     const [details, setDetails] = useState("");
     const [latitude, setLatitude] = useState(initialLatitude);
     const [longitude, setLongitude] = useState(initialLongitude);
+    const navigate = useNavigate();
 
     const handleCharCount = (e, maxLength) => `${e.target.value.length} / ${maxLength}`;
 
@@ -27,6 +29,9 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
 
         const formData = new FormData();
 
+        const userId = localStorage.getItem("userId");
+
+        formData.append("userId", userId);
         formData.append("locationName", name);
         formData.append("locationDescription", details);
         formData.append("latitude", parseFloat(latitude));
@@ -48,8 +53,11 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-    
-            alert("Location submitted successfully!");
+
+            setTimeout(() => {
+                navigate("/profile");
+            }, 1500);
+
         } catch (error) {
             console.error("Error submitting location:", error);
         }

@@ -28,6 +28,7 @@ public class UserProfile {
     @JsonIgnore
     private User user;
 
+    @Column(length = 160)
     private String bio = "";
 
     @OneToOne(cascade = CascadeType.ALL)

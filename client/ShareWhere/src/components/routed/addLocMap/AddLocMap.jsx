@@ -1,10 +1,8 @@
 import PropTypes from "prop-types";
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { PiMapPinSimpleFill } from "react-icons/pi";
 import "./addLocMap.css";
-import { Map, AdvancedMarker, MapControl, useMap, useAdvancedMarkerRef, APIProvider, useMapsLibrary, ControlPosition } from "@vis.gl/react-google-maps";
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
-
+import { Map, AdvancedMarker, useMap, useAdvancedMarkerRef, APIProvider, useMapsLibrary } from "@vis.gl/react-google-maps";
 
 const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
     const [center, setCenter] = useState({ lat: latitude, lng: longitude });
@@ -12,8 +10,7 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
     const [markerRef, marker] = useAdvancedMarkerRef();
     const [selectedPlace, setSelectedPlace] = useState(null);
     const API_KEY = "AIzaSyA3qoBRglmsQ2nyxvGWJ8SCI0az2PCL-bE";
-
-  const MAP_ID = "8556750882f0b69f";
+    const MAP_ID = "8556750882f0b69f";
 
     const handleMapLoad = (map) => {
         setMapRef(map);
@@ -50,7 +47,7 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
                         gestureHandling={"greedy"}
                         disableDefaultUI={true}
                         mapTypeId={"terrain"}
-                        mapId={"8556750882f0b69f"}
+                        mapId={MAP_ID}
                         onDrag={handleMapLoad}
                         onIdle={handleMapLoad}
                         onBoundsChanged={handleBoundsChanged}>

@@ -58,12 +58,13 @@ function SignupForm({ onBackToBasic }) {
                 // setUserInfo(data.user);
                 localStorage.setItem("jwtToken", data.token);
                 localStorage.setItem("userData", data.user);
-                // setUserInfo(data.user);
+                localStorage.setItem("userId", JSON.parse(data.user.userID));
+                localStorage.setItem("name", data.user.name);
                 setUserLoggedIn(true);
 
                 setTimeout(() => {
                     navigate("/");
-                }, 2000);
+                }, 1500);
             }
             else {
                 console.error("Signup failed: ", await response.text());
