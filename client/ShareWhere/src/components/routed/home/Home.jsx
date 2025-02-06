@@ -1,12 +1,17 @@
 import "./home.css"
-// import {useState, useEffect} from "react"
+import {useState, useEffect} from "react"
+
 
 function Home() {
+
+    const name = localStorage.getItem("name");
+
+
     return (
       <>
         <div className="banner-container">
             <h1 className="greeting">
-                Where to today, Cole?
+                Where to today, {name}?
             </h1>
             <form className="home-search-form">
                 <input className="home-search-bar" type="search" placeholder="Search by city or name"></input>

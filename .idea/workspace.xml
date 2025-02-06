@@ -6,11 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="094d4d6e-c9c5-4d5f-ab14-99a0d7800aef" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/LocationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/LocationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/UserProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/UserProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/security/WebSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/home/Home.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,10 +45,10 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.ShareWhereApplication.executor": "Run",
-    "git-widget-placeholder": "profile",
+    "git-widget-placeholder": "update-home-page",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/cole2/Desktop/ShareWhere",
+    "last_opened_file_path": "C:/Users/cole2/Desktop/nurses",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -147,7 +143,8 @@
       <workItem from="1737425565694" duration="39537000" />
       <workItem from="1738026809839" duration="29945000" />
       <workItem from="1738358479885" duration="30298000" />
-      <workItem from="1738532455318" duration="43923000" />
+      <workItem from="1738532455318" duration="45123000" />
+      <workItem from="1738870571387" duration="703000" />
     </task>
     <servers />
   </component>
