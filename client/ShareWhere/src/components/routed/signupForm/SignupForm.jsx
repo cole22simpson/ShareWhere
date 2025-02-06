@@ -58,12 +58,15 @@ function SignupForm({ onBackToBasic }) {
                 // setUserInfo(data.user);
                 localStorage.setItem("jwtToken", data.token);
                 localStorage.setItem("userData", data.user);
+                localStorage.setItem("userId", JSON.parse(data.user.userID));
+                // const base64String = arrayBufferToBase64(data.user.profile.profilePic.imageData)
+                // localStorage.setItem("profilePicData", base64String);
                 // setUserInfo(data.user);
                 setUserLoggedIn(true);
 
                 setTimeout(() => {
                     navigate("/");
-                }, 2000);
+                }, 1500);
             }
             else {
                 console.error("Signup failed: ", await response.text());

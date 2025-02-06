@@ -21,6 +21,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class AuthController {
     private final JwtToPrincipalConverter jwtToPrincipalConverter;
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody @Validated LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody @Validated LoginRequest request) {
         var authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
@@ -54,13 +55,19 @@ public class AuthController {
 
         var token = jwtIssuer.issue(principal.getUserId(), principal.getEmail(), roles);
 
-        Optional<User> user = userService.getUserById(principal.getUserId());
+        Optional<UserDTO> user = userService.getUserById(principal.getUserId());
+        if (user.isPresent()) {
+            UserDTO userDTO = user.get();
 
-        return LoginResponse.builder()
-                .token(token)
-                .message("Logged in successfully")
-                .user(user.orElse(null))
-                .build();
+            LoginResponse response = LoginResponse.builder()
+                    .token(token)
+                    .message("Logged in successfully")
+                    .userDTO(userDTO) // Pass the userDTO to the builder
+                    .build();
+            return ResponseEntity.ok(response);
+        } else {
+            throw new UsernameNotFoundException("User not found");
+        }
     }
 
     @PostMapping("/signup")

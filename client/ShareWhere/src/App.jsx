@@ -5,6 +5,7 @@ import Login from "./components/routed/login/Login.jsx"
 import AddLocation from "./components/routed/addLocation/AddLocation.jsx"
 import AuthProvider from "./components/routed/authContext/AuthContext.jsx"
 import UserProvider from "./components/routed/userContext/UserContext.jsx"
+import Profile from "./components/routed/profile/Profile.jsx"
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
@@ -21,6 +22,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path='/signup' element={<Signup />} />
               <Route path='/add-location' element={<AddLocation />} />
+              <Route path='/profile' element={<Profile />} />
             </Routes>
           </Router>
         </UserProvider>

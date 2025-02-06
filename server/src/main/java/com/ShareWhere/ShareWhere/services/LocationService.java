@@ -1,5 +1,7 @@
 package com.ShareWhere.ShareWhere.services;
 
+import com.ShareWhere.ShareWhere.DTOs.UserDTO;
+import com.ShareWhere.ShareWhere.DTOs.UserProfileDTO;
 import com.ShareWhere.ShareWhere.models.Image;
 import com.ShareWhere.ShareWhere.models.Location;
 //import com.ShareWhere.ShareWhere.models.LocationRequest;
@@ -47,7 +49,7 @@ public class LocationService {
     }
 
     public Location createLocation(
-            String locationName, String locationDescription, Double latitude, Double longitude, List<String> tagNames, List<MultipartFile> imageFiles
+            int userId, String locationName, String locationDescription, Double latitude, Double longitude, List<String> tagNames, List<MultipartFile> imageFiles
     ) throws IOException {
 
 //         Convert image files to Image objects
@@ -72,7 +74,7 @@ public class LocationService {
         }
         location.setImages(images);
 
-        Optional<UserProfile> profile = userService.getUserProfileById(1);
+        Optional<UserProfile> profile = userService.getUserProfileById(userId);
         profile.ifPresent(location::setCreatedBy);
 
         return locationRepo.save(location);
