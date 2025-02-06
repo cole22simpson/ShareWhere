@@ -1,10 +1,21 @@
 .edit-modal-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    border: 3px solid var(--black-color);
+    border-radius: 100px;
+    padding-top: 30px;
+}
+
+.btn-container {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0 20px;
+    margin-left: 50px;
 }
 
 .cancel {
-    display: flex;
     width: fit-content;
     border: 3px solid var(--black-color);
     padding: 5px;
@@ -49,19 +60,19 @@
 .attribute-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
     height: 15vh;
     margin-top: 50px;
-    border: 3px solid;
     padding-bottom: 600px;
-    padding-right: 150px;
+    width: 80%;
 }
 
 .attribute {
     display: flex;
-    align-items: center;
     justify-content: right;
     margin: 10px 0;
-    width: 100%;    
+    width: 100%;
+    margin-right: 100px;    
 }
 
 
@@ -81,6 +92,7 @@
     height: 45px;
     width: 100%;
     margin-right: 20px;
+    outline: none;
 }
 
 .column {
@@ -98,9 +110,14 @@
     margin-right: 20px;
     width: 100%;
     height: 150px;
+    outline: none;
 }
 
 .count {
     font-weight: 700;
     text-align: right;
+}
+
+.save {
+    font-size: 20px;
 }

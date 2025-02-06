@@ -59,9 +59,7 @@ function SignupForm({ onBackToBasic }) {
                 localStorage.setItem("jwtToken", data.token);
                 localStorage.setItem("userData", data.user);
                 localStorage.setItem("userId", JSON.parse(data.user.userID));
-                // const base64String = arrayBufferToBase64(data.user.profile.profilePic.imageData)
-                // localStorage.setItem("profilePicData", base64String);
-                // setUserInfo(data.user);
+                localStorage.setItem("name", data.user.name);
                 setUserLoggedIn(true);
 
                 setTimeout(() => {

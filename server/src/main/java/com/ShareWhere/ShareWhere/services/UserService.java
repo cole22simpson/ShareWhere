@@ -12,7 +12,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -92,6 +95,24 @@ public class UserService {
         });
     }
 
+    @Transactional
+    public Optional<UserDTO> updateUser(int userId, String newName, String newUsername, boolean isPartial) {
+        return userRepo.findById(userId).map(existingUser -> { // Fetch user, get Optional<User>. The map says if user is found, map it
+            if (newName != null || !isPartial) {
+                existingUser.setName(newName);
+            }
+            if (newUsername != null || !isPartial) {
+                existingUser.setUsername(newUsername);
+            }
+
+            existingUser.getProfile().setUpdatedAt(LocalDateTime.now());
+
+            userRepo.save(existingUser);
+
+            return new UserDTO(existingUser);
+        });
+    }
+
     public boolean deleteUser(int userId) {
         if (userRepo.existsById(userId)) {
             userRepo.deleteById(userId);
@@ -109,5 +130,32 @@ public class UserService {
     public Optional<UserProfile> getUserProfileById(int userId) {
         return userRepo.findById(userId)
                 .map(User::getProfile);
+    }
+
+    @Transactional
+    public Optional<UserDTO> updateUser(int userId, String bio, MultipartFile image, boolean isPartial) {
+        return userRepo.findById(userId).map(existingUser -> { // Fetch user, get Optional<User>. The map says if user is found, map it
+            if (image != null || !isPartial) {
+                try {
+                    assert image != null;
+                    Image newImage = new Image(
+                            image.getOriginalFilename(),
+                            image.getContentType(),
+                            image.getBytes()
+                    );
+                    existingUser.getProfile().setProfilePic(newImage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (bio != null || !isPartial) {
+                existingUser.getProfile().setBio(bio);
+            }
+
+            existingUser.setUpdatedAt(LocalDateTime.now());
+
+            userRepo.save(existingUser);
+            return new UserDTO(existingUser);
+        });
     }
 }

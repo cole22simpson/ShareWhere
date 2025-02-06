@@ -1,11 +1,14 @@
 package com.ShareWhere.ShareWhere.controllers;
 
 import com.ShareWhere.ShareWhere.DTOs.UserDTO;
+import com.ShareWhere.ShareWhere.DTOs.UserProfileDTO;
 import com.ShareWhere.ShareWhere.models.User;
 import com.ShareWhere.ShareWhere.services.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,12 +62,16 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PatchMapping("/{userId}")
-    public ResponseEntity<User> updateUserFields(@PathVariable("userId") int userId, @RequestBody User userUpdates) {
-        Optional<User> updatedUser = userService.updateUser(userId, userUpdates, true);
+    @PatchMapping("/{userId}/names")
+    public ResponseEntity<UserDTO> updateUserFields(@PathVariable("userId") int userId,
+                                                 @RequestParam("newName") String newName,
+                                                 @RequestParam("newUsername") String newUsername) {
+        Optional<UserDTO> updatedUser = userService.updateUser(userId, newName, newUsername, true);
         return updatedUser.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable("userId") int userId) {
@@ -72,5 +79,14 @@ public class UserController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PatchMapping(value = "/{userId}/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<UserDTO> updateUserFields(@PathVariable(value = "userId") int userId,
+                                                    @RequestParam(value = "newBio") String bio,
+                                                    @RequestPart(value = "newImage") MultipartFile image) {
+        Optional<UserDTO> updatedUser = userService.updateUser(userId, bio, image, true);
+        return updatedUser.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

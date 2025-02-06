@@ -1,32 +1,119 @@
 import "./editModal.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const EditModal = ({ username, name, bio, profilePicType, profilePicData, backToProfile }) => {
 
-    const [imageType, setImageType] = useState(profilePicType);
-    const [imageData, setImageData] = useState(profilePicData);
-    const [image, setImage] = useState(null);
-    const [newName, setNewName] = useState("");
-    const [newUsername, setNewUsername] = useState("");
-    const [newBio, setNewBio] = useState("");
+    const [newImage, setNewImage] = useState(null);
+    const [newName, setNewName] = useState(name);
+    const [newUsername, setNewUsername] = useState(username);
+    const [newBio, setNewBio] = useState(bio);
+    const [imageURL, setImageURL] = useState("");
+    const [imageUploaded, setImageUploaded] = useState(false);
+    const [isSaveDisabled, setIsSaveDisabled] = useState(false);
+    const navigate = useNavigate();
 
     const handleImageUpload = (e) => {
-        const file = e.target.files;
-        // const newImages = files.map((file) => URL.createObjectURL(file));
-        setImage(file);
+        const file = e.target.files[0];
+        if (file) {
+            setNewImage(file);
+            setImageURL(URL.createObjectURL(file));
+            setImageUploaded(true);
+        }
     };
 
     const handleCharCount = (e, maxLength) => `${e.target.value.length} / ${maxLength}`;
 
+    useEffect(() => {
+        setIsSaveDisabled(newName.length < 3 || newUsername.length < 3);
+    }, [newName, newUsername]);
+
+    const handleSubmitChanges = async () => {
+        console.log("Making changes");
+        const userId = localStorage.getItem("userId");
+
+        if (newName !== name || newUsername !== username) {
+
+            console.log("Name: ", newName);
+            console.log("Username: ", newUsername);
+
+            const formData = new FormData();
+
+            formData.append("newName", newName);
+            formData.append("newUsername", newUsername);
+
+            try {
+                const response = await fetch(`http://localhost:8080/users/${userId}/names`, {
+                    method: "PATCH",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json(); 
+                    console.log("Updated user successfully!");
+                    localStorage.setItem("name", data.name);
+                    localStorage.setItem("userData", data.user);
+                }
+                else {
+                    console.error("User update failed: ", await response.text());
+                }
+            } catch (error) {
+                console.error("Error during user update: ", error);
+            }
+        }
+
+        if (newBio !== bio || newImage) {
+
+            console.log("Bio: ", newBio)
+
+            const formData = new FormData();
+
+            formData.append("newBio", newBio);
+            formData.append("newImage", newImage);
+
+            try {
+                const response = await fetch(`http://localhost:8080/users/${userId}/profile`, {
+                    method: "PATCH",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json(); 
+                    console.log("Updated profile successfully!");
+                    localStorage.setItem("userData", data.user);
+                }
+                else {
+                    console.error("Profile update failed: ", await response.text());
+                }
+            } catch (error) {
+                console.error("Error during profile update: ", error);
+            }
+        }
+
+        backToProfile();
+        window.location.reload();
+    }
 
     return (
         <div className="edit-modal-container">
 
-            <button className="cancel" onClick={backToProfile}>Cancel changes</button>
+            <div className="btn-container">
+                <button className="cancel" onClick={backToProfile}>Cancel changes</button>
+            </div>
 
             <div className="change-profile-pic">
-                <img className="profile-pic" src={`data:${imageType};base64,${imageData}`}></img>
+                { imageUploaded ? (
+                    <img className="profile-pic" src={imageURL}></img>
+                ) : (
+                    <img className="profile-pic" src={`data:${profilePicType};base64,${profilePicData}`}></img>
+                )}
                 <input
                     id="profile-pic"
                     type="file"
@@ -43,12 +130,13 @@ const EditModal = ({ username, name, bio, profilePicType, profilePicData, backTo
                     <div className="column">
                         <input
                             id="username"
+                            minLength={3}
                             maxLength={30}
                             placeholder={username}
                             value={newUsername}
                             onChange={(e) => setNewUsername(e.target.value)}    
                         />
-                        <p className="count">{handleCharCount({ target: { value: username } }, 30)}</p>
+                        <p className="count">{handleCharCount({ target: { value: newUsername } }, 30)}</p>
                     </div>
                 </div>
                 <div className="attribute">
@@ -57,11 +145,12 @@ const EditModal = ({ username, name, bio, profilePicType, profilePicData, backTo
                         <input
                             id="name"
                             value={newName}
+                            minLength={3}
                             maxLength={30}
                             placeholder={name}
                             onChange={(e) => setNewName(e.target.value)}
                         />
-                        <p className="count">{handleCharCount({ target: { value: username } }, 30)}</p>
+                        <p className="count">{handleCharCount({ target: { value: newName } }, 30)}</p>
                     </div>
                 </div>
                 <div className="attribute bio">
@@ -74,22 +163,22 @@ const EditModal = ({ username, name, bio, profilePicType, profilePicData, backTo
                             placeholder={bio}
                             onChange={(e) => setNewBio(e.target.value)}
                         />
-                        <p className="count">{handleCharCount({ target: { value: bio } }, 150)}</p>
+                        <p className="count">{handleCharCount({ target: { value: newBio } }, 150)}</p>
                     </div>
                 </div>
-                
+                <button className="cancel save" disabled={isSaveDisabled} onClick={handleSubmitChanges}>Save changes</button>
             </div>
         </div>
     );
 }
 
-EditModal.PropTypes = {
+EditModal.propTypes = {
     username: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     bio: PropTypes.string.isRequired,
     profilePicType: PropTypes.string.isRequired,
     profilePicData: PropTypes.string.isRequired,
     backToProfile: PropTypes.func.isRequired,
-}
+};
 
 export default EditModal;

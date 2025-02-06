@@ -10,8 +10,6 @@ function Profile() {
     const [name, setName] = useState("");
     const [numPosts, setNumPosts] = useState(0);
     const [bio, setBio] = useState("");
-    // const [profilePicImageType, setProfilePicImageType] = useState("");
-    // const [profilePicImageData, setProfilePicImageData] = useState("");
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -114,7 +112,17 @@ function Profile() {
                             </div>
                             <hr />
                             <div className="posts-container">
-
+                                {posts.map((post) => (
+                                    <div key={post.locationId} className="post">
+                                        {post.images && post.images.length > 0 && ( // Conditional rendering of the image
+                                            <img src={`data:${post.images[0].imageType};base64,${post.images[0].imageData}`} alt="Post" />
+                                        )}
+                                        <p>{post.locationName}</p>
+                                    </div>
+                                ))}
+                                {posts.length === 0 && !isLoading && ( // Display message if no posts
+                                <p>No posts yet.</p>
+                                )}
                             </div>
                         </>
                     )}

@@ -74,6 +74,7 @@ public class LocationController {
         List<String> tagNamesList = Arrays.asList(tagNames.split(","));
 
         int intUserId = Integer.parseInt(userId);
+        System.out.println("Id: " + intUserId);
 
         Location location = locationService.createLocation(
                 intUserId, locationName, locationDescription, latitudeDouble, longitudeDouble, tagNamesList, imageFiles

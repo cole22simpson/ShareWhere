@@ -29,7 +29,7 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
 
         const formData = new FormData();
 
-        const userId = localStorage.getItem(JSON.stringify("userId"));
+        const userId = localStorage.getItem("userId");
 
         formData.append("userId", userId);
         formData.append("locationName", name);
