@@ -6,6 +6,48 @@
     margin: 10px;
 }
 
+.location-pin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pin-card {
+    display: none;
+    margin-bottom: 10px;
+}
+
+.marker:hover {
+    cursor: pointer;
+}
+
+.marker:hover .pin-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.marker:hover .pin-card img {
+    height: 150px;
+    width: 150px;
+    border: 2px solid var(--black-color);
+    border-radius: 15px 15px 0 0;
+}
+
+.marker:hover .pin-card p {
+    border: 2px solid var(--black-color);
+    border-top: none;
+    padding: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 150px;
+    text-align: center;
+    font-family: "Outfit", sans-serif;
+    font-size: 15px;
+    background-color: var(--secondary-color);
+    border-radius: 0 0 15px 15px;
+}
+
 .autocomplete-container {
     position: absolute;
     z-index: 100;

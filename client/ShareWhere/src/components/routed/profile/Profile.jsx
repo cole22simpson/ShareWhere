@@ -39,7 +39,7 @@ function Profile() {
                 setNumPosts(userData.profile.userPosts.length);
                 setName(userData.name);
                 setBio(userData.profile.bio);   
-                setPosts(userData.profile.userPosts);
+                setPosts(userData.profile.userPosts.reverse());
                 // setProfilePicImageType(userData.profile.profilePic.imageType);
                 // setProfilePicImageData(userData.profile.profilePic.imageData);
                 profilePicType = userData.profile.profilePic.imageType;

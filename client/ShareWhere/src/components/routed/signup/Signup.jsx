@@ -16,13 +16,20 @@ function Signup () {
         setShowBasicForm(false); 
       };
 
-    const images = [
-        "url('/public/assets/images/tree-yosemite.PNG'",
-        "url('/public/assets/images/mixed-chill.PNG'",
-        "url('/public/assets/images/surf-paint.PNG'"
-    ]
+    // const images = [
+    //     "url('/assets/images/tree-yosemite.PNG'",
+    //     "url('/assets/images/mixed-chill.PNG'",
+    //     "url('/assets/images/surf-paint.PNG'"
+    // ]
 
     useEffect(() => {
+
+        const images = [
+            "url('/assets/images/tree-yosemite.PNG'",
+            "url('/assets/images/mixed-chill.PNG'",
+            "url('/assets/images/surf-paint.PNG'"
+        ]
+
         const randomImage = images[Math.floor(Math.random() * images.length)];
         setBackgroundImage(randomImage);
     }, []);

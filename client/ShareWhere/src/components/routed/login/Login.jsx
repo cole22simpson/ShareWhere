@@ -13,14 +13,20 @@ function Login () {
     const [backgroundImage, setBackgroundImage] = useState("");
     // const { setUserInfo } = useUser();
 
-    const images = [
-        "url('/public/assets/images/login-background.PNG'",
-        "url('/public/assets/images/mixed-nature.PNG'",
-        "url('/public/assets/images/mixed-sunsets.PNG'"
-    ]
+    // const images = [
+    //     "url('/assets/images/login-background.PNG'",
+    //     "url('/assets/images/mixed-nature.PNG'",
+    //     "url('/assets/images/mixed-sunsets.PNG'"
+    // ]
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        const images = [
+            "url('/assets/images/login-background.PNG'",
+            "url('/assets/images/mixed-nature.PNG'",
+            "url('/assets/images/mixed-sunsets.PNG'"
+        ]
         const randomImage = images[Math.floor(Math.random() * images.length)];
         setBackgroundImage(randomImage);
     }, []);

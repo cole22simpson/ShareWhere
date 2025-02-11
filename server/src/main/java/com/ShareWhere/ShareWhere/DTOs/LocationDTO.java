@@ -23,6 +23,8 @@ public class LocationDTO {
     private List<ImageDTO> images = new ArrayList<>();
     private Integer saves;
     private int createdByProfileID;
+    private ImageDTO creatorProfilePic;
+    private String creatorName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 //    private List<Integer> savedBy = new ArrayList<>();
@@ -41,6 +43,8 @@ public class LocationDTO {
         }
         this.saves = location.getSaves();
         this.createdByProfileID = location.getCreatedBy().getProfileId();
+        this.creatorProfilePic = new ImageDTO(location.getCreatedBy().getProfilePic());
+        this.creatorName = location.getCreatedBy().getUser().getUsername();
         this.createdAt = location.getCreatedAt();
         this.updatedAt = location.getUpdatedAt();
         for (Tag tag : location.getTags()) {

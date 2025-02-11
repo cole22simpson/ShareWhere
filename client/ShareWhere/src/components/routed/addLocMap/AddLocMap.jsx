@@ -1,16 +1,32 @@
 import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import { PiMapPinSimpleFill } from "react-icons/pi";
+import { MdLocationPin } from "react-icons/md";
 import "./addLocMap.css";
 import { Map, AdvancedMarker, useMap, useAdvancedMarkerRef, APIProvider, useMapsLibrary } from "@vis.gl/react-google-maps";
+import LocationModal from "../locationModal/LocationModal";
 
 const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
     const [center, setCenter] = useState({ lat: latitude, lng: longitude });
     const [mapRef, setMapRef] = useState(null);
     const [markerRef, marker] = useAdvancedMarkerRef();
+    const [showModal, setShowModal] = useState(false);
+    const [pins, setPins] = useState([]);
+    const [selectedPin, setSelectedPin] = useState(null);
+    const [bounds, setBounds] = useState({ north: 0.0, south: 0.0, east: 0.0, west: 0.0 });
     const [selectedPlace, setSelectedPlace] = useState(null);
     const API_KEY = "AIzaSyA3qoBRglmsQ2nyxvGWJ8SCI0az2PCL-bE";
     const MAP_ID = "8556750882f0b69f";
+
+    function openLocationModal(pin) {
+        setSelectedPin(pin);
+        console.log(selectedPin);
+        setShowModal(true);
+    }
+
+    function closeLocationModal() {
+        setShowModal(false);
+    };
 
     const handleMapLoad = (map) => {
         setMapRef(map);
@@ -18,46 +34,109 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
 
     const handleBoundsChanged = () => {
         if (mapRef) {
+            const mapBounds = mapRef.map.getBounds();
+            const north = mapBounds.ii.hi;
+            const south = mapBounds.ii.lo;
+            const east = mapBounds.Gh.lo;
+            const west = mapBounds.Gh.hi;
+            setBounds({ north: north, south: south, east: east, west: west });
+            
             const newLat = mapRef.map.center.lat();
             const newLng = mapRef.map.center.lng();
             setCenter({ lat: newLat, lng: newLng });
+            loadPins();
             onLocationChange({ lat: newLat, lng: newLng});
         }
     };
 
-    return (
+    const loadPins = async () => {
+        console.log(bounds);
+        try {
+            const response = await fetch(`http://localhost:8080/locations/pins?north=${bounds.north}&south=${bounds.south}&east=${bounds.east}&west=${bounds.west}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
 
-        <div className="addloc-map-container">
-            <APIProvider
-                apiKey={API_KEY}
-                solutionChannel="GMP_devsite_samples_v3_rgmautocomplete"
-                onLoad={handleMapLoad}
-                >                
-                    <div className="autocomplete-container">
-                        <PlaceAutocomplete
-                            onPlaceSelect={setSelectedPlace}
-                            setCenter={setCenter}
-                            onLocationChange={onLocationChange} />
-                    </div>
-                    
-                    <Map
-                        defaultZoom={15}
-                        defaultCenter={{ lat: center.lat, lng: center.lng }}
-                        center={{ lat: center.lat, lng: center.lng }}
-                        gestureHandling={"greedy"}
-                        disableDefaultUI={true}
-                        mapTypeId={"terrain"}
-                        mapId={MAP_ID}
-                        onDrag={handleMapLoad}
-                        onIdle={handleMapLoad}
-                        onBoundsChanged={handleBoundsChanged}>
-                        <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}>
-                            <PiMapPinSimpleFill size={40} />
-                        </AdvancedMarker>
-                    </Map>
-                    <MapHandler place={selectedPlace} marker={marker} />
-            </APIProvider>
-        </div>
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error fetching user:", response.status, errorData);
+                return;
+            }
+            
+            try {
+                const locationData = await response.json(); // Extract the JSON data
+                console.log("Locations: ", locationData);
+                setPins(locationData);
+                                
+            } catch (error) {
+                console.error("Error parsing JSON:", error); // Handle JSON parsing errors
+            }
+
+        } catch (error) {
+            console.error("Error loading user:", error);
+        }
+    };
+
+    return (
+        <>
+            <div className="addloc-map-container">
+                <APIProvider
+                    apiKey={API_KEY}
+                    solutionChannel="GMP_devsite_samples_v3_rgmautocomplete"
+                    onLoad={handleMapLoad}
+                    >                
+                        <div className="autocomplete-container">
+                            <PlaceAutocomplete
+                                onPlaceSelect={setSelectedPlace}
+                                setCenter={setCenter}
+                                onLocationChange={onLocationChange}
+                            />
+                        </div>
+                        
+                        <Map
+                            defaultZoom={15}
+                            defaultCenter={{ lat: center.lat, lng: center.lng }}
+                            center={{ lat: center.lat, lng: center.lng }}
+                            gestureHandling={"greedy"}
+                            disableDefaultUI={true}
+                            mapTypeId={"terrain"}
+                            mapId={MAP_ID}
+                            onDrag={handleMapLoad}
+                            onIdle={handleMapLoad}
+                            onBoundsChanged={handleBoundsChanged}>
+                            <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}>
+                                <PiMapPinSimpleFill size={40} />
+                            </AdvancedMarker>
+                            {pins.map((pin) => (
+                                <AdvancedMarker
+                                    key={pin.id}
+                                    position={{ lat: pin.latitude, lng: pin.longitude }}
+                                    clickable="true"
+                                    className="marker"
+                                    >
+                                    <div className="location-pin">
+                                        <div className="pin-card" onClick={() => {openLocationModal(pin)}}>
+                                            <img src={`data:${pin.images[0].imageType};base64,${pin.images[0].imageData}`}></img>
+                                            <p>{pin.locationName}</p>
+                                        </div>
+                                        <MdLocationPin size={40}/>
+                                    </div>
+                                </AdvancedMarker>
+                            ))}
+                        </Map>
+                        <MapHandler place={selectedPlace} marker={marker} />
+                </APIProvider>
+            </div>
+
+            {showModal && (
+                <LocationModal
+                    selectedPin={selectedPin}
+                    closeLocationModal={closeLocationModal}
+                />
+            )}
+        </>
     );
 };
 

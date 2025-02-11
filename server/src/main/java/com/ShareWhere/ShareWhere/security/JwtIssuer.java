@@ -18,7 +18,7 @@ public class JwtIssuer {
     public String issue(int userId, String email, List<String> roles) {
         return JWT.create()
                 .withSubject(String.valueOf(userId))
-                .withExpiresAt(Instant.now().plusSeconds(3600))
+                .withExpiresAt(Instant.now().plusSeconds(36000))
                 .withClaim("e", email)
                 .withClaim("a", roles)
                 .sign(Algorithm.HMAC256(jwtProperties.getSecretKey()));

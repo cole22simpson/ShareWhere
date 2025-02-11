@@ -13,9 +13,7 @@
   
   .login-component {
     width: 92%;
-    margin: 0 auto;
-    padding-bottom: 0.75rem;
-    border: 1px solid #222222;
+    border: 2px solid var(--black-color);
   
     background-color: var(--secondary-color);
     color: #fff;

@@ -36,8 +36,8 @@ public class LocationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Location>> getLocations() {
-        List<Location> locations = locationService.getAllLocations();
+    public ResponseEntity<List<LocationDTO>> getLocations() {
+        List<LocationDTO> locations = locationService.getAllLocations();
         return ResponseEntity.ok(locations);
     }
 
@@ -82,40 +82,22 @@ public class LocationController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new LocationDTO(location));
     }
-//
-//    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<Location> createLocation(
-//            @RequestPart(value = "locationName") String locationName,
-//            @RequestPart(value = "locationDescription") String locationDescription,
-//            @RequestPart(value = "latitude") String latitude,
-//            @RequestPart(value = "longitude") String longitude,
-//            @RequestPart(value = "tagNames") List<String> tagNames,
-//            @RequestPart(value = "imageFiles") List<MultipartFile> imageFiles
-//    ) {
-//        try {
-//            System.out.println("Request received.");
-//            String latitudeString = latitude.replaceAll("\"", ""); // Remove double quotes
-//            String longitudeString = longitude.replaceAll("\"", "");
-//
-//            Double latitudeDouble = Double.parseDouble(latitudeString);
-//            Double longitudeDouble = Double.parseDouble(longitudeString);
-//
-//            Location newLocation = locationService.createLocation(
-//                    locationName, locationDescription, latitudeDouble, longitudeDouble, tagNames, imageFiles
-//            );
-//            return ResponseEntity.status(HttpStatus.CREATED).body(newLocation);
-//        } catch (Exception e) {
-//            System.out.println("Sorry");
-//            e.printStackTrace(); // Log exception for debugging
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
 
     @GetMapping("/{locationId}")
     public ResponseEntity<Location> getLocationById(@PathVariable int locationId) {
         return locationService.getLocationById(locationId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/pins")
+    public ResponseEntity<List<LocationDTO>> getLocationsOnMap(
+            @RequestParam(value = "north") Double north,
+            @RequestParam(value = "south") Double south,
+            @RequestParam(value = "east") Double east,
+            @RequestParam(value = "west") Double west) {
+        List<LocationDTO> locations = locationService.getLocationsOnMap(north, south, east, west);
+        return ResponseEntity.ok(locations);
     }
 
     @PutMapping("/{locationId}")
