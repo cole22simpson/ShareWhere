@@ -1,7 +1,7 @@
 import "./locationModal.css";
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { MdLocationPin, MdClose } from "react-icons/md";
+import { MdLocationPin, MdClose, MdAddAPhoto } from "react-icons/md";
 import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
 import { FaBookmark } from 'react-icons/fa';
 import dayjs from "dayjs";
@@ -20,6 +20,18 @@ const LocationModal = ({ selectedPin, closeLocationModal }) => {
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const locationTags = selectedPin.tags;
+    const locationComments = selectedPin.comments;
+    const [commentText, setCommentText] = useState("");
+    const [commentImages, setCommentImages] = useState([]);
+
+    const handleImageUpload = (e) => {
+        const files = Array.from(e.target.files);
+        if (commentImages.length + files.length > 5) {
+            alert("You can only upload up to 5 photos.");
+            return;
+        }
+        setCommentImages((prev) => [...prev, ...files]);
+    };
 
     const handleNextImage = () => {
         setCurrentImageIndex((prevIndex) =>
@@ -63,7 +75,7 @@ const LocationModal = ({ selectedPin, closeLocationModal }) => {
                 </div>
                 <hr/>
                 <p className="location-description"><span>{selectedPin.creatorName}</span>&nbsp;{selectedPin.locationDescription}</p>
-                <p className="location-tags">Tags</p>
+                <p className="location-header">Tags</p>
                 <div className="location-tags-container">
                     {locationTags.map((tag, index) => (
                     <div key={index} className="location-tag">
@@ -71,6 +83,7 @@ const LocationModal = ({ selectedPin, closeLocationModal }) => {
                     </div>
                     ))}
                 </div>
+                <p className="location-header">Location</p>
                 <div className="modal-map-container">
                     <APIProvider
                         apiKey={API_KEY}
@@ -89,7 +102,57 @@ const LocationModal = ({ selectedPin, closeLocationModal }) => {
                         </Map>
                     </APIProvider>
                 </div>
-                <p>Comments</p>
+                <div className="comments-container">
+                    <p className="location-header">Comments</p>
+                    <hr/>
+                    {locationComments.length === 0 ? (
+                        <div className="no-comments">
+                            <p>No comments yet</p>
+                        </div>
+                    ) : (
+                        <div className="comments">
+                            {locationComments.map((comment, index) => (
+                                <div key={index} className="location-comment">
+                                    {comment.commentText}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <div className="add-comment-container">
+                        <div className="comment-top-row">
+                            <textarea
+                                type="text"
+                                className="comment-input"
+                                placeholder="Write a comment"
+                                maxLength="800"
+                                value={commentText}
+                                onChange={(e) => setCommentText(e.target.value)}
+                            />
+                            <input
+                                id="comment-image-upload"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageUpload}
+                                multiple
+                                hidden
+                            />
+                            <div className="upload-btn-container">
+                                <label className="comment-image-button" htmlFor="comment-image-upload"><MdAddAPhoto /></label>
+                                <p className="photo-count">{commentImages.length} / 5</p>
+                            </div>
+                        </div>
+                        <div className="uploaded-images"> 
+                            {commentImages.map((image, index) => (
+                                <img 
+                                    key={index} 
+                                    src={URL.createObjectURL(image)} 
+                                    alt={`Uploaded Image ${index + 1}`} 
+                                    className="uploaded-image" 
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );
@@ -99,6 +162,7 @@ LocationModal.propTypes = {
     selectedPin: PropTypes.shape({
         createdAt: PropTypes.string.isRequired,
         createdByProfileID: PropTypes.number.isRequired,
+        comments: PropTypes.arrayOf(PropTypes.object).isRequired,
         creatorName: PropTypes.string.isRequired,
         creatorProfilePic: PropTypes.object.isRequired,
         images: PropTypes.arrayOf(PropTypes.object).isRequired, 

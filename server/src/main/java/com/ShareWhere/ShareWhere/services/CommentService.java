@@ -1,9 +1,17 @@
 package com.ShareWhere.ShareWhere.services;
 
+import com.ShareWhere.ShareWhere.DTOs.CommentDTO;
 import com.ShareWhere.ShareWhere.models.Comment;
+import com.ShareWhere.ShareWhere.models.Image;
+import com.ShareWhere.ShareWhere.models.Location;
+import com.ShareWhere.ShareWhere.models.UserProfile;
 import com.ShareWhere.ShareWhere.repositories.CommentRepo;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,16 +19,43 @@ import java.util.Optional;
 public class CommentService {
 
     private final CommentRepo commentRepo;
+    private final LocationService locationService;
+    private final UserService userService;
 
-    public CommentService(CommentRepo commentRepo) {
+    public CommentService(CommentRepo commentRepo, LocationService locationService, UserService userService) {
         this.commentRepo = commentRepo;
+        this.locationService = locationService;
+        this.userService = userService;
     }
 
     public List<Comment> getAllComments() {
         return commentRepo.findAll();
     }
 
-    public Comment createComment(Comment comment) {
+    public Comment createComment(
+            Integer locationId, Integer userId, String commentText, List<MultipartFile> imageFiles) throws IOException {
+
+        Location location = locationService.getLocationById(locationId).orElseThrow(
+                () -> new EntityNotFoundException("Location not found")
+        );
+
+        UserProfile profile = userService.getUserProfileById(userId).orElseThrow(
+                () -> new EntityNotFoundException("User profile not found")
+        );
+
+        Comment comment = new Comment(commentText, profile, location);
+
+        List<Image> images = new ArrayList<>();
+        for (MultipartFile imageFile : imageFiles) {
+            Image image = new Image(
+                    imageFile.getOriginalFilename(),
+                    imageFile.getContentType(),
+                    imageFile.getBytes()
+            );
+            image.setComment(comment);
+            images.add(image);
+        }
+        comment.setImages(images);
         return commentRepo.save(comment);
     }
 
@@ -35,9 +70,6 @@ public class CommentService {
             }
             if (updatedFields.getLikes() != null || !isPartial) {
                 existingComment.setLikes(updatedFields.getLikes());
-            }
-            if (updatedFields.getTags() != null || !isPartial) {
-                existingComment.setTags(updatedFields.getTags());
             }
 
             commentRepo.save(existingComment);

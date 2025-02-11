@@ -1,12 +1,17 @@
 package com.ShareWhere.ShareWhere.controllers;
 
+import com.ShareWhere.ShareWhere.DTOs.CommentDTO;
+import com.ShareWhere.ShareWhere.DTOs.LocationDTO;
 import com.ShareWhere.ShareWhere.models.Comment;
 import com.ShareWhere.ShareWhere.services.CommentService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,10 +31,16 @@ public class CommentController {
         return ResponseEntity.ok(comments);
     }
 
-    @PostMapping
-    public ResponseEntity<Comment> createComment(@RequestBody Comment comment) {
-        Comment newComment = commentService.createComment(comment);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newComment);
+    @PostMapping(value = "/send", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CommentDTO> createComment(
+            @RequestParam("locationId") Integer locationId,
+            @RequestParam("userId") Integer userId,
+            @RequestParam("commentText") String commentText,
+            @RequestPart("imageFiles") List<MultipartFile> imageFiles) throws IOException {
+        Comment newComment = commentService.createComment(
+                locationId, userId, commentText, imageFiles
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CommentDTO(newComment));
     }
 
     @GetMapping("/{commentId}")

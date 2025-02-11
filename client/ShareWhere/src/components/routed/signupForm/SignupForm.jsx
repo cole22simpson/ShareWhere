@@ -86,8 +86,8 @@ function SignupForm({ onBackToBasic }) {
 
     return (
         <div className="signup-modal-container">
-            <div className="back-btn-container">
-                <button className="back" onClick={ onBackToBasic }><FaArrowLeft /></button>
+            <div className="signup-back-btn-container">
+                <button className="signup-form-back" onClick={ onBackToBasic }><FaArrowLeft /></button>
             </div>
             <h2 className="signup-form-header">Sign up to do some exploring</h2>
             <form

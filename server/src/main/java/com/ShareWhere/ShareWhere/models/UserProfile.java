@@ -19,6 +19,7 @@ import java.util.List;
 @Data
 @Table(name = "user_profile")
 public class UserProfile {
+
     @Id
     private int profileId;
 
@@ -34,14 +35,7 @@ public class UserProfile {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_pic_id", referencedColumnName = "imageId")
     private Image profilePic;
-//    private String profilePicImgType;
-//    @Lob
-//    private byte[] imageData;
 
-    /* Collections that have a many to many relationship shouls take int o consideration the importance
-    of order and duplicates. If duplicates are allowed, then a list is acceptable.
-    If dupes are not allowed, but order is needed, then a sorted set is fine.
-     */
     @OneToMany(
             mappedBy = "createdBy",
             cascade = CascadeType.ALL,
@@ -57,6 +51,9 @@ public class UserProfile {
             inverseJoinColumns = @JoinColumn(name = "location_id")
     )
     private List<Location> savedLocations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "writtenBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> userComments = new ArrayList<>();
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

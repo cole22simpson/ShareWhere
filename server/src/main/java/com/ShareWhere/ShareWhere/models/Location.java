@@ -74,12 +74,7 @@ public class Location {
     )
     private List<Tag> tags = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "location_comments",
-            joinColumns = @JoinColumn(name = "location_id"),
-            inverseJoinColumns = @JoinColumn(name = "comment_id")
-    )
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     public Location() {}

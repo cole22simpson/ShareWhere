@@ -80,11 +80,6 @@ public class LocationService {
         profile.ifPresent(location::setCreatedBy);
 
         return locationRepo.save(location);
-//
-//        images.forEach(image -> image.setLocation(savedLocation));
-//
-//        // Create Location object
-//        return savedLocation;
     }
 
     public Optional<Location> getLocationById(int locationId) {

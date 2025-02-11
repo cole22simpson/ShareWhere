@@ -5,11 +5,11 @@
     align-items: center;
 }
 
-.back-btn-container {
+.signup-back-btn-container {
     width: 85%;
 }
 
-.back {
+.signup-form-back {
     display: flex;
     width: fit-content;
     align-items: center;
@@ -18,7 +18,7 @@
     border-radius: 100px;
 }
 
-.back:hover {
+.signup-form-back:hover {
     cursor: pointer;
     background-color: var(--black-color);
     color: white;

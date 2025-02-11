@@ -29,7 +29,7 @@ public class LocationDTO {
     private LocalDateTime updatedAt;
 //    private List<Integer> savedBy = new ArrayList<>();
     private List<TagDTO> tags = new ArrayList<>();
-//    private List<Comment> comments = new ArrayList<>();
+    private List<CommentDTO> comments = new ArrayList<>();
 
     // Constructor
     public LocationDTO(Location location) {
@@ -49,6 +49,9 @@ public class LocationDTO {
         this.updatedAt = location.getUpdatedAt();
         for (Tag tag : location.getTags()) {
             this.tags.add(new TagDTO(tag));
+        }
+        for (Comment comment : location.getComments()) {
+            this.comments.add(new CommentDTO(comment));
         }
     }
 }

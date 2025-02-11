@@ -63,6 +63,7 @@
 
 .creator-profile-pic {
     height: 100px;
+    border-radius: 100px;
     margin-right: 20px;
 }
 
@@ -110,6 +111,7 @@
     height: 40vh;
     max-width: 100%;
     margin: 15px;
+    border-radius: 15px;
 }
 
 .img-arrow {
@@ -135,12 +137,6 @@
     margin-bottom: 20px;
 }
 
-.location-tags {
-    font-size: 30px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
-
 .location-tags-container {
     display: flex;
     flex-wrap: wrap;
@@ -160,7 +156,141 @@
 .modal-map-container {
     height: 500px;
     width: 500px;
+    margin-bottom: 15px;
     border: 1px solid;
     border-radius: 15px;
     overflow: hidden;
+}
+
+.location-header {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.comments-container {
+    margin-bottom: 200px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.comments-container hr {
+    margin-top: 0px;
+}
+
+.no-comments {
+
+}
+
+.add-comment-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    margin-top: 20px;
+}
+
+.comment-input {
+    border: 1px solid var(--black-color);
+    border-radius: 10px;
+    min-height: 100px;
+    font-family: inherit;
+    font-size: 15px;
+    padding: 3px 5px;
+    resize: vertical;
+    overflow: hidden;
+    overflow-y: auto;
+    width: 80%;
+    outline: none;
+}
+
+.comment-input::-webkit-scrollbar {
+    width: 8px;
+    height: 9%;
+}
+
+.comment-input::-webkit-scrollbar-track {
+    background: var(--secondary-color);
+    border-radius: 10px;
+}
+
+.comment-input::-webkit-scrollbar-thumb {
+    background: var(--black-color);
+    border-radius: 10px;
+}
+
+.comment-input::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+}
+
+.upload-btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+}
+
+.comment-image-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    padding: 3px;
+    border-radius: 5px;
+    border: 2px solid var(--black-color);
+    margin: 5px;
+}
+
+.comment-image-button:hover {
+    background-color: var(--black-color);
+    color: var(--secondary-color);
+    cursor: pointer;
+}
+
+.comment-photo-count {
+}
+
+.comment-top-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px
+}
+
+.uploaded-images {
+    width: 100%;
+    overflow-x: scroll;
+    max-height: 130px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.uploaded-images::-webkit-scrollbar {
+    height: 8px;
+}
+
+.uploaded-images::-webkit-scrollbar-track {
+    background: var(--secondary-color);
+    border-radius: 10px;
+}
+
+.uploaded-images::-webkit-scrollbar-thumb {
+    background: var(--black-color);
+    border-radius: 10px;
+}
+
+.uploaded-images::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+}
+
+.uploaded-images img {
+    max-height: 100px;
+    margin-right: 5px;
+    border-radius: 10px;
 }
