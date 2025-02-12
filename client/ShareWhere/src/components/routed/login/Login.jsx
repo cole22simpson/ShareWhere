@@ -13,14 +13,20 @@ function Login () {
     const [backgroundImage, setBackgroundImage] = useState("");
     // const { setUserInfo } = useUser();
 
-    const images = [
-        "url('/public/assets/images/login-background.PNG'",
-        "url('/public/assets/images/mixed-nature.PNG'",
-        "url('/public/assets/images/mixed-sunsets.PNG'"
-    ]
+    // const images = [
+    //     "url('/assets/images/login-background.PNG'",
+    //     "url('/assets/images/mixed-nature.PNG'",
+    //     "url('/assets/images/mixed-sunsets.PNG'"
+    // ]
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        const images = [
+            "url('/assets/images/login-background.PNG'",
+            "url('/assets/images/mixed-nature.PNG'",
+            "url('/assets/images/mixed-sunsets.PNG'"
+        ]
         const randomImage = images[Math.floor(Math.random() * images.length)];
         setBackgroundImage(randomImage);
     }, []);
@@ -44,12 +50,12 @@ function Login () {
             if (response.ok) {
                 const data = await response.json(); 
                 console.log("Login successful!");
-                console.log("Bearer Token:", data.accessToken);
+                console.log("Bearer Token:", data.token);
 
                 // setUserInfo(data.user);
 
                 localStorage.setItem("jwtToken", data.token);
-                localStorage.setItem("userId", JSON.parse(data.user.userID));
+                localStorage.setItem("userId", data.user.userId);
                 setUserLoggedIn(true);
 
                 setTimeout(() => {

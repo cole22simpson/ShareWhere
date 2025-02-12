@@ -35,6 +35,10 @@ public class Image {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    @ManyToOne
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
+
     @OneToOne(mappedBy = "profilePic")
     private UserProfile userProfile;
 

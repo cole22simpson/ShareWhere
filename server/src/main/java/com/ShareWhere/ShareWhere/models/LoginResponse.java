@@ -13,5 +13,5 @@ public class LoginResponse {
 
     private String token;
     private String message;
-    private UserDTO userDTO;
+    private UserDTO user;
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../authContext/useAuth";
 import { getLocation } from "../../../assets/helpers/getLocation";
+import { FaArrowLeft } from "react-icons/fa";
 // import { useUser } from "../userContext/useUser";
 
 function SignupForm({ onBackToBasic }) {
@@ -15,9 +16,11 @@ function SignupForm({ onBackToBasic }) {
     const [location, setLocation] = useState(null);
     const [latitude, setLatitude] = useState(0.0);
     const [longitude, setLongitude] = useState(0.0);
+    const [city, setCity] = useState("");
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const { setUserLoggedIn } = useAuth();
+    const GEOCODE_API_KEY = "67a816ef92b15044102715dipdd6220";
     // const { setUserInfo } = useUser();
     
 
@@ -27,6 +30,13 @@ function SignupForm({ onBackToBasic }) {
             setLocation(coords);
             setLatitude(coords.lat);
             setLongitude(coords.lng);
+            const response = await fetch(`https://geocode.maps.co/reverse?lat=${coords.lat}&lon=${coords.lng}&api_key=${GEOCODE_API_KEY}`, {
+                method: "GET"
+            });
+            if (response.ok) {
+                const data = await response.json(); 
+                setCity(data.address.city);
+            }
         } catch (error) {
             setError(error.message);
         }
@@ -75,8 +85,10 @@ function SignupForm({ onBackToBasic }) {
     };
 
     return (
-        <>
-            <button onClick={ onBackToBasic }>Back</button>
+        <div className="signup-modal-container">
+            <div className="signup-back-btn-container">
+                <button className="signup-form-back" onClick={ onBackToBasic }><FaArrowLeft /></button>
+            </div>
             <h2 className="signup-form-header">Sign up to do some exploring</h2>
             <form
                 className="signup-form-container"
@@ -125,18 +137,33 @@ function SignupForm({ onBackToBasic }) {
                     onChange={(e) => setPasswordHash(e.target.value)}
                 />
                 <br/>
-                <div>
-                    {location ? (
-                    <p>Location: {latitude}, {longitude}</p> 
-                    ) : (
-                    <button type="button" className="signup-form-btn" onClick={handleLocationPermission}>Allow Location</button>
-                    )}
+                <div className="location-container">
+                    <p className="location-text">Location: 
+                        {location ? (
+                            <span>{city}</span> 
+                        ) : (
+                            <button type="button" className="location-btn" onClick={handleLocationPermission}>
+                                Allow Location
+                            </button>
+                        )}
+                    </p> 
                     {error && <p className="error">{error}</p>}
                 </div>
                 <br/>
-                <input className="signup-form-btn" type="submit" value="Submit"></input>
+                <input
+                    disabled={
+                        !(name !== "" &&
+                          username !== "" &&
+                          email !== "" &&
+                          passwordHash !== "" && 
+                          location !== null) 
+                    }
+                    className="signup-modal-btn"
+                    type="submit"
+                    value="Submit"
+                />
             </form>
-        </>
+        </div>
     );
 }
 

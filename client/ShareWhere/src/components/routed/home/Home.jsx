@@ -1,13 +1,33 @@
 import "./home.css"
-// import {useState, useEffect} from "react"
+import {useState, useEffect} from "react"
+
+
 
 function Home() {
+
+    const [name, setName] = useState("");
+    const [hasAccount, setHasAccount] = useState(false);
+
+    useEffect(() => {
+        if (localStorage.getItem("name")) {
+            setName(localStorage.getItem("name"));
+            setHasAccount(true);
+        }
+    }, []);
+
+
     return (
       <>
         <div className="banner-container">
-            <h1 className="greeting">
-                Where to today, Cole?
-            </h1>
+            {hasAccount ? (
+                <h1 className="greeting">
+                    Where to today, {name}?
+                </h1>
+            ) : (
+                <h1 className="greeting">
+                    Welcome to ShareWhere
+                </h1>
+            )}
             <form className="home-search-form">
                 <input className="home-search-bar" type="search" placeholder="Search by city or name"></input>
             </form>

@@ -17,40 +17,31 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int commentId;
 
-    @Column(nullable = false)
-    private int userId;
+    @Column(nullable = false, length = 800)
+    private String commentText;
 
-    @Column(nullable = false)
-    private int locationId;
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 
-    public String commentText;
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
+    private UserProfile writtenBy;
 
-    @ManyToMany
-    @JoinTable(
-            name = "comment_tags",
-            joinColumns = @JoinColumn(name = "comment_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    private List<Tag> tags = new ArrayList<>();
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images;
 
     @Column(nullable = false)
     private Integer likes = 0;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime timeCreated = LocalDateTime.now();;
+    private LocalDateTime timeCreated = LocalDateTime.now();
 
     public Comment() {}
 
-    public Comment(int userId, int locationId, String commentText) {
-        this.userId = userId;
-        this.locationId = locationId;
+    public Comment(String commentText, UserProfile writtenBy, Location location) {
         this.commentText = commentText;
-    }
-
-    public Comment(int userId, int locationId, String commentText, List<Tag> tags) {
-        this.userId = userId;
-        this.locationId = locationId;
-        this.commentText = commentText;
-        this.tags.addAll(tags);
+        this.writtenBy = writtenBy;
+        this.location = location;
     }
 }

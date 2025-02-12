@@ -1,5 +1,5 @@
 .banner-container {
-    background: url("/public/assets/images/haleakala-sunset.jpg");
+    background: url("/assets/images/haleakala-sunset.jpg");
     background-size: cover;
     background-position: 0% 50%;
     display: flex;

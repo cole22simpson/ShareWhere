@@ -62,7 +62,7 @@ public class AuthController {
             LoginResponse response = LoginResponse.builder()
                     .token(token)
                     .message("Logged in successfully")
-                    .userDTO(userDTO) // Pass the userDTO to the builder
+                    .user(userDTO) // Pass the userDTO to the builder
                     .build();
             return ResponseEntity.ok(response);
         } else {
