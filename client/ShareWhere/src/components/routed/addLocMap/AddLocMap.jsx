@@ -50,7 +50,6 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
     };
 
     const loadPins = async () => {
-        console.log(bounds);
         try {
             const response = await fetch(`http://localhost:8080/locations/pins?north=${bounds.north}&south=${bounds.south}&east=${bounds.east}&west=${bounds.west}`, {
                 method: "GET",
@@ -67,7 +66,6 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
             
             try {
                 const locationData = await response.json(); // Extract the JSON data
-                console.log("Locations: ", locationData);
                 setPins(locationData);
                                 
             } catch (error) {
@@ -111,7 +109,7 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
                             </AdvancedMarker>
                             {pins.map((pin) => (
                                 <AdvancedMarker
-                                    key={pin.id}
+                                    key={pin.locationId}
                                     position={{ lat: pin.latitude, lng: pin.longitude }}
                                     clickable="true"
                                     className="marker"

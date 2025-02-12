@@ -1,0 +1,59 @@
+.location-comment {
+    width: 100%;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.commenter-prof-pic {
+    height: 40px;
+    width: 40px;
+    border-radius: 100px;
+    margin-right: 5px;
+}
+
+.comment-top {
+    display: flex;
+}
+
+.commenter-username {
+    display: flex;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.comment-time {
+    font-size: 13px;
+    margin-left: 5px;
+}
+
+.comment-middle {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.comment-text {
+    
+}
+
+.likes-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.like-comment {
+    background: none;
+    border: none;
+}
+
+.like-comment.liked {
+    color: red;
+}
+
+.like-comment:hover {
+    color: red;
+    cursor: pointer;
+}

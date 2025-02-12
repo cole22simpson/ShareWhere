@@ -66,14 +66,7 @@ function Nav() {
                                         <span>Add location</span>
                                     </Link>
                                 </li>
-
-                                <li className="nav-item">
-                                    <Link to='/saved'>
-                                        <FaIcons.FaBookmark className='nav-icon' />
-                                        <span>Saved</span>
-                                    </Link>
-                                </li>
-
+                                
                                 <li className="nav-item">
                                     <Link to='/profile'>
                                         <FaIcons6.FaCircleUser className='nav-icon' />

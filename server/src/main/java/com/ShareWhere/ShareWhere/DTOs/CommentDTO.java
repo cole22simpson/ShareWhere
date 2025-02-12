@@ -14,18 +14,19 @@ import java.time.LocalDateTime;
 public class CommentDTO {
     private int commentId;
     private String commentText;
-    private Location commentedOn;
+    private int locationId;
     private String commenterUser;
     private ImageDTO commenterProfilePic;
     private int likes;
-    private LocalDateTime timeCreated = LocalDateTime.now();
+    private LocalDateTime timeCreated;
 
     public CommentDTO(Comment comment) {
         this.commentId = comment.getCommentId();
         this.commentText = comment.getCommentText();
-        this.commentedOn = comment.getLocation();
+        this.locationId = comment.getLocation().getLocationId();
         this.commenterUser = comment.getWrittenBy().getUser().getUsername();
         this.likes = comment.getLikes();
         this.timeCreated = comment.getTimeCreated();
+        this.commenterProfilePic = new ImageDTO(comment.getWrittenBy().getProfilePic());
     }
 }

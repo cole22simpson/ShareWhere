@@ -36,11 +36,11 @@ public class CommentController {
             @RequestParam("locationId") Integer locationId,
             @RequestParam("userId") Integer userId,
             @RequestParam("commentText") String commentText,
-            @RequestPart("imageFiles") List<MultipartFile> imageFiles) throws IOException {
-        Comment newComment = commentService.createComment(
+            @RequestPart(value = "imageFiles", required = false) List<MultipartFile> imageFiles) throws IOException {
+        CommentDTO newComment = commentService.createComment(
                 locationId, userId, commentText, imageFiles
         );
-        return ResponseEntity.status(HttpStatus.CREATED).body(new CommentDTO(newComment));
+        return ResponseEntity.status(HttpStatus.CREATED).body(newComment);
     }
 
     @GetMapping("/{commentId}")

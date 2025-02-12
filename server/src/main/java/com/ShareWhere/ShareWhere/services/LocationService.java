@@ -10,6 +10,7 @@ import com.ShareWhere.ShareWhere.models.Tag;
 import com.ShareWhere.ShareWhere.models.UserProfile;
 import com.ShareWhere.ShareWhere.repositories.LocationRepo;
 import com.ShareWhere.ShareWhere.repositories.TagRepo;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -76,8 +77,11 @@ public class LocationService {
         }
         location.setImages(images);
 
-        Optional<UserProfile> profile = userService.getUserProfileById(userId);
-        profile.ifPresent(location::setCreatedBy);
+        UserProfile profile = userService.getUserProfileById(userId).orElseThrow(
+                () -> new EntityNotFoundException("User profile not found")
+        );
+        location.setCreatedBy(profile);
+        profile.getUserPosts().add(location);
 
         return locationRepo.save(location);
     }

@@ -1,6 +1,11 @@
 import "./profile.css";
 import { useState, useEffect } from "react";
 import EditModal from "../profileModal/EditModal";
+import LocationModal from "../locationModal/LocationModal";
+import { FaBookmark } from 'react-icons/fa';
+import { MdOutlineGridOn } from "react-icons/md";
+import Posts from "../posts/Posts";
+import Saved from "../saved/Saved";
 
 let profilePicType;
 let profilePicData;
@@ -13,6 +18,27 @@ function Profile() {
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedPin, setSelectedPin] = useState(null);
+    const [showPosts, setShowPosts] = useState(true);
+
+    function openLocationModal(pin) {
+        setSelectedPin(pin);
+        console.log(selectedPin);
+        setShowModal(true);
+    }
+
+    function closeLocationModal() {
+        setShowModal(false);
+    };
+
+    function handleShowPosts() {
+        setShowPosts(true);
+    };
+
+    function handleShowSaved() {
+        setShowPosts(false);
+    }
 
 
     const loadProfile = async () => {
@@ -111,19 +137,28 @@ function Profile() {
                                 </div>
                             </div>
                             <hr />
-                            <div className="posts-container">
-                                {posts.map((post) => (
-                                    <div key={post.locationId} className="post">
-                                        {post.images && post.images.length > 0 && ( // Conditional rendering of the image
-                                            <img src={`data:${post.images[0].imageType};base64,${post.images[0].imageData}`} alt="Post" />
-                                        )}
-                                        <p>{post.locationName}</p>
-                                    </div>
-                                ))}
-                                {posts.length === 0 && !isLoading && ( // Display message if no posts
-                                <p>No posts yet.</p>
-                                )}
+                            <div className="pick-content-container">
+                                <div className={`pick-content-btn ${showPosts ? 'chosen' : ''}`} onClick={handleShowPosts}>
+                                    <MdOutlineGridOn/>
+                                </div>
+                                <div className={`pick-content-btn ${showPosts ? '' : 'chosen'}`} onClick={handleShowSaved}>
+                                    <FaBookmark/>
+                                </div>
                             </div>
+                            <hr />
+                            {showPosts && (
+                                <Posts
+                                    posts={posts}
+                                    openLocationModal={openLocationModal}
+                                    closeLocationModal={closeLocationModal}
+                                    showModal={showModal}
+                                    selectedPin={selectedPin}
+                                />
+                            )}
+                            {!showPosts && (
+                                <Saved />
+                            )}
+                            
                         </>
                     )}
                 </div>

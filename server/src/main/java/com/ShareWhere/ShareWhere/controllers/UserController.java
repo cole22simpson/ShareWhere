@@ -64,8 +64,8 @@ public class UserController {
 
     @PatchMapping("/{userId}/names")
     public ResponseEntity<UserDTO> updateUserFields(@PathVariable("userId") int userId,
-                                                 @RequestParam("newName") String newName,
-                                                 @RequestParam("newUsername") String newUsername) {
+                                                 @RequestParam(value = "newName", required = false) String newName,
+                                                 @RequestParam(value = "newUsername", required = false) String newUsername) {
         Optional<UserDTO> updatedUser = userService.updateUser(userId, newName, newUsername, true);
         return updatedUser.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -83,8 +83,8 @@ public class UserController {
 
     @PatchMapping(value = "/{userId}/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<UserDTO> updateUserFields(@PathVariable(value = "userId") int userId,
-                                                    @RequestParam(value = "newBio") String bio,
-                                                    @RequestPart(value = "newImage") MultipartFile image) {
+                                                    @RequestParam(value = "newBio", required = false) String bio,
+                                                    @RequestPart(value = "newImage", required = false) MultipartFile image) {
         Optional<UserDTO> updatedUser = userService.updateUser(userId, bio, image, true);
         return updatedUser.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

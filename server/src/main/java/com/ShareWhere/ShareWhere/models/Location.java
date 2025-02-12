@@ -93,7 +93,6 @@ public class Location {
         this.latitude = latitude;
         this.longitude = longitude;
         this.tags = tags;
-        this.images = images;
         this.createdBy = createdBy;
     }
 

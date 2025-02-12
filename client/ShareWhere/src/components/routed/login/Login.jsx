@@ -50,12 +50,12 @@ function Login () {
             if (response.ok) {
                 const data = await response.json(); 
                 console.log("Login successful!");
-                console.log("Bearer Token:", data.accessToken);
+                console.log("Bearer Token:", data.token);
 
                 // setUserInfo(data.user);
 
                 localStorage.setItem("jwtToken", data.token);
-                localStorage.setItem("userId", JSON.parse(data.user.userID));
+                localStorage.setItem("userId", data.user.userId);
                 setUserLoggedIn(true);
 
                 setTimeout(() => {

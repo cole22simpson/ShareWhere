@@ -1,6 +1,7 @@
 package com.ShareWhere.ShareWhere.services;
 
 import com.ShareWhere.ShareWhere.DTOs.CommentDTO;
+import com.ShareWhere.ShareWhere.DTOs.ImageDTO;
 import com.ShareWhere.ShareWhere.models.Comment;
 import com.ShareWhere.ShareWhere.models.Image;
 import com.ShareWhere.ShareWhere.models.Location;
@@ -32,7 +33,7 @@ public class CommentService {
         return commentRepo.findAll();
     }
 
-    public Comment createComment(
+    public CommentDTO createComment(
             Integer locationId, Integer userId, String commentText, List<MultipartFile> imageFiles) throws IOException {
 
         Location location = locationService.getLocationById(locationId).orElseThrow(
@@ -46,17 +47,25 @@ public class CommentService {
         Comment comment = new Comment(commentText, profile, location);
 
         List<Image> images = new ArrayList<>();
-        for (MultipartFile imageFile : imageFiles) {
-            Image image = new Image(
-                    imageFile.getOriginalFilename(),
-                    imageFile.getContentType(),
-                    imageFile.getBytes()
-            );
-            image.setComment(comment);
-            images.add(image);
+        if (imageFiles != null) {
+            for (MultipartFile imageFile : imageFiles) {
+                Image image = new Image(
+                        imageFile.getOriginalFilename(),
+                        imageFile.getContentType(),
+                        imageFile.getBytes()
+                );
+                image.setComment(comment);
+                images.add(image);
+            }
         }
         comment.setImages(images);
-        return commentRepo.save(comment);
+
+        location.getComments().add(comment);
+        profile.getUserComments().add(comment);
+
+        commentRepo.save(comment);
+
+        return new CommentDTO(comment);
     }
 
     public Optional<Comment> getCommentById(int commentId) {

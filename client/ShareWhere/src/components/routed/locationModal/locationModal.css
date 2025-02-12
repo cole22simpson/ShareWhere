@@ -62,7 +62,8 @@
 }
 
 .creator-profile-pic {
-    height: 100px;
+    height: 150px;
+    width: 150px;
     border-radius: 100px;
     margin-right: 20px;
 }
@@ -184,6 +185,10 @@
 
 }
 
+.comments {
+    width: 50%;
+}
+
 .add-comment-container {
     display: flex;
     flex-direction: column;
@@ -227,11 +232,18 @@
     cursor: pointer;
 }
 
+.upload-and-send {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+}
+
 .upload-btn-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20%;
 }
 
 .comment-image-button {
@@ -260,6 +272,23 @@
     align-items: center;
     width: 100%;
     margin-bottom: 15px
+}
+
+.submit-comment {
+    display: flex;
+    width: 40px;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    padding: 5px;
+    border: 2px solid var(--black-color);
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.submit-comment:hover {
+    background-color: #6E9CED;
+    cursor: pointer;
 }
 
 .uploaded-images {
@@ -293,4 +322,16 @@
     max-height: 100px;
     margin-right: 5px;
     border-radius: 10px;
+}
+
+.back-to-top {
+    font-size: 30px;
+    margin-top: 50px;
+    background: none;
+    border: none;
+}
+
+.back-to-top:hover {
+    color: rgb(61, 57, 57);
+    cursor: pointer;
 }

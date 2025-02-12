@@ -1,8 +1,11 @@
 import "./locationModal.css";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import Comment from "../comment/Comment";
+import { useState, useEffect } from "react";
 import { MdLocationPin, MdClose, MdAddAPhoto } from "react-icons/md";
 import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
+import { BsArrowUpCircleFill } from "react-icons/bs";
+import { IoSendSharp } from "react-icons/io5";
 import { FaBookmark } from 'react-icons/fa';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -17,12 +20,28 @@ const LocationModal = ({ selectedPin, closeLocationModal }) => {
     const createdAtDate = dayjs(selectedPin.createdAt);
     const timeAgo = createdAtDate.fromNow();
     const multipleImages = selectedPin.images.length > 1;
-
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const locationTags = selectedPin.tags;
-    const locationComments = selectedPin.comments;
+    const [locationComments, setLocationComments] = useState(selectedPin.comments);
     const [commentText, setCommentText] = useState("");
     const [commentImages, setCommentImages] = useState([]);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+
+        const handleEscapeKey = (event) => {
+            if (event.key === 'Escape' && isMounted) {
+            closeLocationModal(); 
+            }
+        };
+
+        window.addEventListener('keydown', handleEscapeKey);
+
+        return () => {
+            window.removeEventListener('keydown', handleEscapeKey);
+        };
+    }, [closeLocationModal, isMounted]);
 
     const handleImageUpload = (e) => {
         const files = Array.from(e.target.files);
@@ -43,6 +62,44 @@ const LocationModal = ({ selectedPin, closeLocationModal }) => {
         setCurrentImageIndex((prevIndex) =>
             (prevIndex - 1 + selectedPin.images.length) % selectedPin.images.length 
         );
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData();
+
+        const userId = localStorage.getItem("userId");
+        const locationId = selectedPin.locationId;
+
+        formData.append("userId", userId);
+        formData.append("locationId", locationId);
+        formData.append("commentText", commentText);
+        commentImages.forEach(image => {
+            formData.append("imageFiles", image);
+        });
+
+        try {
+            const response = await fetch("http://localhost:8080/comments/send", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const newComment = await response.json();
+            setLocationComments([...locationComments, newComment]);
+            setCommentText("");
+            setCommentImages([]);
+
+        } catch (error) {
+            console.error("Error submitting location:", error);
+        }
     };
 
     return (
@@ -111,10 +168,8 @@ const LocationModal = ({ selectedPin, closeLocationModal }) => {
                         </div>
                     ) : (
                         <div className="comments">
-                            {locationComments.map((comment, index) => (
-                                <div key={index} className="location-comment">
-                                    {comment.commentText}
-                                </div>
+                            {locationComments.map((comment) => (
+                                <Comment key={comment.commentId} comment={comment} />
                             ))}
                         </div>
                     )}
@@ -136,9 +191,14 @@ const LocationModal = ({ selectedPin, closeLocationModal }) => {
                                 multiple
                                 hidden
                             />
-                            <div className="upload-btn-container">
-                                <label className="comment-image-button" htmlFor="comment-image-upload"><MdAddAPhoto /></label>
-                                <p className="photo-count">{commentImages.length} / 5</p>
+                            <div className="upload-and-send">
+                                <div className="upload-btn-container">
+                                    <label className="comment-image-button" htmlFor="comment-image-upload"><MdAddAPhoto /></label>
+                                    <p className="photo-count">{commentImages.length} / 5</p>
+                                </div>
+                                <div className="send-btn">
+                                    <button className="submit-comment" onClick={handleSubmit}><IoSendSharp/></button>
+                                </div>
                             </div>
                         </div>
                         <div className="uploaded-images"> 
