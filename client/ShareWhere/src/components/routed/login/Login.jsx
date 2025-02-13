@@ -49,13 +49,12 @@ function Login () {
 
             if (response.ok) {
                 const data = await response.json(); 
-                console.log("Login successful!");
                 console.log("Bearer Token:", data.token);
 
-                // setUserInfo(data.user);
-
                 localStorage.setItem("jwtToken", data.token);
-                localStorage.setItem("userId", data.user.userId);
+                localStorage.setItem("userData", data.user);
+                localStorage.setItem("userId", JSON.parse(data.user.userId));
+                localStorage.setItem("name", data.user.name);
                 setUserLoggedIn(true);
 
                 setTimeout(() => {

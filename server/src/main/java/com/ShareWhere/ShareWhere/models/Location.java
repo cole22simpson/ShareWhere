@@ -1,5 +1,6 @@
 package com.ShareWhere.ShareWhere.models;
 
+import com.ShareWhere.ShareWhere.DTOs.LocationDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -12,8 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Data
 //@ToString(exclude = {"images", "comments", "tags"})
@@ -53,17 +53,11 @@ public class Location {
             name = "user_id",
             nullable = false
     )
+    @JsonIgnore
     private UserProfile createdBy;
 
-    @ManyToMany
-    @JoinTable(
-            name = "saved_by",
-            joinColumns = @JoinColumn(name = "location_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<UserProfile> savedBy = new ArrayList<>();
-
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Image> images;
 
     @ManyToMany
@@ -72,10 +66,16 @@ public class Location {
             joinColumns = @JoinColumn(name = "location_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @JsonIgnore
     private List<Tag> tags = new ArrayList<>();
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "savedLocations")
+    @JsonIgnore
+    private Set<UserProfile> savedBy = new HashSet<>();
 
     public Location() {}
 
@@ -96,6 +96,10 @@ public class Location {
         this.createdBy = createdBy;
     }
 
+    public boolean isSavedByUser(UserProfile userProfile) {
+        return savedBy.contains(userProfile);
+    }
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -105,5 +109,17 @@ public class Location {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public LocationDTO toLocationDTO() {
+        return new LocationDTO(this);
+    }
+
+    public boolean equals(Location location) {
+        return this.locationId == location.getLocationId();
+    }
+
+    public int hashCode() {
+        return Objects.hash(locationId);
     }
 }

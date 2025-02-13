@@ -93,7 +93,7 @@ public class AuthController {
 
         userService.createUser(newUser);
 
-        String token = jwtIssuer.issue(newUser.getUserID(), newUser.getEmail(), List.of(newUser.getRole()));
+        String token = jwtIssuer.issue(newUser.getUserId(), newUser.getEmail(), List.of(newUser.getRole()));
 
         SignupResponse response = SignupResponse.builder()
                 .token(token)

@@ -12,15 +12,15 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
     const [markerRef, marker] = useAdvancedMarkerRef();
     const [showModal, setShowModal] = useState(false);
     const [pins, setPins] = useState([]);
-    const [selectedPin, setSelectedPin] = useState(null);
+    const [selectedPost, setSelectedPost] = useState(null);
     const [bounds, setBounds] = useState({ north: 0.0, south: 0.0, east: 0.0, west: 0.0 });
     const [selectedPlace, setSelectedPlace] = useState(null);
     const API_KEY = "AIzaSyA3qoBRglmsQ2nyxvGWJ8SCI0az2PCL-bE";
     const MAP_ID = "8556750882f0b69f";
 
-    function openLocationModal(pin) {
-        setSelectedPin(pin);
-        console.log(selectedPin);
+    function openLocationModal(post) {
+        setSelectedPost(post);
+        console.log(selectedPost);
         setShowModal(true);
     }
 
@@ -30,6 +30,7 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
 
     const handleMapLoad = (map) => {
         setMapRef(map);
+        handleBoundsChanged();
     };
 
     const handleBoundsChanged = () => {
@@ -83,7 +84,6 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
                 <APIProvider
                     apiKey={API_KEY}
                     solutionChannel="GMP_devsite_samples_v3_rgmautocomplete"
-                    onLoad={handleMapLoad}
                     >                
                         <div className="autocomplete-container">
                             <PlaceAutocomplete
@@ -96,13 +96,13 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
                         <Map
                             defaultZoom={15}
                             defaultCenter={{ lat: center.lat, lng: center.lng }}
-                            center={{ lat: center.lat, lng: center.lng }}
                             gestureHandling={"greedy"}
                             disableDefaultUI={true}
                             mapTypeId={"terrain"}
                             mapId={MAP_ID}
                             onDrag={handleMapLoad}
                             onIdle={handleMapLoad}
+                            onMousemove={handleMapLoad}
                             onBoundsChanged={handleBoundsChanged}>
                             <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}>
                                 <PiMapPinSimpleFill size={40} />
@@ -130,7 +130,7 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
 
             {showModal && (
                 <LocationModal
-                    selectedPin={selectedPin}
+                    selectedPost={selectedPost}
                     closeLocationModal={closeLocationModal}
                 />
             )}

@@ -11,7 +11,7 @@ import lombok.Data;
 public class SignupRequest {
 
     @NotBlank(message = "Username is required")
-    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
+    @Size(min = 3, max = 30, message = "Username must be between 3 and 20 characters")
     private String username;
 
     @NotBlank(message = "Name is required")

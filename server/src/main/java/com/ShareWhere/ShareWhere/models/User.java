@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -16,7 +17,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int userID;
+    private int userId;
 
     @Column(unique = true, nullable = false, length = 30)
     private String username;
@@ -48,6 +49,7 @@ public class User {
             mappedBy = "user",
             orphanRemoval = true
     )
+    @JsonIgnore
     private UserProfile profile;
 
     @Column(nullable = false)
@@ -108,5 +110,13 @@ public class User {
             throw new IllegalArgumentException(fieldName + " cannot be null or empty");
         }
         return value;
+    }
+
+    public boolean equals(User user) {
+        return this.userId == user.getUserId();
+    }
+
+    public int hashCode() {
+        return Objects.hash(userId);
     }
 }

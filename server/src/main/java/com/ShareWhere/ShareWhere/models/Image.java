@@ -33,13 +33,16 @@ public class Image {
 
     @ManyToOne
     @JoinColumn(name = "location_id")
+    @JsonIgnore
     private Location location;
 
     @ManyToOne
     @JoinColumn(name = "comment_id")
+    @JsonIgnore
     private Comment comment;
 
     @OneToOne(mappedBy = "profilePic")
+    @JsonIgnore
     private UserProfile userProfile;
 
     public Image() {}

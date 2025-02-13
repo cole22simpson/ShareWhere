@@ -15,22 +15,9 @@ function Profile() {
     const [name, setName] = useState("");
     const [numPosts, setNumPosts] = useState(0);
     const [bio, setBio] = useState("");
-    const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [showModal, setShowModal] = useState(false);
-    const [selectedPin, setSelectedPin] = useState(null);
     const [showPosts, setShowPosts] = useState(true);
-
-    function openLocationModal(pin) {
-        setSelectedPin(pin);
-        console.log(selectedPin);
-        setShowModal(true);
-    }
-
-    function closeLocationModal() {
-        setShowModal(false);
-    };
 
     function handleShowPosts() {
         setShowPosts(true);
@@ -65,9 +52,6 @@ function Profile() {
                 setNumPosts(userData.profile.userPosts.length);
                 setName(userData.name);
                 setBio(userData.profile.bio);   
-                setPosts(userData.profile.userPosts.reverse());
-                // setProfilePicImageType(userData.profile.profilePic.imageType);
-                // setProfilePicImageData(userData.profile.profilePic.imageData);
                 profilePicType = userData.profile.profilePic.imageType;
                 profilePicData = userData.profile.profilePic.imageData;
                                 
@@ -147,13 +131,7 @@ function Profile() {
                             </div>
                             <hr />
                             {showPosts && (
-                                <Posts
-                                    posts={posts}
-                                    openLocationModal={openLocationModal}
-                                    closeLocationModal={closeLocationModal}
-                                    showModal={showModal}
-                                    selectedPin={selectedPin}
-                                />
+                                <Posts />
                             )}
                             {!showPosts && (
                                 <Saved />

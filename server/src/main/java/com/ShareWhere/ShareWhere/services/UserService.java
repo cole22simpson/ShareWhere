@@ -1,13 +1,17 @@
 package com.ShareWhere.ShareWhere.services;
 
 import com.ShareWhere.ShareWhere.DTOs.ImageDTO;
+import com.ShareWhere.ShareWhere.DTOs.LocationDTO;
 import com.ShareWhere.ShareWhere.DTOs.UserDTO;
 import com.ShareWhere.ShareWhere.DTOs.UserProfileDTO;
 import com.ShareWhere.ShareWhere.models.Image;
+import com.ShareWhere.ShareWhere.models.Location;
 import com.ShareWhere.ShareWhere.models.User;
 import com.ShareWhere.ShareWhere.models.UserProfile;
+import com.ShareWhere.ShareWhere.repositories.LocationRepo;
 import com.ShareWhere.ShareWhere.repositories.UserRepo;
 import com.ShareWhere.ShareWhere.utils.FileUtils;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,16 +23,19 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     private final UserRepo userRepo;
+    private final LocationRepo locationRepo;
 
     // Constructor Injection
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo, LocationRepo locationRepo) {
         this.userRepo = userRepo;
+        this.locationRepo = locationRepo;
     }
 
     public List<UserDTO> getAllUsers() {
@@ -59,6 +66,24 @@ public class UserService {
     public Optional<UserDTO> getUserById(int userId) {
         return userRepo.findById(userId)
                 .map(UserDTO::new);
+    }
+
+    public List<LocationDTO> getUserPosts(int userId) {
+        UserProfile profile = this.getUserProfileById(userId).orElseThrow(
+                () -> new EntityNotFoundException("User not found")
+        );
+        List<LocationDTO> posts = new ArrayList<>();
+        for (Location post : profile.getUserPosts()) {
+            posts.add(new LocationDTO(post));
+        }
+        return posts;
+    }
+
+    public List<Location> getUserSavedPosts(int userId) {
+        UserProfile profile = this.getUserProfileById(userId).orElseThrow(
+                () -> new EntityNotFoundException("User not found")
+        );
+        return profile.getSavedLocations();
     }
 
     public Optional<User> getUserByUsername(String username) {
@@ -110,6 +135,43 @@ public class UserService {
             userRepo.save(existingUser);
 
             return new UserDTO(existingUser);
+        });
+    }
+
+    @Transactional
+    public Optional<LocationDTO> updateUser(int userId, Location location, String field) {
+        return userRepo.findById(userId).map(existingUser -> {
+            UserProfile profile = existingUser.getProfile();
+
+            if (field.equals("SAVE")) {
+                synchronized (location) {
+                    List<Location> saved = profile.getSavedLocations();
+                    if (!saved.contains(location)) {
+                        saved.add(location);
+                        profile.setSavedLocations(saved);
+                        location.setSaves(location.getSaves() + 1);
+                        Set<UserProfile> savedBy = location.getSavedBy();
+                        savedBy.add(profile);
+                        location.setSavedBy(savedBy);
+                    }
+                }
+            }
+            else if (field.equals("UNSAVE")) {
+                synchronized (location) {
+                    List<Location> saved = profile.getSavedLocations();
+                    if (saved.contains(location)) {
+                        saved.remove(location);
+                        profile.setSavedLocations(saved);
+                        location.setSaves(location.getSaves() - 1);
+                        Set<UserProfile> savedBy = location.getSavedBy();
+                        savedBy.remove(profile);
+                        location.setSavedBy(savedBy);
+                    }
+                }
+            }
+            locationRepo.save(location);
+            userRepo.save(existingUser);
+            return new LocationDTO(location);
         });
     }
 

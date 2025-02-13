@@ -9,10 +9,11 @@ import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class UserDTO {
-    private int userID;
+    private int userId;
     private String username;
     private String name;
     private String email;
@@ -24,7 +25,7 @@ public class UserDTO {
     private UserProfileDTO profile;
 
     public UserDTO(User user) {
-        this.userID = user.getUserID();
+        this.userId = user.getUserId();
         this.username = user.getUsername();
         this.name = user.getName();
         this.email = user.getEmail();

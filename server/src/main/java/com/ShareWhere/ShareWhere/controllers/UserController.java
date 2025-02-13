@@ -1,17 +1,20 @@
 package com.ShareWhere.ShareWhere.controllers;
 
+import com.ShareWhere.ShareWhere.DTOs.LocationDTO;
 import com.ShareWhere.ShareWhere.DTOs.UserDTO;
 import com.ShareWhere.ShareWhere.DTOs.UserProfileDTO;
+import com.ShareWhere.ShareWhere.models.Location;
 import com.ShareWhere.ShareWhere.models.User;
+import com.ShareWhere.ShareWhere.services.LocationService;
 import com.ShareWhere.ShareWhere.services.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -19,10 +22,12 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final LocationService locationService;
 
     // Constructor Injection
-    public UserController(UserService userService) {
+    public UserController(UserService userService, LocationService locationService) {
         this.userService = userService;
+        this.locationService = locationService;
     }
 
     @GetMapping
@@ -39,10 +44,36 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("userId") int userId) {
-        System.out.println("Getting user with ID: " + userId);
         return userService.getUserById(userId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{userId}/posts")
+    public ResponseEntity<List<LocationDTO>> getUserPosts(@PathVariable("userId") int userId) {
+        return ResponseEntity.ok(userService.getUserPosts(userId));
+    }
+
+    @GetMapping("/{userId}/saved")
+    public ResponseEntity<List<Location>> getUserSavedPosts(@PathVariable("userId") int userId) {
+        return ResponseEntity.ok(userService.getUserSavedPosts(userId));
+    }
+
+    // In goes a save. I need to update the number of saves which would come from the location. I need a list of the locations saved by IDs
+    @PatchMapping("/save")
+    public ResponseEntity<Set<Integer>> updateUserSavedPosts(
+            @RequestParam("userId") int userId,
+            @RequestParam("locationId") int locationId,
+            @RequestParam("field") String field) {
+        Location location = locationService.getLocationById(locationId).orElseThrow(
+                () -> new EntityNotFoundException("Location not found")
+        );
+        Optional<LocationDTO> updatedLocation = userService.updateUser(userId, location, field);
+        Set<Integer> savedLocations = updatedLocation
+                .map(LocationDTO::getSavedBy)
+                .orElse(Collections.emptySet());
+
+        return ResponseEntity.ok(savedLocations);
     }
 
 //    @PostMapping("/product")

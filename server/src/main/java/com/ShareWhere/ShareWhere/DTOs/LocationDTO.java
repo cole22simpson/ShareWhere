@@ -11,7 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class LocationDTO {
@@ -27,7 +29,7 @@ public class LocationDTO {
     private String creatorName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-//    private List<Integer> savedBy = new ArrayList<>();
+    private Set<Integer> savedBy = new HashSet<>();
     private List<TagDTO> tags = new ArrayList<>();
     private List<CommentDTO> comments = new ArrayList<>();
 
@@ -47,6 +49,9 @@ public class LocationDTO {
         this.creatorName = location.getCreatedBy().getUser().getUsername();
         this.createdAt = location.getCreatedAt();
         this.updatedAt = location.getUpdatedAt();
+        for (UserProfile profile : location.getSavedBy()) {
+            this.savedBy.add(profile.getProfileId());
+        }
         for (Tag tag : location.getTags()) {
             this.tags.add(new TagDTO(tag));
         }

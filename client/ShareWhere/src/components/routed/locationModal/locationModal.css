@@ -92,6 +92,32 @@
     font-size: 18px;
 }
 
+.save-btn {
+    background: none;
+    border: none;
+    display: flex;
+    font-size: 18px;
+}
+
+.save-btn:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+.unsave-btn {
+    background: none;
+    border: none;
+    display: flex;
+    font-size: 18px;
+}
+
+.unsave-btn:hover {
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+
+
 .info-container hr {
     width: 70%;
     margin-top: 10px;
