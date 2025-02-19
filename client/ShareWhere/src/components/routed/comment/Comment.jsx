@@ -72,7 +72,7 @@ const Comment = ({ comment }) => {
     <div className="location-comment">
         <img 
             className="commenter-prof-pic" 
-            src={`data:${comment.commenterProfilePic.imageType};base64,${comment.commenterProfilePic.imageData}`} 
+            src={comment.commenterProfilePic.imageUrl} 
         />
         <div className="comment-middle">
         <div className="comment-top">
@@ -82,7 +82,7 @@ const Comment = ({ comment }) => {
             <p className="comment-text">{comment.commentText}</p>
         </div>
         <div className="likes-container">
-            {isLiked ? (
+            {!isLiked ? (
                 <button 
                     className="like-comment"
                     onClick={(e) => handleLike(e, "LIKE")}>
@@ -104,8 +104,7 @@ const Comment = ({ comment }) => {
 Comment.propTypes = {
     comment: PropTypes.shape({
         commenterProfilePic: PropTypes.shape({
-            imageType: PropTypes.string.isRequired,
-            imageData: PropTypes.string.isRequired,
+            imageUrl: PropTypes.string.isRequired,
           }).isRequired,
         commenterUser: PropTypes.string.isRequired,
         commentText: PropTypes.string.isRequired,

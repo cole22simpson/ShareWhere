@@ -98,7 +98,7 @@ const LocationModal = ({ selectedPost, closeLocationModal }) => {
                 </div>
                 <div className="top-row">
                     <div className="creator-info">
-                        <img className="creator-profile-pic" src={`data:${selectedPost.creatorProfilePic.imageType};base64,${selectedPost.creatorProfilePic.imageData}`}></img>
+                        <img className="creator-profile-pic" src={selectedPost.creatorProfilePic.imageUrl}></img>
                         <p className="creator-name">{selectedPost.creatorName}</p>
                     </div>
                     <p className="created-at">Posted {timeAgo}</p>
@@ -118,7 +118,7 @@ const LocationModal = ({ selectedPost, closeLocationModal }) => {
                         <RiArrowLeftCircleLine/>
                     </div>
                     <img 
-                        src={`data:${selectedPost.images[currentImageIndex].imageType};base64,${selectedPost.images[currentImageIndex].imageData}`} 
+                        src={selectedPost.images[currentImageIndex].imageUrl} 
                         alt={`Image ${currentImageIndex + 1} of ${selectedPost.locationName}`} 
                     />
                     <div className={`img-arrow ${multipleImages ? '' : 'none'}`} onClick={handleNextImage}>

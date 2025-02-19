@@ -17,8 +17,8 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int imageId;
 
-//    @Column(nullable = true)
-//    private String imageUrl;
+    @Column(nullable = true)
+    private String imageUrl;
 
     @Column(nullable = false)
     private String imageName;
@@ -26,10 +26,10 @@ public class Image {
     @Column(nullable = false)
     private String imageType;
 
-    @Lob
-    @Column(nullable = false)
-    @JsonIgnore
-    private byte[] imageData;
+//    @Lob
+//    @Column(nullable = false)
+//    @JsonIgnore
+//    private byte[] imageData;
 
     @ManyToOne
     @JoinColumn(name = "location_id")
@@ -47,9 +47,9 @@ public class Image {
 
     public Image() {}
 
-    public Image(String imageName, String imageType, byte[] imageData) {
+    public Image(String imageName, String imageType, String imageUrl) {
         this.imageName = imageName;
         this.imageType = imageType;
-        this.imageData = imageData;
+        this.imageUrl = imageUrl;
     }
 }

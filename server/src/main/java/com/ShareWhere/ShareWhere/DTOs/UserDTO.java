@@ -19,6 +19,7 @@ public class UserDTO {
     private String email;
     private Double latitude;
     private Double longitude;
+    private String city;
     private String role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -31,6 +32,7 @@ public class UserDTO {
         this.email = user.getEmail();
         this.latitude = user.getLatitude();
         this.longitude = user.getLongitude();
+        this.city = user.getCity();
         this.role = user.getRole();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();

@@ -1,9 +1,6 @@
 package com.ShareWhere.ShareWhere.services;
 
-import com.ShareWhere.ShareWhere.DTOs.ImageDTO;
-import com.ShareWhere.ShareWhere.DTOs.LocationDTO;
-import com.ShareWhere.ShareWhere.DTOs.UserDTO;
-import com.ShareWhere.ShareWhere.DTOs.UserProfileDTO;
+import com.ShareWhere.ShareWhere.DTOs.*;
 import com.ShareWhere.ShareWhere.models.Image;
 import com.ShareWhere.ShareWhere.models.Location;
 import com.ShareWhere.ShareWhere.models.User;
@@ -31,11 +28,15 @@ public class UserService {
 
     private final UserRepo userRepo;
     private final LocationRepo locationRepo;
+    private final FileUtils fileUtils;
+    private final AzureBlobStorageService azureBlobStorageService;
 
     // Constructor Injection
-    public UserService(UserRepo userRepo, LocationRepo locationRepo) {
+    public UserService(UserRepo userRepo, LocationRepo locationRepo, FileUtils fileUtils, AzureBlobStorageService azureBlobStorageService) {
         this.userRepo = userRepo;
         this.locationRepo = locationRepo;
+        this.fileUtils = fileUtils;
+        this.azureBlobStorageService = azureBlobStorageService;
     }
 
     public List<UserDTO> getAllUsers() {
@@ -47,11 +48,11 @@ public class UserService {
     @Transactional
     public User createUser(User user) {
         try {
-            byte[] defaultProfilePicData = FileUtils.loadDefaultProfilePicture();
+            String defaultProfilePicUrl = fileUtils.loadDefaultProfilePicture();
             Image defaultProfilePic = new Image(
                     "default_profile_pic.png",
                     "image/png",
-                    defaultProfilePicData
+                    defaultProfilePicUrl
             );
             UserProfile profile = new UserProfile(user);
             profile.setProfilePic(defaultProfilePic);
@@ -68,22 +69,26 @@ public class UserService {
                 .map(UserDTO::new);
     }
 
-    public List<LocationDTO> getUserPosts(int userId) {
+    public List<LocationPreviewDTO> getUserPosts(int userId) {
         UserProfile profile = this.getUserProfileById(userId).orElseThrow(
                 () -> new EntityNotFoundException("User not found")
         );
-        List<LocationDTO> posts = new ArrayList<>();
+        List<LocationPreviewDTO> posts = new ArrayList<>();
         for (Location post : profile.getUserPosts()) {
-            posts.add(new LocationDTO(post));
+            posts.add(new LocationPreviewDTO(post));
         }
         return posts;
     }
 
-    public List<Location> getUserSavedPosts(int userId) {
+    public List<LocationPreviewDTO> getUserSavedPosts(int userId) {
         UserProfile profile = this.getUserProfileById(userId).orElseThrow(
                 () -> new EntityNotFoundException("User not found")
         );
-        return profile.getSavedLocations();
+        List<LocationPreviewDTO> saved = new ArrayList<>();
+        for (Location save : profile.getSavedLocations()) {
+            saved.add(new LocationPreviewDTO(save));
+        }
+        return saved;
     }
 
     public Optional<User> getUserByUsername(String username) {
@@ -200,10 +205,11 @@ public class UserService {
             if (image != null || !isPartial) {
                 try {
                     assert image != null;
+                    String imageUrl = azureBlobStorageService.uploadFile(image);
                     Image newImage = new Image(
                             image.getOriginalFilename(),
                             image.getContentType(),
-                            image.getBytes()
+                            imageUrl
                     );
                     existingUser.getProfile().setProfilePic(newImage);
                 } catch (IOException e) {

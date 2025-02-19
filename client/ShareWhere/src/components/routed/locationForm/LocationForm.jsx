@@ -5,10 +5,12 @@ import { useState } from "react";
 import TagSelector from "../tagSelector/TagSelector.jsx";
 import ImageUploader from "../imageUploader/ImageUploader";
 import AddLocMap from "../addLocMap/AddLocMap";
+import PinSelector from "../pinSelector/PinSelector.jsx";
 
 const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, setSelectedTags, images, setImages }) => {
     const [name, setName] = useState("");
     const [details, setDetails] = useState("");
+    const [pinType, setPinType] = useState("DEFAULT");
     const [latitude, setLatitude] = useState(initialLatitude);
     const [longitude, setLongitude] = useState(initialLongitude);
     const navigate = useNavigate();
@@ -36,6 +38,8 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
         formData.append("locationDescription", details);
         formData.append("latitude", parseFloat(latitude));
         formData.append("longitude", parseFloat(longitude));
+        console.log(pinType);
+        formData.append("pinType", pinType);
         formData.append("tagNames", selectedTagsArray.join(","));
         images.forEach(image => {
             formData.append("imageFiles", image);
@@ -90,6 +94,7 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
 
                     <ImageUploader images={images} setImages={setImages} />
                     <TagSelector tags={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+                    <PinSelector pinType={pinType} setPinType={setPinType} />
                 </div>
                 <button className="submit-location" onClick={handleSubmit}>Create post</button>
             </div>

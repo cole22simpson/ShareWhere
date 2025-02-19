@@ -22,6 +22,7 @@ public class LocationDTO {
     private String locationDescription;
     private Double latitude;
     private Double longitude;
+    private String pinType;
     private List<ImageDTO> images = new ArrayList<>();
     private Integer saves;
     private int createdByProfileID;
@@ -40,6 +41,7 @@ public class LocationDTO {
         this.locationDescription = location.getLocationDescription();
         this.latitude = location.getLatitude();
         this.longitude = location.getLongitude();
+        this.pinType = location.getPinType();
         for (Image image : location.getImages()) {
             this.images.add(new ImageDTO(image));
         }

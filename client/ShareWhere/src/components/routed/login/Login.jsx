@@ -11,13 +11,6 @@ function Login () {
     const [ password, setPassword ] = useState("");
     const { setUserLoggedIn } = useAuth();
     const [backgroundImage, setBackgroundImage] = useState("");
-    // const { setUserInfo } = useUser();
-
-    // const images = [
-    //     "url('/assets/images/login-background.PNG'",
-    //     "url('/assets/images/mixed-nature.PNG'",
-    //     "url('/assets/images/mixed-sunsets.PNG'"
-    // ]
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -49,7 +42,6 @@ function Login () {
 
             if (response.ok) {
                 const data = await response.json(); 
-                console.log("Bearer Token:", data.token);
 
                 localStorage.setItem("jwtToken", data.token);
                 localStorage.setItem("userData", data.user);

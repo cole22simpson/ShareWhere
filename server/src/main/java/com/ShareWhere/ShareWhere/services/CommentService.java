@@ -27,12 +27,14 @@ public class CommentService {
     private final UserRepo userRepo;
     private final LocationService locationService;
     private final UserService userService;
+    private final AzureBlobStorageService azureBlobStorageService;
 
-    public CommentService(CommentRepo commentRepo, LocationService locationService, UserService userService, UserRepo userRepo) {
+    public CommentService(CommentRepo commentRepo, LocationService locationService, UserService userService, UserRepo userRepo, AzureBlobStorageService azureBlobStorageService) {
         this.commentRepo = commentRepo;
         this.locationService = locationService;
         this.userService = userService;
         this.userRepo = userRepo;
+        this.azureBlobStorageService = azureBlobStorageService;
     }
 
     public List<Comment> getAllComments() {
@@ -55,10 +57,11 @@ public class CommentService {
         List<Image> images = new ArrayList<>();
         if (imageFiles != null) {
             for (MultipartFile imageFile : imageFiles) {
+                String imageUrl = azureBlobStorageService.uploadFile(imageFile);
                 Image image = new Image(
                         imageFile.getOriginalFilename(),
                         imageFile.getContentType(),
-                        imageFile.getBytes()
+                        imageUrl
                 );
                 image.setComment(comment);
                 images.add(image);

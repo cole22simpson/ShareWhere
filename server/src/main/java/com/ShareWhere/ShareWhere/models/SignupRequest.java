@@ -32,5 +32,8 @@ public class SignupRequest {
     @NotBlank(message = "Longitude is required")
     private Double longitude;
 
+    @NotBlank(message = "City is required")
+    private String city;
+
     private String role = "USER"; // Default role is USER if not specified
 }

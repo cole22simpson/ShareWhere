@@ -9,6 +9,7 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class SignupResponse {
+
     private String token;
     private String message;
     private UserDTO user;

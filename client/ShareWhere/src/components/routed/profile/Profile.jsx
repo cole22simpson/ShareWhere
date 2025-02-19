@@ -1,20 +1,21 @@
 import "./profile.css";
 import { useState, useEffect } from "react";
 import EditModal from "../profileModal/EditModal";
-import LocationModal from "../locationModal/LocationModal";
 import { FaBookmark } from 'react-icons/fa';
 import { MdOutlineGridOn } from "react-icons/md";
+import UseAnimations from "react-useanimations";
+import loading from 'react-useanimations/lib/loading';
 import Posts from "../posts/Posts";
 import Saved from "../saved/Saved";
 
-let profilePicType;
-let profilePicData;
-
 function Profile() {
     const [username, setUsername] = useState("");
+    const userNameClass = getUsernameClass(username);
     const [name, setName] = useState("");
     const [numPosts, setNumPosts] = useState(0);
     const [bio, setBio] = useState("");
+    // const [hideBackground, setHideBackground] = useState(false);
+    const [profilePicUrl, setProfilePicUrl] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showPosts, setShowPosts] = useState(true);
@@ -25,6 +26,19 @@ function Profile() {
 
     function handleShowSaved() {
         setShowPosts(false);
+    }
+
+    function getUsernameClass(username) {
+        const length = username.length;
+        if (length <= 10) {
+            return "big";
+        } else if (length <= 20) {
+            return "medium";
+        } else if (length <= 30) {
+            return "small";
+        } else {
+            return "";
+        }
     }
 
 
@@ -51,11 +65,10 @@ function Profile() {
                 setUsername(userData.username);
                 setNumPosts(userData.profile.userPosts.length);
                 setName(userData.name);
-                setBio(userData.profile.bio);   
-                profilePicType = userData.profile.profilePic.imageType;
-                profilePicData = userData.profile.profilePic.imageData;
+                setBio(userData.profile.bio);
+                setProfilePicUrl(userData.profile.profilePic.imageUrl);   
                                 
-                if (!profilePicData) {  // Important: Check if image data exists
+                if (profilePicUrl !== "") {  // Important: Check if image data exists
                     const imgElement = document.getElementById('profile-pic');
                     if(imgElement) {
                         imgElement.src = '/assets/images/default-image.png';
@@ -87,62 +100,62 @@ function Profile() {
     }
 
     return (
-        <div className="profile-page">
+        <>
             {isLoading ? (
-                <div className="loading">Loading...</div>
+                <div className="loading"><UseAnimations animation={loading} size={56} /></div>
             ) : (
-                <div className="profile-container">
-                    {showEditModal ? (
-                        <EditModal
-                         username={username}
-                         name={name}
-                         bio={bio}
-                         profilePicData={profilePicData}
-                         profilePicType={profilePicType}
-                         backToProfile={handleBackToProfile} />
-                    ) : (
-                        <>
-                            <div className="attributes-container">
-                                <div className="profile-pic-container">
-                                    <img id="profile-pic" src={`data:${profilePicType};base64,${profilePicData}`}></img>
-                                </div>
-                                <div className="attributes">
-                                    <div className="username-row">
-                                        <p className="username">{username}</p>
-                                        <button className="edit-profile" onClick={handleButtonClick}>Edit profile</button>
+                <div className="profile-page">
+                    <div className="profile-container">
+                        {showEditModal ? (
+                            <EditModal
+                            username={username}
+                            name={name}
+                            bio={bio}
+                            profilePicUrl={profilePicUrl}
+                            backToProfile={handleBackToProfile} />
+                        ) : (
+                            <>
+                                <div className="attributes-container">
+                                    <div className="profile-pic-container">
+                                        <img id="profile-pic" src={profilePicUrl} />
                                     </div>
-                                    <div className="account-stats">
-                                        <p className="stat" id="posts"><span>{numPosts}</span> posts</p>
-                                        <p className="stat" id="followers"><span>250</span> followers</p>
-                                        <p className="stat" id="following"><span>42</span> following</p>
+                                    <div className="attributes">
+                                        <div className="username-row">
+                                        <p className={`username ${userNameClass}`}>{username}</p>
+                                            <button className="edit-profile" onClick={handleButtonClick}>Edit profile</button>
+                                        </div>
+                                        <div className="account-stats">
+                                            <p className="stat" id="posts"><span>{numPosts}</span> posts</p>
+                                            <p className="stat" id="followers"><span>250</span> followers</p>
+                                            <p className="stat" id="following"><span>42</span> following</p>
+                                        </div>
+                                        <p className="name">{name}</p>
+                                        <p className="bio">{bio}</p>
                                     </div>
-                                    <p className="name">{name}</p>
-                                    <p className="bio">{bio}</p>
                                 </div>
-                            </div>
-                            <hr />
-                            <div className="pick-content-container">
-                                <div className={`pick-content-btn ${showPosts ? 'chosen' : ''}`} onClick={handleShowPosts}>
-                                    <MdOutlineGridOn/>
+                                <hr />
+                                <div className="pick-content-container">
+                                    <div className={`pick-content-btn ${showPosts ? 'chosen' : ''}`} onClick={handleShowPosts}>
+                                        <MdOutlineGridOn/>
+                                    </div>
+                                    <div className={`pick-content-btn ${showPosts ? '' : 'chosen'}`} onClick={handleShowSaved}>
+                                        <FaBookmark/>
+                                    </div>
                                 </div>
-                                <div className={`pick-content-btn ${showPosts ? '' : 'chosen'}`} onClick={handleShowSaved}>
-                                    <FaBookmark/>
-                                </div>
-                            </div>
-                            <hr />
-                            {showPosts && (
-                                <Posts />
-                            )}
-                            {!showPosts && (
-                                <Saved />
-                            )}
-                            
-                        </>
-                    )}
+                                <hr />
+                                {showPosts && (
+                                    <Posts />
+                                )}
+                                {!showPosts && (
+                                    <Saved />
+                                )}
+                                
+                            </>
+                        )}
+                    </div>
                 </div>
             )}
-        </div>
-
+        </>
     );
 }
 

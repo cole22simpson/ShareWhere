@@ -28,7 +28,6 @@ function SignupForm({ onBackToBasic }) {
         try {
             const coords = await getLocation();
             setLocation(coords);
-            console.log(coords);
             setLatitude(coords.lat);
             setLongitude(coords.lng);
             const response = await fetch(`https://geocode.maps.co/reverse?lat=${coords.lat}&lon=${coords.lng}&api_key=${GEOCODE_API_KEY}`, {
@@ -58,18 +57,20 @@ function SignupForm({ onBackToBasic }) {
                     email,
                     passwordHash,
                     latitude,
-                    longitude
+                    longitude,
+                    city
                 }),
             });
 
             if (response.ok) {
                 const data = await response.json(); 
-                console.log("Bearer Token:", data.token);
 
                 localStorage.setItem("jwtToken", data.token);
-                localStorage.setItem("userData", data.user);
+                localStorage.setItem("user", JSON.stringify(data.user));
                 localStorage.setItem("userId", JSON.parse(data.user.userId));
                 localStorage.setItem("name", data.user.name);
+                localStorage.setItem("city", data.user.city);
+
                 setUserLoggedIn(true);
 
                 setTimeout(() => {

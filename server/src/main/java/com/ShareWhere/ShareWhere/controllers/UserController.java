@@ -1,6 +1,7 @@
 package com.ShareWhere.ShareWhere.controllers;
 
 import com.ShareWhere.ShareWhere.DTOs.LocationDTO;
+import com.ShareWhere.ShareWhere.DTOs.LocationPreviewDTO;
 import com.ShareWhere.ShareWhere.DTOs.UserDTO;
 import com.ShareWhere.ShareWhere.DTOs.UserProfileDTO;
 import com.ShareWhere.ShareWhere.models.Location;
@@ -50,12 +51,12 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/posts")
-    public ResponseEntity<List<LocationDTO>> getUserPosts(@PathVariable("userId") int userId) {
+    public ResponseEntity<List<LocationPreviewDTO>> getUserPosts(@PathVariable("userId") int userId) {
         return ResponseEntity.ok(userService.getUserPosts(userId));
     }
 
     @GetMapping("/{userId}/saved")
-    public ResponseEntity<List<Location>> getUserSavedPosts(@PathVariable("userId") int userId) {
+    public ResponseEntity<List<LocationPreviewDTO>> getUserSavedPosts(@PathVariable("userId") int userId) {
         return ResponseEntity.ok(userService.getUserSavedPosts(userId));
     }
 

@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import { PiMapPinSimpleFill } from "react-icons/pi";
+import { IoBookmark  } from "react-icons/io5";
 import { MdLocationPin } from "react-icons/md";
 import "./addLocMap.css";
-import { Map, AdvancedMarker, useMap, useAdvancedMarkerRef, APIProvider, useMapsLibrary } from "@vis.gl/react-google-maps";
+import { Map, AdvancedMarker, useMap, useAdvancedMarkerRef, APIProvider, ControlPosition, useMapsLibrary } from "@vis.gl/react-google-maps";
 import LocationModal from "../locationModal/LocationModal";
 
 const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
@@ -18,10 +19,68 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
     const API_KEY = "AIzaSyA3qoBRglmsQ2nyxvGWJ8SCI0az2PCL-bE";
     const MAP_ID = "8556750882f0b69f";
 
-    function openLocationModal(post) {
-        setSelectedPost(post);
-        console.log(selectedPost);
-        setShowModal(true);
+    const getPinIcon = (pinType) => {
+        switch (pinType) {
+            case "VIEW":
+                return "/assets/icons/sunset.svg";
+            case "ROCKCLIMB":
+                return "/assets/icons/rock-climb.svg";
+            case "DATE":
+                return "/assets/icons/date.svg";
+            case "ART":
+                return "/assets/icons/art.svg";
+            case "BIKE":
+                return "/assets/icons/bike.svg";
+            case "BUILDING":
+                return "/assets/icons/building.svg";
+            case "PICTURES":
+                return "/assets/icons/camera.svg";
+            case "CAVE":
+                return "/assets/icons/cave.svg";
+            case "GRAFFITI":
+                return "/assets/icons/graffiti.svg";
+            case "HIKE":
+                return "/assets/icons/hike.svg";
+            case "NATURE":
+                return "/assets/icons/nature.svg";
+            case "SKATEBOARD":
+                return "/assets/icons/skateboard.svg";
+            case "STARGAZING":
+                return "/assets/icons/star-gazing.svg";
+            case "SWIM":
+                return "/assets/icons/swim.svg";
+            default:
+                return "/assets/icons/default.svg";
+        }
+    }
+
+    const openLocationModal  = async (pinId) => {
+        const locationId = pinId;
+        try {
+            const response = await fetch(`http://localhost:8080/locations/${locationId}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error fetching location:", response.status, errorData);
+                return;
+            }
+            
+            try {
+                const pinData = await response.json(); // Extract the JSON data
+                setSelectedPost(pinData);
+                setShowModal(true);                              
+            } catch (error) {
+                console.error("Error parsing JSON:", error); // Handle JSON parsing errors
+            }
+
+        } catch (error) {
+            console.error("Error loading location:", error);
+        }
     }
 
     function closeLocationModal() {
@@ -45,7 +104,6 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
             const newLat = mapRef.map.center.lat();
             const newLng = mapRef.map.center.lng();
             setCenter({ lat: newLat, lng: newLng });
-            loadPins();
             onLocationChange({ lat: newLat, lng: newLng});
         }
     };
@@ -67,8 +125,7 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
             
             try {
                 const locationData = await response.json(); // Extract the JSON data
-                setPins(locationData);
-                                
+                setPins(locationData);                                
             } catch (error) {
                 console.error("Error parsing JSON:", error); // Handle JSON parsing errors
             }
@@ -77,6 +134,10 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
             console.error("Error loading user:", error);
         }
     };
+
+    useEffect(() => {
+        loadPins();
+    }, [showModal]);
 
     return (
         <>
@@ -92,17 +153,17 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
                                 onLocationChange={onLocationChange}
                             />
                         </div>
-                        
                         <Map
                             defaultZoom={15}
+                            center={{ lat: center.lat, lng: center.lng }}
                             defaultCenter={{ lat: center.lat, lng: center.lng }}
                             gestureHandling={"greedy"}
-                            disableDefaultUI={true}
                             mapTypeId={"terrain"}
                             mapId={MAP_ID}
-                            onDrag={handleMapLoad}
-                            onIdle={handleMapLoad}
-                            onMousemove={handleMapLoad}
+                            fullscreenControl={false}
+                            mapTypeControlOptions={{ position: ControlPosition.TOP_RIGHT }}
+                            onMousemove={(map) => handleMapLoad(map)}
+                            onIdle={loadPins}
                             onBoundsChanged={handleBoundsChanged}>
                             <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}>
                                 <PiMapPinSimpleFill size={40} />
@@ -115,11 +176,15 @@ const AddLocMap = ({ latitude, longitude, onLocationChange }) => {
                                     className="marker"
                                     >
                                     <div className="location-pin">
-                                        <div className="pin-card" onClick={() => {openLocationModal(pin)}}>
-                                            <img src={`data:${pin.images[0].imageType};base64,${pin.images[0].imageData}`}></img>
-                                            <p>{pin.locationName}</p>
+                                        <div className="pin-card" onClick={() => {openLocationModal(pin.locationId)}}>
+                                            <p className="pin-top">{pin.locationName}</p>
+                                            <img src={pin.previewImage.imageUrl}></img>
+                                            <p className="pin-bottom"><IoBookmark/>{pin.saves}</p>
                                         </div>
-                                        <MdLocationPin size={40}/>
+                                        <div className="pin-icon-container">
+                                            <img className="pin-icon" src={"/assets/icons/marker.png"}/>
+                                            <img className="pin-type" src={getPinIcon(pin.pinType)} />
+                                        </div>
                                     </div>
                                 </AdvancedMarker>
                             ))}

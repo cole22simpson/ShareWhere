@@ -14,12 +14,13 @@ public class ImageDTO {
     private int imageId;
     private String imageName;
     private String imageType;
-    private byte[] imageData;
+    private String imageUrl;
+//    private byte[] imageData;
 
     public ImageDTO(Image image) {
         this.imageId = image.getImageId();
         this.imageName = image.getImageName();
         this.imageType = image.getImageType();
-        this.imageData = image.getImageData();
+        this.imageUrl = image.getImageUrl();
     }
 }

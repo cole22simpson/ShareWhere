@@ -1,15 +1,11 @@
 package com.ShareWhere.ShareWhere.config;
 
-import com.ShareWhere.ShareWhere.controllers.AuthController;
 import com.ShareWhere.ShareWhere.models.*;
 import com.ShareWhere.ShareWhere.services.LocationService;
 import com.ShareWhere.ShareWhere.services.TagService;
 import com.ShareWhere.ShareWhere.services.UserService;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -24,12 +20,14 @@ public class Initialization implements CommandLineRunner {
     private final LocationService locationService;
     private final TagService tagService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JdbcTemplate jdbcTemplate;
 
-    public Initialization(UserService userService, LocationService locationService, TagService tagService, BCryptPasswordEncoder passwordEncoder) {
+    public Initialization(UserService userService, LocationService locationService, TagService tagService, BCryptPasswordEncoder passwordEncoder, JdbcTemplate jdbcTemplate) {
         this.userService = userService;
         this.locationService = locationService;
         this.tagService = tagService;
         this.passwordEncoder = passwordEncoder;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
 //    private final JsonImportService importJson;
@@ -71,12 +69,16 @@ public class Initialization implements CommandLineRunner {
                 "BubbaSimps",
                 "Cole Simpson",
                 32.93184,
-                -117.0669568
+                -117.0669568,
+                "San Diego"
         );
 
         userService.createUser(user);
 
         System.out.println("User created");
+//
+    }
+}
 
 
 //        List<Tag> locationTags = new ArrayList<>();
@@ -146,5 +148,3 @@ public class Initialization implements CommandLineRunner {
 //        System.out.println("Users inserted");
 
 //        importJson.importJSON();
-    }
-}

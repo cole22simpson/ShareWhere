@@ -38,8 +38,11 @@ function Nav() {
                         alt='hamburger menu'
                         className='hamburger-menu-img' />
                 </Link>
-                <a href="/" className="img-wrap">
-                    <h1 className="title"><span className="logo"><GiTreeSwing /></span>ShareWhere</h1>
+                <a href="/" className="logo-link-container">
+                    <div className="logo-container">
+                        <GiTreeSwing className="logo" />
+                        <p className="title">&nbsp;ShareWhere</p>
+                    </div>
                 </a>
 
                 <nav className='pc-nav'>

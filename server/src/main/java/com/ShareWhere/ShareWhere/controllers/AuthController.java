@@ -88,7 +88,8 @@ public class AuthController {
                 request.getUsername(),
                 request.getName(),
                 request.getLatitude(),
-                request.getLongitude()
+                request.getLongitude(),
+                request.getCity()
         );
 
         userService.createUser(newUser);

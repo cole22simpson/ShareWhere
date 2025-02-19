@@ -16,12 +16,6 @@ function Signup () {
         setShowBasicForm(false); 
       };
 
-    // const images = [
-    //     "url('/assets/images/tree-yosemite.PNG'",
-    //     "url('/assets/images/mixed-chill.PNG'",
-    //     "url('/assets/images/surf-paint.PNG'"
-    // ]
-
     useEffect(() => {
 
         const images = [

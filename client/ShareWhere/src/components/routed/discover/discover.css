@@ -1,0 +1,173 @@
+.discover-container {
+    display: flex;
+    justify-content: space-between;
+    height: 95vh;
+}
+
+.search-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    margin-left: 10px;
+}
+
+.discover-sidebar-header {
+    width: 100%;
+    font-size: 30px;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: 700;
+}
+
+.search-name-container {
+    margin-top: 15px;
+}
+
+.search-name-label {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.search-by-name {
+    border: 3px solid var(--black-color);
+    font-size: 20px;
+    height: 50px;
+    width: 100%;
+    padding-left: 1rem;
+    border-radius: 15px;
+    font-family: "Outfit", sans-serif;
+    resize: none;
+    outline: none;
+}
+
+.results {
+    width: 100%;
+    background-color: #fff;
+    border: 3px solid var(--black-color);
+    border-radius: 0 0 15px 15px;
+    overflow: hidden;
+    border-top: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin-top: -15px;
+    z-index: 2;
+    padding-top: 10px;
+}
+
+
+.result {
+    padding: 7px;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    color: var(--black-color);
+    font-family: "Outfit", sans-serif;
+    border-top: 1px solid rgb(226, 226, 226);
+}
+
+.result:hover {
+    background-color: var(--secondary-color);
+}
+
+.result.active
+.result.active:hover {
+    background-color: var(--secondary-color);
+}
+
+
+.discover-map-container {
+    width: 80%;
+    border: 3px solid var(--black-color);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 10px;
+}
+
+.disc-pin-card {
+    display: none;
+    margin-bottom: 1px;
+}
+
+.disc-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.disc-marker:hover {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.disc-marker:hover .disc-pin-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.disc-marker:hover .disc-pin-card img {
+    height: 150px;
+    width: 150px;
+    border: 2px solid;
+}
+
+.disc-marker:hover .disc-pin-card .disc-pin-top {
+    border: 2px solid var(--black-color);
+    border-bottom: none;
+    padding: 5px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 150px;
+    text-align: center;
+    font-family: "Outfit", sans-serif;
+    font-size: 18px;
+    background-color: var(--secondary-color);
+    border-radius: 10px 10px 0 0;
+}
+
+.disc-marker:hover .disc-pin-card .disc-pin-bottom {
+    border: 2px solid var(--black-color);
+    border-top: none;
+    padding: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 150px;
+    text-align: center;
+    font-family: "Outfit", sans-serif;
+    font-size: 15px;
+    background-color: var(--secondary-color);
+    border-radius: 0 0 10px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pick-up {
+    display: flex;
+    flex-direction: column;
+}
+
+.person {
+    -webkit-transform: scaleY(-1);
+    transform: scaleY(-1);
+}
+
+.hand {
+    position: relative;
+    top: 13px;
+    left: 18px;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+.pin-container {
+    display: flex;
+}
+
+.sunset {
+    font-size: 22px;
+    color: white;
+}

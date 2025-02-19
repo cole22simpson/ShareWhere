@@ -5,36 +5,51 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="094d4d6e-c9c5-4d5f-ab14-99a0d7800aef" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/LocationPreviewDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/BlobUploadController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/DefaultMultipartFile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/AzureBlobStorageService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/AddLocMap.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/AddLocMap.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/addLocMap.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/addLocMap.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/comment/Comment.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/comment/Comment.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationModal/LocationModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationModal/LocationModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationModal/locationModal.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationModal/locationModal.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/login/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/login/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/home/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/nav/Nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/nav/Nav.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/nav/nav.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/nav/nav.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/posts/Posts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/posts/Posts.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/posts/posts.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/posts/posts.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profile/Profile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profile/Profile.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profile/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profile/profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profileModal/EditModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profileModal/EditModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profileModal/editModal.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profileModal/editModal.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/saved/Saved.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/saved/Saved.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signupForm/SignupForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signupForm/SignupForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/CommentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/CommentDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/server/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/ImageDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/ImageDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/LocationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/LocationDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/UserDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/UserProfileDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/UserProfileDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/config/Initialization.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/config/Initialization.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/CommentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/LocationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/LocationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Comment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Image.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Image.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Location.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/SignupRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/SignupRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Tag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/SignupResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/SignupResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/UserProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/UserProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/repositories/LocationRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/repositories/LocationRepo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/security/CustomUserDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/security/CustomUserDetailsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/LocationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/LocationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/utils/FileUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/utils/FileUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +189,8 @@
       <workItem from="1738532455318" duration="45123000" />
       <workItem from="1738870571387" duration="703000" />
       <workItem from="1738881140590" duration="689000" />
-      <workItem from="1739066848459" duration="63834000" />
+      <workItem from="1739066848459" duration="74605000" />
+      <workItem from="1739824784120" duration="34265000" />
     </task>
     <servers />
   </component>
