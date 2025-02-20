@@ -9,27 +9,30 @@ import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class UserDTO {
-    private int userID;
+    private int userId;
     private String username;
     private String name;
     private String email;
     private Double latitude;
     private Double longitude;
+    private String city;
     private String role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private UserProfileDTO profile;
 
     public UserDTO(User user) {
-        this.userID = user.getUserID();
+        this.userId = user.getUserId();
         this.username = user.getUsername();
         this.name = user.getName();
         this.email = user.getEmail();
         this.latitude = user.getLatitude();
         this.longitude = user.getLongitude();
+        this.city = user.getCity();
         this.role = user.getRole();
         this.createdAt = user.getCreatedAt();
         this.updatedAt = user.getUpdatedAt();

@@ -20,7 +20,7 @@ function SignupForm({ onBackToBasic }) {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const { setUserLoggedIn } = useAuth();
-    const GEOCODE_API_KEY = "67a816ef92b15044102715dipdd6220";
+    const GEOCODE_API_KEY = import.meta.env.REACT_APP_GEOCODE_KEY;
     // const { setUserInfo } = useUser();
     
 
@@ -57,19 +57,20 @@ function SignupForm({ onBackToBasic }) {
                     email,
                     passwordHash,
                     latitude,
-                    longitude
+                    longitude,
+                    city
                 }),
             });
 
             if (response.ok) {
                 const data = await response.json(); 
-                console.log("Signup successful!");
-                console.log("Bearer Token:", data.token);
-                // setUserInfo(data.user);
+
                 localStorage.setItem("jwtToken", data.token);
-                localStorage.setItem("userData", data.user);
-                localStorage.setItem("userId", JSON.parse(data.user.userID));
+                localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem("userId", JSON.parse(data.user.userId));
                 localStorage.setItem("name", data.user.name);
+                localStorage.setItem("city", data.user.city);
+
                 setUserLoggedIn(true);
 
                 setTimeout(() => {

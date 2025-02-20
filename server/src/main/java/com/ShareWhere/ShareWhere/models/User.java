@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -16,7 +17,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int userID;
+    private int userId;
 
     @Column(unique = true, nullable = false, length = 30)
     private String username;
@@ -31,14 +32,14 @@ public class User {
     @Column(nullable = false, name = "password")
     private String passwordHash;
 
-//    @Column(nullable = false)
-//    private String location;
-
     @Column(nullable = false)
     private Double latitude;
 
     @Column(nullable = false)
     private Double longitude;
+
+    @Column(nullable = false)
+    private String city;
 
     @Column(nullable = false)
     private String role;
@@ -48,6 +49,7 @@ public class User {
             mappedBy = "user",
             orphanRemoval = true
     )
+    @JsonIgnore
     private UserProfile profile;
 
     @Column(nullable = false)
@@ -71,17 +73,18 @@ public class User {
     // Constructors
     protected User() {}
 
-    public User(String email, String password, String username, String name, Double latitude, Double longitude) {
-        this(email, password, username, name, latitude, longitude, "User");
+    public User(String email, String password, String username, String name, Double latitude, Double longitude, String city) {
+        this(email, password, username, name, latitude, longitude, city, "User");
     }
 
-    public User(String email, String password, String username, String name, Double latitude, Double longitude, String role) {
+    public User(String email, String password, String username, String name, Double latitude, Double longitude, String city, String role) {
         this.username = validateNotEmptyString(username, "Username");
         this.email = validateNotEmptyString(email, "Email");
         this.passwordHash = validateNotEmptyString(password, "Password");
         this.name = validateNotEmptyString(name, "Name");
         this.latitude = validateNotEmptyDouble(latitude, "Latitude");
         this.longitude = validateNotEmptyDouble(longitude, "Longitude");
+        this.city = validateNotEmptyString(city, "City");
         this.role = validateNotEmptyString(role, "Role");
     }
 
@@ -108,5 +111,13 @@ public class User {
             throw new IllegalArgumentException(fieldName + " cannot be null or empty");
         }
         return value;
+    }
+
+    public boolean equals(User user) {
+        return this.userId == user.getUserId();
+    }
+
+    public int hashCode() {
+        return Objects.hash(userId);
     }
 }

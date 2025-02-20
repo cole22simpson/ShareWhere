@@ -11,7 +11,7 @@ const TagSelector = ({ tags, selectedTags, setSelectedTags }) => {
 
     return (
         <div className="tags-container">
-            <p className="addloc-label">Add tags:</p>
+            <p className="addloc-label">Add tags</p>
             {Object.entries(tags).map(([group, groupTags]) => (
                 <div key={group} className="tag-group">
                     {groupTags.map((tag) => (
