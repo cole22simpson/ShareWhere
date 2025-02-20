@@ -11,8 +11,10 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
     const [name, setName] = useState("");
     const [details, setDetails] = useState("");
     const [pinType, setPinType] = useState("DEFAULT");
+    const [city, setCity] = useState("");
     const [latitude, setLatitude] = useState(initialLatitude);
     const [longitude, setLongitude] = useState(initialLongitude);
+    const GEOCODE_API_KEY = import.meta.env.REACT_APP_GEOCODE_KEY;
     const navigate = useNavigate();
 
     const handleCharCount = (e, maxLength) => `${e.target.value.length} / ${maxLength}`;
@@ -21,6 +23,20 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
         setLatitude(lat);
         setLongitude(lng);
     };
+
+    const handleGetCity = async () => {
+            try {
+                const response = await fetch(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=${GEOCODE_API_KEY}`, {
+                    method: "GET"
+                });
+                if (response.ok) {
+                    const data = await response.json(); 
+                    setCity(data.address.city);
+                }
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
 
     const handleSubmit = async (event) => {
 
@@ -33,12 +49,14 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
 
         const userId = localStorage.getItem("userId");
 
+        handleGetCity();
+
         formData.append("userId", userId);
         formData.append("locationName", name);
         formData.append("locationDescription", details);
         formData.append("latitude", parseFloat(latitude));
         formData.append("longitude", parseFloat(longitude));
-        console.log(pinType);
+        formData.append("city", city);
         formData.append("pinType", pinType);
         formData.append("tagNames", selectedTagsArray.join(","));
         images.forEach(image => {
@@ -98,7 +116,7 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
                 </div>
                 <button className="submit-location" onClick={handleSubmit}>Create post</button>
             </div>
-            <AddLocMap latitude={latitude} longitude={longitude} onLocationChange={handleLocationChange} />
+            <AddLocMap initialLatitude={initialLatitude} initialLongitude={initialLongitude} latitude={latitude} longitude={longitude} onLocationChange={handleLocationChange} />
         </div>
     );
 };

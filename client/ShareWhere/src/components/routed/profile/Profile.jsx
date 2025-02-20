@@ -14,7 +14,6 @@ function Profile() {
     const [name, setName] = useState("");
     const [numPosts, setNumPosts] = useState(0);
     const [bio, setBio] = useState("");
-    // const [hideBackground, setHideBackground] = useState(false);
     const [profilePicUrl, setProfilePicUrl] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [showEditModal, setShowEditModal] = useState(false);

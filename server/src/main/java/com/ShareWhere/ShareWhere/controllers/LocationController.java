@@ -55,6 +55,7 @@ public class LocationController {
             @RequestParam(value = "locationDescription") String locationDescription,
             @RequestParam(value = "latitude") String latitude,
             @RequestParam(value = "longitude") String longitude,
+            @RequestParam(value = "city") String city,
             @RequestParam(value = "pinType") String pinType,
             @RequestParam(value = "tagNames") String tagNames,
             @RequestPart(value = "imageFiles") List<MultipartFile> imageFiles) throws IOException {
@@ -79,7 +80,7 @@ public class LocationController {
         System.out.println("Id: " + intUserId);
 
         Location location = locationService.createLocation(
-                intUserId, locationName, locationDescription, latitudeDouble, longitudeDouble, pinType, tagNamesList, imageFiles
+                intUserId, locationName, locationDescription, latitudeDouble, longitudeDouble, city, pinType, tagNamesList, imageFiles
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new LocationDTO(location));

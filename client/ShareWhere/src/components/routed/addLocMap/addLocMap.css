@@ -12,61 +12,6 @@
     align-items: center;
 }
 
-.pin-card {
-    display: none;
-    margin-bottom: 10px;
-}
-
-.marker:hover {
-    cursor: pointer;
-}
-
-.marker:hover .pin-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.marker:hover .pin-card img {
-    height: 150px;
-    width: 150px;
-    border: 2px solid var(--black-color);
-}
-
-.marker:hover .pin-card .pin-top {
-    border: 2px solid var(--black-color);
-    border-bottom: none;
-    padding: 5px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 150px;
-    text-align: center;
-    font-family: "Outfit", sans-serif;
-    font-weight: 700;
-    font-size: 18px;
-    background-color: var(--secondary-color);
-    border-radius: 10px 10px 0 0;
-}
-
-.marker:hover .pin-card .pin-bottom {
-    border: 2px solid var(--black-color);
-    border-top: none;
-    padding: 5px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 150px;
-    text-align: center;
-    font-family: "Outfit", sans-serif;
-    font-size: 15px;
-    background-color: var(--secondary-color);
-    border-radius: 0 0 10px 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .autocomplete-container {
     position: absolute;
     z-index: 100;
@@ -101,24 +46,6 @@
 .pin-type {
     height: 25px;
 } */
-
-.pin-icon-container {
-    position: relative;
-    height: 50px;
-    filter: drop-shadow(0px 0px 3px black);
-}
-
-.pin-icon {
-    height: 100%;
-}
-
-.pin-type {
-    position: absolute;
-    height: 22px;
-    top: 17px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
 
 
 
@@ -199,4 +126,16 @@
 
 .pac-placeholder {
     color: gray;
+}
+
+.gm-style-mtc button {
+}
+
+.gm-svpc {
+    border-radius: 100% !important;
+    border: 2px solid black !important;
+}
+
+.gmnoprint .gm-control-active {
+    
 }

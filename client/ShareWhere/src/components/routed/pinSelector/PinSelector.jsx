@@ -36,6 +36,8 @@ const PinSelector = ({ pinType, setPinType }) => {
                 return "/assets/icons/star-gazing.svg";
             case "SWIM":
                 return "/assets/icons/swim.svg";
+            case "READING":
+                return "/assets/icons/reading.svg";
             default:
                 return "/assets/icons/default.svg";
         }
@@ -56,7 +58,8 @@ const PinSelector = ({ pinType, setPinType }) => {
         "NATURE",
         "SKATEBOARD",
         "STARGAZING",
-        "SWIM"
+        "SWIM",
+        "READING"
     ]
 
     const handlePinSelect = (option) => {

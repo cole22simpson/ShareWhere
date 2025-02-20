@@ -12,8 +12,8 @@ import { Map, AdvancedMarker, APIProvider} from "@vis.gl/react-google-maps";
 dayjs.extend(relativeTime);
 
 const LocationModal = ({ selectedPost, closeLocationModal }) => {
-    const API_KEY = "AIzaSyA3qoBRglmsQ2nyxvGWJ8SCI0az2PCL-bE";
-    const MAP_ID = "8556750882f0b69f";
+    const MAP_ID = import.meta.env.VITE_MAP_ID;
+    const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
     
     const createdAtDate = dayjs(selectedPost.createdAt);
     const comments = selectedPost.comments;

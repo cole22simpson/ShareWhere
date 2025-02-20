@@ -37,6 +37,9 @@ public class Location {
     private Double longitude;
 
     @Column(nullable = false)
+    private String city;
+
+    @Column(nullable = false)
     private int saves;
 
     @Column(nullable = false)
@@ -83,18 +86,19 @@ public class Location {
     public Location() {}
 
     public Location(String locationName, String locationDescription,
-                    double latitude, double longitude, String pinType,
+                    double latitude, double longitude, String city, String pinType,
                     List<Tag> tags) {
-        this(locationName, locationDescription, latitude, longitude, pinType, tags, null);
+        this(locationName, locationDescription, latitude, longitude, city, pinType, tags, null);
     }
 
     public Location(String locationName, String locationDescription,
-                    double latitude, double longitude, String pinType,
+                    double latitude, double longitude, String city, String pinType,
                     List<Tag> tags, UserProfile createdBy) {
         this.locationName = locationName;
         this.locationDescription = locationDescription;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.city = city;
         this.pinType = pinType;
         this.tags = tags;
         this.saves = 0;

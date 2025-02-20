@@ -1,13 +1,11 @@
 import PropTypes from "prop-types";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { MdLocationPin } from "react-icons/md";
 import { IoBookmark  } from "react-icons/io5";
 import { BsPersonArmsUp, BsPersonRaisedHand } from "react-icons/bs";
-import { FaCircle } from "react-icons/fa6";
-import { TbSunset2 } from "react-icons/tb";
 import { GiHandOk } from "react-icons/gi";
 import "./discover.css";
-import { Map, AdvancedMarker, useMap, useAdvancedMarkerRef, Pin, APIProvider, useMapsLibrary, MapControl, ControlPosition } from "@vis.gl/react-google-maps";
+import { Map, AdvancedMarker, useMap, useAdvancedMarkerRef, APIProvider, useMapsLibrary, MapControl, InfoWindow, ControlPosition } from "@vis.gl/react-google-maps";
 import LocationModal from "../locationModal/LocationModal";
 
 const Discover = () => {
@@ -20,12 +18,52 @@ const Discover = () => {
     const [showModal, setShowModal] = useState(false);
     const [pins, setPins] = useState([]);
     const [dragging, setDragging] = useState(false);
+    const [infoWindowOpen, setInfoWindowOpen] = useState(false);
+    const markerRefs = useRef({});
+    const [selectedPin, setSelectedPin] = useState(null);
     const [selectedPost, setSelectedPost] = useState(null);
     const [bounds, setBounds] = useState({ north: 0.0, south: 0.0, east: 0.0, west: 0.0 });
     const [selectedPlace, setSelectedPlace] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
-    const API_KEY = "AIzaSyA3qoBRglmsQ2nyxvGWJ8SCI0az2PCL-bE";
-    const MAP_ID = "8556750882f0b69f";
+    const MAP_ID = import.meta.env.VITE_MAP_ID;
+    const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
+
+    const getPinIcon = (pinType) => {
+        switch (pinType) {
+            case "VIEW":
+                return "/assets/icons/sunset.svg";
+            case "ROCKCLIMB":
+                return "/assets/icons/rock-climb.svg";
+            case "DATE":
+                return "/assets/icons/date.svg";
+            case "ART":
+                return "/assets/icons/art.svg";
+            case "BIKE":
+                return "/assets/icons/bike.svg";
+            case "BUILDING":
+                return "/assets/icons/building.svg";
+            case "PICTURES":
+                return "/assets/icons/camera.svg";
+            case "CAVE":
+                return "/assets/icons/cave.svg";
+            case "GRAFFITI":
+                return "/assets/icons/graffiti.svg";
+            case "HIKE":
+                return "/assets/icons/hike.svg";
+            case "NATURE":
+                return "/assets/icons/nature.svg";
+            case "SKATEBOARD":
+                return "/assets/icons/skateboard.svg";
+            case "STARGAZING":
+                return "/assets/icons/star-gazing.svg";
+            case "SWIM":
+                return "/assets/icons/swim.svg";
+            case "READING":
+                return "/assets/icons/reading.svg";
+            default:
+                return "/assets/icons/default.svg";
+        }
+    }
     
     const filteredPins = searchQuery 
     ? pins
@@ -81,12 +119,32 @@ const Discover = () => {
         handleBoundsChanged();
     };
 
-    const handleDrag = () => {
-        setDragging(true);
+    const handleMarkerClick = (pin) => {
+        setSelectedPin(pin);
+        setInfoWindowOpen(true);
     };
 
-    const handleIdle = () => {
-        setDragging(false);
+    const handlePinIconMouseOver = (pin) => {
+        setSelectedPin(pin);
+        setInfoWindowOpen(true);
+    };
+
+    const handlePinIconMouseOut = () => {
+        setInfoWindowOpen(false);
+    };
+
+    const handleInfoWindowMouseOver = () => {
+       setInfoWindowOpen(true);
+    };
+
+    const handleInfoWindowMouseOut = () => {
+        setInfoWindowOpen(false);
+    };
+
+
+    const handleCloseInfoWindow = () => {
+        setInfoWindowOpen(false);
+        setSelectedPin(null); // Clear the selected pin when the info window is closed
     };
 
     const handleBoundsChanged = () => {
@@ -101,7 +159,6 @@ const Discover = () => {
             const newLat = mapRef.map.center.lat();
             const newLng = mapRef.map.center.lng();
             setCenter({ lat: newLat, lng: newLng });
-            loadPins();
             handleLocationChange({ lat: newLat, lng: newLng});
         }
     };
@@ -195,8 +252,7 @@ const Discover = () => {
                             fullscreenControl={false}
                             mapTypeControlOptions={{ position: ControlPosition.TOP_RIGHT }}
                             onMousemove={(map) => handleMapLoad(map)}
-                            onDrag={handleDrag}
-                            onIdle={handleIdle}
+                            onIdle={loadPins}
                             onBoundsChanged={handleBoundsChanged}>
                             <MapControl position={ControlPosition.BOTTOM_RIGHT}></MapControl>
                             <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}>
@@ -212,17 +268,36 @@ const Discover = () => {
                             {pins.map((pin) => (
                                 <AdvancedMarker
                                     key={pin.locationId}
+                                    ref={(ref) => { markerRefs[pin.locationId] = ref; }}
                                     position={{ lat: pin.latitude, lng: pin.longitude }}
                                     clickable="true"
-                                    className="disc-marker"
+                                    className="marker"
+                                    onClick={() => handleMarkerClick(pin)}
                                     >
-                                        <div className="disc-pin-card" onClick={() => {openLocationModal(pin.locationId)}}>
-                                            <p className="disc-pin-top">{pin.locationName}</p>
-                                            <img src={pin.previewImage.imageUrl}></img>
-                                            <p className="disc-pin-bottom"><IoBookmark/>{pin.saves}</p>
+                                        <div
+                                            className="pin-icon-container"
+                                            onMouseOver={() => handlePinIconMouseOver(pin)}
+                                            onMouseOut={handlePinIconMouseOut}
+                                            onClick={() => openLocationModal(pin.locationId)}>
+                                            <img className="pin-icon" src={"/assets/icons/marker.png"}/>
+                                            <img className="pin-type" src={getPinIcon(pin.pinType)} />
                                         </div>
-                                        <MdLocationPin size={40} />
-                                </AdvancedMarker>
+                                        {infoWindowOpen && selectedPin && selectedPin.locationId === pin.locationId && (
+                                            <InfoWindow
+                                                anchor={markerRefs[pin.locationId]}                                                
+                                                onCloseClick={() => handleCloseInfoWindow}>
+                                                <div className="pin-card"
+                                                    onClick={() => {openLocationModal(pin.locationId)}}>
+                                                    <div className="pin-info">
+                                                        <p className="pin-top">{pin.locationName}</p>
+                                                        <p className="pin-city">{pin.city}</p>
+                                                        <p className="pin-bottom"><IoBookmark/>{pin.saves}</p>
+                                                    </div>
+                                                    <img src={pin.previewImage.imageUrl}></img>
+                                                </div>
+                                            </InfoWindow>
+                                        )}
+                                </AdvancedMarker>        
                             ))}
                         </Map>
                         <MapHandler place={selectedPlace} marker={marker} />

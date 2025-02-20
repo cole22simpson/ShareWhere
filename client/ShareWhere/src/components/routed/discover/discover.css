@@ -82,54 +82,56 @@
     margin: 10px;
 }
 
-.disc-pin-card {
+.pin-card {
     display: none;
     margin-bottom: 1px;
+
 }
 
-.disc-marker {
+.marker {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-
-.disc-marker:hover {
-    cursor: pointer;
+.pin-card {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    cursor: pointer;
 }
 
-.disc-marker:hover .disc-pin-card {
+.pin-info {
+    height: 100px;
+    width: 200px;
+    border: 2px solid var(--black-color);
+    border-right: none;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px 0 0 10px;
+    background-color: var(--secondary-color);
+    overflow: hidden;
 }
 
-.disc-marker:hover .disc-pin-card img {
-    height: 150px;
-    width: 150px;
+.pin-card img {
+    height: 100px;
+    width: 100px;
     border: 2px solid;
+    border-radius: 0 10px 10px 0;
 }
 
-.disc-marker:hover .disc-pin-card .disc-pin-top {
-    border: 2px solid var(--black-color);
-    border-bottom: none;
+.pin-top {
     padding: 5px;
-    font-weight: 700;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    width: 150px;
-    text-align: center;
+    width: ;
     font-family: "Outfit", sans-serif;
-    font-size: 18px;
-    background-color: var(--secondary-color);
-    border-radius: 10px 10px 0 0;
+    font-size: 15px;
 }
 
-.disc-marker:hover .disc-pin-card .disc-pin-bottom {
-    border: 2px solid var(--black-color);
-    border-top: none;
+.pin-bottom {
     padding: 5px;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -138,12 +140,108 @@
     text-align: center;
     font-family: "Outfit", sans-serif;
     font-size: 15px;
-    background-color: var(--secondary-color);
-    border-radius: 0 0 10px 10px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
+.pin-icon-container {
+    position: relative;
+    height: 50px;
+    filter: drop-shadow(0px 0px 3px black);
+}
+
+.pin-icon {
+    height: 100%;
+}
+
+.pin-type {
+    position: absolute;
+    height: 22px;
+    top: 17px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.gm-style-iw-chr {
+    display: none;
+}
+
+.gm-style .gm-style-iw-c {
+    padding: none;
+    background: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.gm-style .gm-style-iw-d {
+    background: none !important;
+    padding: 20px;
+    overflow: hidden !important;
+    padding: 0 !important;
+}
+
+.gm-style-iw-tc {
+    display: none;
+}
+
+
+/* .marker:hover {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    border: 3px solid;
+}
+
+.marker:hover .pin-card {
+    display: flex;
+    flex-direction: row;
+}
+
+.marker:hover .pin-info {
+    height: 100px;
+    width: 200px;
+    border: 2px solid var(--black-color);
+    border-right: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px 0 0 10px;
+    background-color: var(--secondary-color);
+    overflow: hidden;
+}
+
+.marker:hover .pin-card img {
+    height: 100px;
+    width: 100px;
+    border: 2px solid;
+    border-radius: 0 10px 10px 0;
+}
+
+.marker:hover .pin-card .pin-top {
+    padding: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: ;
+    font-family: "Outfit", sans-serif;
+    font-size: 15px;
+}
+
+.marker:hover .pin-card .pin-bottom {
+    padding: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 150px;
+    text-align: center;
+    font-family: "Outfit", sans-serif;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
 
 .pick-up {
     display: flex;
@@ -165,9 +263,4 @@
 
 .pin-container {
     display: flex;
-}
-
-.sunset {
-    font-size: 22px;
-    color: white;
 }

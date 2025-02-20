@@ -20,7 +20,7 @@ function SignupForm({ onBackToBasic }) {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const { setUserLoggedIn } = useAuth();
-    const GEOCODE_API_KEY = "67a816ef92b15044102715dipdd6220";
+    const GEOCODE_API_KEY = import.meta.env.REACT_APP_GEOCODE_KEY;
     // const { setUserInfo } = useUser();
     
 

@@ -17,7 +17,7 @@ public class AzureBlobStorageService {
 
     private final BlobContainerClient containerClient;
 
-    // Constructor now takes account name and account key from application.yaml or environment variables
+    // Constructor now takes account name and account key from application.properties or environment variables
     public AzureBlobStorageService(
             @Value("${spring.cloud.azure.storage.blob.account-name}") String accountName,
             @Value("${spring.cloud.azure.storage.blob.account-key}") String accountKey,

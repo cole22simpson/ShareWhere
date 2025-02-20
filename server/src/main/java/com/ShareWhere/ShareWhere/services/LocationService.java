@@ -63,7 +63,9 @@ public class LocationService {
     }
 
     public Location createLocation(
-            int userId, String locationName, String locationDescription, Double latitude, Double longitude, String pinType, List<String> tagNames, List<MultipartFile> imageFiles
+            int userId, String locationName, String locationDescription,
+            Double latitude, Double longitude, String city,
+            String pinType, List<String> tagNames, List<MultipartFile> imageFiles
     ) throws IOException {
 
         Location location = new Location(
@@ -71,6 +73,7 @@ public class LocationService {
                 locationDescription,
                 latitude,
                 longitude,
+                city,
                 pinType,
                 tagService.getTagsByName(tagNames)
         );
