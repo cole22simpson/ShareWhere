@@ -2,12 +2,15 @@ package com.ShareWhere.ShareWhere.services;
 
 import com.ShareWhere.ShareWhere.DTOs.CommentDTO;
 import com.ShareWhere.ShareWhere.DTOs.ImageDTO;
+import com.ShareWhere.ShareWhere.DTOs.LocationDTO;
 import com.ShareWhere.ShareWhere.models.Comment;
 import com.ShareWhere.ShareWhere.models.Image;
 import com.ShareWhere.ShareWhere.models.Location;
 import com.ShareWhere.ShareWhere.models.UserProfile;
 import com.ShareWhere.ShareWhere.repositories.CommentRepo;
+import com.ShareWhere.ShareWhere.repositories.UserRepo;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,18 +18,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CommentService {
 
     private final CommentRepo commentRepo;
+    private final UserRepo userRepo;
     private final LocationService locationService;
     private final UserService userService;
+    private final AzureBlobStorageService azureBlobStorageService;
 
-    public CommentService(CommentRepo commentRepo, LocationService locationService, UserService userService) {
+    public CommentService(CommentRepo commentRepo, LocationService locationService, UserService userService, UserRepo userRepo, AzureBlobStorageService azureBlobStorageService) {
         this.commentRepo = commentRepo;
         this.locationService = locationService;
         this.userService = userService;
+        this.userRepo = userRepo;
+        this.azureBlobStorageService = azureBlobStorageService;
     }
 
     public List<Comment> getAllComments() {
@@ -49,10 +57,11 @@ public class CommentService {
         List<Image> images = new ArrayList<>();
         if (imageFiles != null) {
             for (MultipartFile imageFile : imageFiles) {
+                String imageUrl = azureBlobStorageService.uploadFile(imageFile);
                 Image image = new Image(
                         imageFile.getOriginalFilename(),
                         imageFile.getContentType(),
-                        imageFile.getBytes()
+                        imageUrl
                 );
                 image.setComment(comment);
                 images.add(image);
@@ -85,6 +94,29 @@ public class CommentService {
 
             return existingComment;
         });
+    }
+
+    @Transactional
+    public CommentDTO updateComment(int userId, Comment comment, String field) {
+        Set<Integer> likedBy = comment.getLikedBy();
+        if (field.equals("LIKE")) {
+            synchronized (comment) {
+                if (!likedBy.contains(userId)) {
+                    likedBy.add(userId);
+                    comment.setLikes(comment.getLikes() + 1);
+                }
+            }
+        }
+        else if (field.equals("UNLIKE")) {
+            synchronized (comment) {
+                if (likedBy.contains(userId)) {
+                    likedBy.remove(userId);
+                    comment.setLikes(comment.getLikes() - 1);
+                }
+            }
+        }
+        commentRepo.save(comment);
+        return new CommentDTO(comment);
     }
 
     public boolean deleteComment(int commentId) {

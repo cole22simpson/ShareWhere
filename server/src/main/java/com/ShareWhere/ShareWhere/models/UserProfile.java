@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -34,6 +35,7 @@ public class UserProfile {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_pic_id", referencedColumnName = "imageId")
+    @JsonIgnore
     private Image profilePic;
 
     @OneToMany(
@@ -41,7 +43,7 @@ public class UserProfile {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JsonBackReference
+    @JsonIgnore
     private List<Location> userPosts = new ArrayList<>();
 
     @ManyToMany
@@ -50,9 +52,11 @@ public class UserProfile {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "location_id")
     )
+    @JsonIgnore
     private List<Location> savedLocations = new ArrayList<>();
 
     @OneToMany(mappedBy = "writtenBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Comment> userComments = new ArrayList<>();
 
     private LocalDateTime createdAt;
@@ -62,6 +66,7 @@ public class UserProfile {
 
     // private List<User> followers = new ArrayList<>();
     // private List<User> following = new ArrayList<>();
+
 
     public UserProfile(User user) {
         this.user = user;
@@ -76,5 +81,13 @@ public class UserProfile {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public boolean equals(UserProfile profile) {
+        return this.profileId == profile.getProfileId();
+    }
+
+    public int hashCode() {
+        return Objects.hash(profileId);
     }
 }

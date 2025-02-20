@@ -6,12 +6,26 @@
     gap: 0.5em;
 }
 
+.logo-link-container {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .logo {
-    margin-top: 10px;
+    font-size: 40px;
 }
 
 .title {
+    font-size: 40px;
     font-family: 'Alatsi', sans-serif;
+    font-weight: 700;
     color: black;
 }
 

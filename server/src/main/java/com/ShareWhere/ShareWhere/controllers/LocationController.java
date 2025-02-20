@@ -1,6 +1,7 @@
 package com.ShareWhere.ShareWhere.controllers;
 
 import com.ShareWhere.ShareWhere.DTOs.LocationDTO;
+import com.ShareWhere.ShareWhere.DTOs.LocationPreviewDTO;
 import com.ShareWhere.ShareWhere.models.Image;
 import com.ShareWhere.ShareWhere.models.Location;
 //import com.ShareWhere.ShareWhere.models.LocationRequest;
@@ -54,6 +55,8 @@ public class LocationController {
             @RequestParam(value = "locationDescription") String locationDescription,
             @RequestParam(value = "latitude") String latitude,
             @RequestParam(value = "longitude") String longitude,
+            @RequestParam(value = "city") String city,
+            @RequestParam(value = "pinType") String pinType,
             @RequestParam(value = "tagNames") String tagNames,
             @RequestPart(value = "imageFiles") List<MultipartFile> imageFiles) throws IOException {
 
@@ -77,26 +80,26 @@ public class LocationController {
         System.out.println("Id: " + intUserId);
 
         Location location = locationService.createLocation(
-                intUserId, locationName, locationDescription, latitudeDouble, longitudeDouble, tagNamesList, imageFiles
+                intUserId, locationName, locationDescription, latitudeDouble, longitudeDouble, city, pinType, tagNamesList, imageFiles
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new LocationDTO(location));
     }
 
     @GetMapping("/{locationId}")
-    public ResponseEntity<Location> getLocationById(@PathVariable int locationId) {
-        return locationService.getLocationById(locationId)
+    public ResponseEntity<LocationDTO> getLocationById(@PathVariable int locationId) {
+        return locationService.getLocationDTOById(locationId)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/pins")
-    public ResponseEntity<List<LocationDTO>> getLocationsOnMap(
+    public ResponseEntity<List<LocationPreviewDTO>> getLocationsOnMap(
             @RequestParam(value = "north") Double north,
             @RequestParam(value = "south") Double south,
             @RequestParam(value = "east") Double east,
             @RequestParam(value = "west") Double west) {
-        List<LocationDTO> locations = locationService.getLocationsOnMap(north, south, east, west);
+        List<LocationPreviewDTO> locations = locationService.getLocationsOnMap(north, south, east, west);
         return ResponseEntity.ok(locations);
     }
 

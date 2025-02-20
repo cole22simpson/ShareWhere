@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         var user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return UserPrincipal.builder()
-                .userId(user.getUserID())
+                .userId(user.getUserId())
                 .email(user.getEmail())
                 .authorities(List.of(new SimpleGrantedAuthority(user.getRole())))
                 .password(user.getPasswordHash())

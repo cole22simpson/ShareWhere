@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const EditModal = ({ username, name, bio, profilePicType, profilePicData, backToProfile }) => {
+const EditModal = ({ username, name, bio, profilePicUrl, backToProfile }) => {
 
     const [newImage, setNewImage] = useState(null);
     const [newName, setNewName] = useState(name);
     const [newUsername, setNewUsername] = useState(username);
     const [newBio, setNewBio] = useState(bio);
-    const [imageURL, setImageURL] = useState("");
+    const [imageURL, setImageURL] = useState(profilePicUrl);
     const [imageUploaded, setImageUploaded] = useState(false);
     const [isSaveDisabled, setIsSaveDisabled] = useState(false);
     const navigate = useNavigate();
@@ -30,13 +30,9 @@ const EditModal = ({ username, name, bio, profilePicType, profilePicData, backTo
     }, [newName, newUsername]);
 
     const handleSubmitChanges = async () => {
-        console.log("Making changes");
         const userId = localStorage.getItem("userId");
 
         if (newName !== name || newUsername !== username) {
-
-            console.log("Name: ", newName);
-            console.log("Username: ", newUsername);
 
             const formData = new FormData();
 
@@ -54,7 +50,6 @@ const EditModal = ({ username, name, bio, profilePicType, profilePicData, backTo
 
                 if (response.ok) {
                     const data = await response.json(); 
-                    console.log("Updated user successfully!");
                     localStorage.setItem("name", data.name);
                     localStorage.setItem("userData", data.user);
                 }
@@ -67,8 +62,6 @@ const EditModal = ({ username, name, bio, profilePicType, profilePicData, backTo
         }
 
         if (newBio !== bio || newImage) {
-
-            console.log("Bio: ", newBio)
 
             const formData = new FormData();
 
@@ -86,7 +79,6 @@ const EditModal = ({ username, name, bio, profilePicType, profilePicData, backTo
 
                 if (response.ok) {
                     const data = await response.json(); 
-                    console.log("Updated profile successfully!");
                     localStorage.setItem("userData", data.user);
                 }
                 else {
@@ -112,7 +104,7 @@ const EditModal = ({ username, name, bio, profilePicType, profilePicData, backTo
                 { imageUploaded ? (
                     <img className="profile-pic" src={imageURL}></img>
                 ) : (
-                    <img className="profile-pic" src={`data:${profilePicType};base64,${profilePicData}`}></img>
+                    <img className="profile-pic" src={profilePicUrl}></img>
                 )}
                 <input
                     id="profile-pic"
@@ -153,7 +145,7 @@ const EditModal = ({ username, name, bio, profilePicType, profilePicData, backTo
                         <p className="count">{handleCharCount({ target: { value: newName } }, 30)}</p>
                     </div>
                 </div>
-                <div className="attribute bio">
+                <div className="attribute">
                     <label htmlFor="bio">Bio: </label>
                     <div className="column">
                         <textarea
@@ -176,8 +168,7 @@ EditModal.propTypes = {
     username: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     bio: PropTypes.string.isRequired,
-    profilePicType: PropTypes.string.isRequired,
-    profilePicData: PropTypes.string.isRequired,
+    profilePicUrl: PropTypes.string.isRequired,
     backToProfile: PropTypes.func.isRequired,
 };
 

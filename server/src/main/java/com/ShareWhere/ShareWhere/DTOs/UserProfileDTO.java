@@ -26,7 +26,7 @@ public class UserProfileDTO {
 
     public UserProfileDTO(UserProfile userProfile) {
         this.profileId = userProfile.getProfileId();
-        this.userId = userProfile.getUser().getUserID();
+        this.userId = userProfile.getUser().getUserId();
         this.bio = userProfile.getBio();
         this.profilePic = new ImageDTO(userProfile.getProfilePic());
         this.createdAt = userProfile.getCreatedAt();

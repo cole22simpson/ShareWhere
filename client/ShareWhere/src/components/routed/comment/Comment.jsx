@@ -4,20 +4,13 @@ import { FaHeart } from "react-icons/fa";
 import PropTypes from 'prop-types';
 import "./comment.css";
 import dayjs from "dayjs";
-import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 
 const Comment = ({ comment }) => {
-    const [isLiked, setIsLiked] = useState(false);
+    const [isLiked, setIsLiked] = useState(comment.likedBy.includes(parseInt(localStorage.getItem("userId"))));
+    const [numLikes, setNumLikes] = useState(comment.likes);
     const createdAtDate = dayjs(comment.timeCreated);
     const timeAgo = createdAtDate.fromNow();
-
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    // Here you would typically send a request to your server 
-    // to update the like count for this specific comment 
-    // on the backend.
-  };
 
   useEffect(() => {
     dayjs.extend(updateLocale);
@@ -41,11 +34,45 @@ const Comment = ({ comment }) => {
     });
   }, []);
 
+    const handleLike = async (event, action) => {
+        event.preventDefault();
+        const type = action;
+
+        const userId = localStorage.getItem("userId");
+
+        const formData = new FormData();
+
+        formData.append("userId", userId);
+        formData.append("commentId", comment.commentId);
+        formData.append("field", type);
+
+        try {
+            const response = await fetch(`http://localhost:8080/comments/like`, {
+                method: "PATCH",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setIsLiked(!isLiked);
+                setNumLikes(data.length);
+            }
+            else {
+                console.error("Like failed: ", await response.text());
+            }
+        } catch (error) {
+            console.error("Error during like: ", error);
+        }
+    }
+
   return (
     <div className="location-comment">
         <img 
             className="commenter-prof-pic" 
-            src={`data:${comment.commenterProfilePic.imageType};base64,${comment.commenterProfilePic.imageData}`} 
+            src={comment.commenterProfilePic.imageUrl} 
         />
         <div className="comment-middle">
         <div className="comment-top">
@@ -55,17 +82,20 @@ const Comment = ({ comment }) => {
             <p className="comment-text">{comment.commentText}</p>
         </div>
         <div className="likes-container">
-            <button 
-                className={`like-comment ${isLiked ? 'liked' : ''}`} 
-                onClick={handleLike}
-            >
-                {isLiked ? (
-                    <FaHeart />
-                ) : (
+            {!isLiked ? (
+                <button 
+                    className="like-comment"
+                    onClick={(e) => handleLike(e, "LIKE")}>
                     <FiHeart />
-                )}
-            </button>
-            <p className="comment-likes">{comment.likes}</p>
+                </button>
+            ) : (
+                <button 
+                    className="unlike-comment" 
+                    onClick={(e) => handleLike(e, "UNLIKE")}>
+                    <FaHeart />
+                </button>
+            )}
+            <p className="comment-likes">{numLikes}</p>
         </div>
     </div>
   );
@@ -74,15 +104,15 @@ const Comment = ({ comment }) => {
 Comment.propTypes = {
     comment: PropTypes.shape({
         commenterProfilePic: PropTypes.shape({
-            imageType: PropTypes.string.isRequired,
-            imageData: PropTypes.string.isRequired,
+            imageUrl: PropTypes.string.isRequired,
           }).isRequired,
         commenterUser: PropTypes.string.isRequired,
         commentText: PropTypes.string.isRequired,
-        likes: PropTypes.number.isRequired, 
+        likes: PropTypes.number.isRequired,
+        likedBy: PropTypes.arrayOf(PropTypes.number).isRequired,
         commentId: PropTypes.number.isRequired,
         timeCreated: PropTypes.string.isRequired,
-    })
+    }),
   };
 
 export default Comment;
