@@ -1,0 +1,26 @@
+.options-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.pin-option {
+    height: 40px;
+    margin: 5px;
+    background-color: var(--black-color);
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.pin-option:hover {
+    cursor: pointer;
+    outline: 3px solid #6E9CED;
+}
+
+.pin-option.selected {
+    outline: 3px solid #2273ff;
+}
+
+.pin-img {
+    height: 100%;
+}
+

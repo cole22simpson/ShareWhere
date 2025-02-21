@@ -5,12 +5,17 @@ import { useState } from "react";
 import TagSelector from "../tagSelector/TagSelector.jsx";
 import ImageUploader from "../imageUploader/ImageUploader";
 import AddLocMap from "../addLocMap/AddLocMap";
+import PinSelector from "../pinSelector/PinSelector.jsx";
 
 const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, setSelectedTags, images, setImages }) => {
     const [name, setName] = useState("");
     const [details, setDetails] = useState("");
+    const [pinType, setPinType] = useState("DEFAULT");
+    const [city, setCity] = useState("");
     const [latitude, setLatitude] = useState(initialLatitude);
     const [longitude, setLongitude] = useState(initialLongitude);
+    const [submitted, setSubmitted] = useState(false);
+    const GEOCODE_API_KEY = import.meta.env.VITE_GEOCODE_KEY;
     const navigate = useNavigate();
 
     const handleCharCount = (e, maxLength) => `${e.target.value.length} / ${maxLength}`;
@@ -20,7 +25,23 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
         setLongitude(lng);
     };
 
+    const handleGetCity = async () => {
+            try {
+                const response = await fetch(`https://geocode.maps.co/reverse?lat=${latitude}&lon=${longitude}&api_key=${GEOCODE_API_KEY}`, {
+                    method: "GET"
+                });
+                if (response.ok) {
+                    const data = await response.json(); 
+                    setCity(data.address.city);
+                }
+            } catch (error) {
+                console.error(error.message);
+            }
+        };
+
     const handleSubmit = async (event) => {
+
+        setSubmitted(true);
 
         const selectedTagsArray = Object.values(selectedTags)
             .filter(tagName => tagName !== null);
@@ -31,11 +52,15 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
 
         const userId = localStorage.getItem("userId");
 
+        handleGetCity();
+
         formData.append("userId", userId);
         formData.append("locationName", name);
         formData.append("locationDescription", details);
         formData.append("latitude", parseFloat(latitude));
         formData.append("longitude", parseFloat(longitude));
+        formData.append("city", city);
+        formData.append("pinType", pinType);
         formData.append("tagNames", selectedTagsArray.join(","));
         images.forEach(image => {
             formData.append("imageFiles", image);
@@ -51,6 +76,7 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
             });
     
             if (!response.ok) {
+                setSubmitted(false);
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
@@ -59,6 +85,7 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
             }, 1500);
 
         } catch (error) {
+            setSubmitted(false);
             console.error("Error submitting location:", error);
         }
     };
@@ -90,10 +117,11 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
 
                     <ImageUploader images={images} setImages={setImages} />
                     <TagSelector tags={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+                    <PinSelector pinType={pinType} setPinType={setPinType} />
                 </div>
-                <button className="submit-location" onClick={handleSubmit}>Create post</button>
+                <button className="submit-location" disabled={submitted} onClick={handleSubmit}>Create post</button>
             </div>
-            <AddLocMap latitude={latitude} longitude={longitude} onLocationChange={handleLocationChange} />
+            <AddLocMap initialLatitude={initialLatitude} initialLongitude={initialLongitude} latitude={latitude} longitude={longitude} onLocationChange={handleLocationChange} />
         </div>
     );
 };

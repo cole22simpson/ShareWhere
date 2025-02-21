@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 // What is a component
 @Entity
@@ -30,5 +31,13 @@ public class Tag {
         this.tagName = tagName;
         this.tagGroup = tagGroup;
         this.timeCreated = LocalDateTime.now();
+    }
+
+    public boolean equals(Tag tag) {
+        return this.tagId == tag.getTagId();
+    }
+
+    public int hashCode() {
+        return Objects.hash(tagId);
     }
 }

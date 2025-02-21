@@ -1,6 +1,7 @@
 package com.ShareWhere.ShareWhere.services;
 
 import com.ShareWhere.ShareWhere.DTOs.LocationDTO;
+import com.ShareWhere.ShareWhere.DTOs.LocationPreviewDTO;
 import com.ShareWhere.ShareWhere.DTOs.UserDTO;
 import com.ShareWhere.ShareWhere.DTOs.UserProfileDTO;
 import com.ShareWhere.ShareWhere.models.Image;
@@ -35,12 +36,14 @@ public class LocationService {
     private final String uploadDir = "uploads/locations/";
     private final TagService tagService;
     private final UserService userService;
+    private final AzureBlobStorageService azureBlobStorageService;
 
-    public LocationService(LocationRepo locationRepo, TagRepo tagRepo, TagService tagService, UserService userService) {
+    public LocationService(LocationRepo locationRepo, TagRepo tagRepo, TagService tagService, UserService userService, AzureBlobStorageService azureBlobStorageService) {
         this.locationRepo = locationRepo;
         this.tagRepo = tagRepo;
         this.tagService = tagService;
         this.userService = userService;
+        this.azureBlobStorageService = azureBlobStorageService;
     }
 
     public List<LocationDTO> getAllLocations() {
@@ -49,12 +52,20 @@ public class LocationService {
                 .collect(Collectors.toList());
     }
 
+    public List<LocationPreviewDTO> getAllLocationPreviews() {
+        return locationRepo.findAll().stream()
+                .map(LocationPreviewDTO::new)
+                .collect(Collectors.toList());
+    }
+
     public Location createLocation(Location location) {
         return locationRepo.save(location);
     }
 
     public Location createLocation(
-            int userId, String locationName, String locationDescription, Double latitude, Double longitude, List<String> tagNames, List<MultipartFile> imageFiles
+            int userId, String locationName, String locationDescription,
+            Double latitude, Double longitude, String city,
+            String pinType, List<String> tagNames, List<MultipartFile> imageFiles
     ) throws IOException {
 
         Location location = new Location(
@@ -62,15 +73,18 @@ public class LocationService {
                 locationDescription,
                 latitude,
                 longitude,
+                city,
+                pinType,
                 tagService.getTagsByName(tagNames)
         );
 
         List<Image> images = new ArrayList<>();
         for (MultipartFile imageFile : imageFiles) {
+            String imageUrl = azureBlobStorageService.uploadFile(imageFile);
             Image image = new Image(
                     imageFile.getOriginalFilename(),
                     imageFile.getContentType(),
-                    imageFile.getBytes()
+                    imageUrl
             );
             image.setLocation(location);
             images.add(image);
@@ -90,11 +104,16 @@ public class LocationService {
         return locationRepo.findById(locationId);
     }
 
-    public List<LocationDTO> getLocationsOnMap(Double north, Double south, Double east, Double west) {
-        List<LocationDTO> locations = this.getAllLocations();
+    public Optional<LocationDTO> getLocationDTOById(int locationId) {
+        return locationRepo.findById(locationId)
+                .map(LocationDTO::new);
+    }
 
-        List<LocationDTO> locationsOnMap = new ArrayList<>();
-        for (LocationDTO location : locations) {
+    public List<LocationPreviewDTO> getLocationsOnMap(Double north, Double south, Double east, Double west) {
+        List<LocationPreviewDTO> locations = this.getAllLocationPreviews();
+
+        List<LocationPreviewDTO> locationsOnMap = new ArrayList<>();
+        for (LocationPreviewDTO location : locations) {
             if (location.getLatitude() > south && location.getLatitude() < north &&
                     location.getLongitude() > east && location.getLongitude() < west) {
                 locationsOnMap.add(location);

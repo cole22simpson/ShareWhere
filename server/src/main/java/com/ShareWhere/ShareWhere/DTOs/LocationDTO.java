@@ -11,7 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 public class LocationDTO {
@@ -20,6 +22,8 @@ public class LocationDTO {
     private String locationDescription;
     private Double latitude;
     private Double longitude;
+    private String city;
+    private String pinType;
     private List<ImageDTO> images = new ArrayList<>();
     private Integer saves;
     private int createdByProfileID;
@@ -27,7 +31,7 @@ public class LocationDTO {
     private String creatorName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-//    private List<Integer> savedBy = new ArrayList<>();
+    private Set<Integer> savedBy = new HashSet<>();
     private List<TagDTO> tags = new ArrayList<>();
     private List<CommentDTO> comments = new ArrayList<>();
 
@@ -38,6 +42,8 @@ public class LocationDTO {
         this.locationDescription = location.getLocationDescription();
         this.latitude = location.getLatitude();
         this.longitude = location.getLongitude();
+        this.city = location.getCity();
+        this.pinType = location.getPinType();
         for (Image image : location.getImages()) {
             this.images.add(new ImageDTO(image));
         }
@@ -47,6 +53,9 @@ public class LocationDTO {
         this.creatorName = location.getCreatedBy().getUser().getUsername();
         this.createdAt = location.getCreatedAt();
         this.updatedAt = location.getUpdatedAt();
+        for (UserProfile profile : location.getSavedBy()) {
+            this.savedBy.add(profile.getProfileId());
+        }
         for (Tag tag : location.getTags()) {
             this.tags.add(new TagDTO(tag));
         }

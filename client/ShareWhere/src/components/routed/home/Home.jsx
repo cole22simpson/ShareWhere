@@ -6,11 +6,16 @@ import {useState, useEffect} from "react"
 function Home() {
 
     const [name, setName] = useState("");
+    const [city, setCity] = useState("");
     const [hasAccount, setHasAccount] = useState(false);
 
     useEffect(() => {
         if (localStorage.getItem("name")) {
             setName(localStorage.getItem("name"));
+            setHasAccount(true);
+        }
+        if (localStorage.getItem("city")) {
+            setCity(localStorage.getItem("city"));
             setHasAccount(true);
         }
     }, []);
@@ -20,9 +25,9 @@ function Home() {
       <>
         <div className="banner-container">
             {hasAccount ? (
-                <h1 className="greeting">
+                <p className="greeting">
                     Where to today, {name}?
-                </h1>
+                </p>
             ) : (
                 <h1 className="greeting">
                     Welcome to ShareWhere
@@ -35,9 +40,9 @@ function Home() {
         <div className="home-post-container">
             <div className="local-post-container">
                 <div className="local-favorites">
-                    <h2 className="favorites-title">
-                        Local favorites near <span>San Diego</span>
-                    </h2>
+                    <p className="favorites-title">
+                        Local favorites near <span>{city}</span>
+                    </p>
                     <a href="" className="home-see-more">
                         See more
                     </a>
