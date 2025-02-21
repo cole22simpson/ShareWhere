@@ -1,4 +1,4 @@
-.addloc-map-container {
+.map-container {
     width: 80%;
     border: 3px solid var(--black-color);
     border-radius: 20px;
@@ -6,16 +6,81 @@
     margin: 10px;
 }
 
-.location-pin {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .autocomplete-container {
     position: absolute;
     z-index: 100;
     width: 25%;
+}
+
+.control-container {
+    position: absolute;
+    z-index: 100;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+.zoom-control {
+    display: flex;
+    flex-direction: column;
+}
+
+.map-type-container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--secondary-color);
+    border: 2px solid;
+    margin-right: 10px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.close-type-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.close-map-types {
+    border: 2px solid;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    padding: 5px;
+
+}
+
+.close-map-types:hover{
+    background-color: var(--main-color);
+    cursor: pointer;
+}
+
+.control {
+    display: flex;
+    justify-content: center;
+    background-color: var(--secondary-color);
+    align-items: center;
+    border: 2px solid var(--black-color);
+    margin-bottom: 15px;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.control:hover {
+    background-color: var(--main-color);
+    cursor: pointer;
+}
+
+.open-map-types {
+    font-size: 25px;
 }
 
 .location-search-input {
@@ -134,8 +199,6 @@
 .gm-svpc {
     border-radius: 100% !important;
     border: 2px solid black !important;
-}
-
-.gmnoprint .gm-control-active {
-    
+    background-color: var(--secondary-color) !important;
+    padding: 20px !important;
 }

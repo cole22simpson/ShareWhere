@@ -14,7 +14,8 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
     const [city, setCity] = useState("");
     const [latitude, setLatitude] = useState(initialLatitude);
     const [longitude, setLongitude] = useState(initialLongitude);
-    const GEOCODE_API_KEY = import.meta.env.REACT_APP_GEOCODE_KEY;
+    const [submitted, setSubmitted] = useState(false);
+    const GEOCODE_API_KEY = import.meta.env.VITE_GEOCODE_KEY;
     const navigate = useNavigate();
 
     const handleCharCount = (e, maxLength) => `${e.target.value.length} / ${maxLength}`;
@@ -39,6 +40,8 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
         };
 
     const handleSubmit = async (event) => {
+
+        setSubmitted(true);
 
         const selectedTagsArray = Object.values(selectedTags)
             .filter(tagName => tagName !== null);
@@ -73,6 +76,7 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
             });
     
             if (!response.ok) {
+                setSubmitted(false);
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
@@ -81,6 +85,7 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
             }, 1500);
 
         } catch (error) {
+            setSubmitted(false);
             console.error("Error submitting location:", error);
         }
     };
@@ -114,7 +119,7 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
                     <TagSelector tags={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
                     <PinSelector pinType={pinType} setPinType={setPinType} />
                 </div>
-                <button className="submit-location" onClick={handleSubmit}>Create post</button>
+                <button className="submit-location" disabled={submitted} onClick={handleSubmit}>Create post</button>
             </div>
             <AddLocMap initialLatitude={initialLatitude} initialLongitude={initialLongitude} latitude={latitude} longitude={longitude} onLocationChange={handleLocationChange} />
         </div>

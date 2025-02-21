@@ -1,9 +1,13 @@
 import PropTypes from "prop-types";
 import { useState, useRef, useCallback, useEffect } from "react";
-import { MdLocationPin } from "react-icons/md";
+import { TbMapCog } from "react-icons/tb";
+import { MdClose } from "react-icons/md";
+import { FaLocationCrosshairs } from "react-icons/fa6";
+import { ImPlus, ImMinus } from "react-icons/im";
 import { IoBookmark  } from "react-icons/io5";
 import { BsPersonArmsUp, BsPersonRaisedHand } from "react-icons/bs";
 import { GiHandOk } from "react-icons/gi";
+import TagSelector from "../tagSelector/TagSelector";
 import "./discover.css";
 import { Map, AdvancedMarker, useMap, useAdvancedMarkerRef, APIProvider, useMapsLibrary, MapControl, InfoWindow, ControlPosition } from "@vis.gl/react-google-maps";
 import LocationModal from "../locationModal/LocationModal";
@@ -16,10 +20,13 @@ const Discover = () => {
     const [mapRef, setMapRef] = useState(null);
     const [markerRef, marker] = useAdvancedMarkerRef();
     const [showModal, setShowModal] = useState(false);
+    const [controlsModal, setControlsModal] = useState(false);
+    const [mapType, setMapType] = useState("terrain");
     const [pins, setPins] = useState([]);
     const [dragging, setDragging] = useState(false);
     const [infoWindowOpen, setInfoWindowOpen] = useState(false);
     const markerRefs = useRef({});
+    const [tags, setTags] = useState([]);
     const [selectedPin, setSelectedPin] = useState(null);
     const [selectedPost, setSelectedPost] = useState(null);
     const [bounds, setBounds] = useState({ north: 0.0, south: 0.0, east: 0.0, west: 0.0 });
@@ -27,6 +34,51 @@ const Discover = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const MAP_ID = import.meta.env.VITE_MAP_ID;
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
+    const [isStreetView, setIsStreetView] = useState(false);
+
+    const [selectedTags, setSelectedTags] = useState({});
+
+    useEffect(() => {
+        console.log(selectedTags);
+    }, [selectedTags]);
+
+
+    const toggleTagSelection = (tagGroup, tagName) => {
+        setSelectedTags((prev) => ({
+            ...prev,
+            [tagGroup]: prev[tagGroup] === tagName ? null : tagName,
+        }));
+    };
+
+    const pinOptions = [
+        "DEFAULT",
+        "VIEW",
+        "ROCKCLIMB",
+        "DATE",
+        "ART",
+        "BIKE",
+        "BUILDING",
+        "PICTURES",
+        "CAVE",
+        "GRAFFITI",
+        "HIKE",
+        "NATURE",
+        "SKATEBOARD",
+        "STARGAZING",
+        "SWIM",
+        "READING"
+    ];
+
+    const [activePinTypes, setActivePinTypes] = useState(
+        pinOptions.reduce((acc, type) => ({ ...acc, [type]: true }), {}) // Initialize all pin types as active
+    );
+
+    const togglePinType = (type) => {
+        setActivePinTypes((prev) => ({
+            ...prev,
+            [type]: !prev[type]
+        }));
+    };
 
     const getPinIcon = (pinType) => {
         switch (pinType) {
@@ -65,12 +117,13 @@ const Discover = () => {
         }
     }
     
+    
     const filteredPins = searchQuery 
     ? pins
         .filter((pin) => 
           pin.locationName.toLowerCase().includes(searchQuery.toLowerCase())
         )
-        .slice(0, 10) 
+        .slice(0, 5) 
     : [];
 
     const handleSearchChange = (event) => {
@@ -80,6 +133,32 @@ const Discover = () => {
     const handleLocationChange = ({ lat, lng }) => {
         setCenter({ lat: lat, lng: lng });
     };
+
+    useEffect(() => {
+        const fetchTags = async () => {
+            try {
+                const token = localStorage.getItem("jwtToken");
+                const response = await fetch("http://localhost:8080/tags", {
+                    method: "GET",
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                if (!response.ok) throw new Error("Failed to fetch tags");
+
+                const data = await response.json();
+                const groupedTags = data.reduce((acc, tag) => {
+                    if (!acc[tag.tagGroup]) acc[tag.tagGroup] = [];
+                    acc[tag.tagGroup].push(tag);
+                    return acc;
+                }, {});
+
+                setTags(groupedTags);
+            } catch (error) {
+                console.error("Error fetching tags: ", error);
+            }
+        };
+
+        fetchTags();
+    }, []);
 
     const openLocationModal  = async (pinId) => {
         const locationId = pinId;
@@ -133,12 +212,28 @@ const Discover = () => {
         setInfoWindowOpen(false);
     };
 
-    const handleInfoWindowMouseOver = () => {
-       setInfoWindowOpen(true);
-    };
+    const handleIdle = () => {
+        setDragging(false);
+        loadPins();
+    }
 
-    const handleInfoWindowMouseOut = () => {
-        setInfoWindowOpen(false);
+    const handleMapTypeChange = (type) => {
+        switch (type) {
+            case "terrain":
+                setMapType("terrain");
+                break;
+            case "roadmap":
+                setMapType("roadmap");
+                break;
+            case "satellite":
+                setMapType("satellite");
+                break;
+            case "hybrid":
+                setMapType("hybrid");
+                break;
+            default:
+                setMapType("terrain");
+        }
     };
 
 
@@ -150,8 +245,8 @@ const Discover = () => {
     const handleBoundsChanged = () => {
         if (mapRef) {
             const mapBounds = mapRef.map.getBounds();
-            const north = mapBounds.ii.hi;
-            const south = mapBounds.ii.lo;
+            const north = mapBounds.ji.hi;
+            const south = mapBounds.ji.lo;
             const east = mapBounds.Gh.lo;
             const west = mapBounds.Gh.hi;
             setBounds({ north: north, south: south, east: east, west: west });
@@ -162,6 +257,8 @@ const Discover = () => {
             handleLocationChange({ lat: newLat, lng: newLng});
         }
     };
+
+    
 
     const loadPins = async () => {
         try {
@@ -193,6 +290,8 @@ const Discover = () => {
     useEffect(() => {
         loadPins();
     }, [showModal]);
+
+    const newFilteredPins = pins.filter((pin) => activePinTypes[pin.pinType]);
 
     return (
         <>      
@@ -233,28 +332,83 @@ const Discover = () => {
                                 </div>
                             )}
                         </div>
+                        <div className="filter-icon">
+                            <label className="search-name-label disc-options">Filter by icon type</label>
+                            <div className="options-container">
+                                {pinOptions.map((option) => (
+                                    <div
+                                        className={`pin-option ${activePinTypes[option] ? "selected" : ""}`} 
+                                        key={option} 
+                                        onClick={() => togglePinType(option)}
+                                    >
+                                        <img className="pin-img" src={getPinIcon(option)} />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="tags-container">
+                            <p className="addloc-label">Add tags</p>
+                            {Object.entries(tags).map(([group, groupTags]) => (
+                                <div key={group} className="tag-group">
+                                    {groupTags.map((tag) => (
+                                        <button
+                                            key={tag.tagId}
+                                            className={`tag-btn ${selectedTags[group] === tag.tagName ? "selected" : ""}`}
+                                            onClick={() => toggleTagSelection(group, tag.tagName)}
+                                        >
+                                            {tag.tagName}
+                                        </button>
+                                    ))}
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                    <div className="discover-map-container">
-                        <div className="autocomplete-container">
-                            <PlaceAutocomplete
-                                onPlaceSelect={setSelectedPlace}
-                                setCenter={setCenter}
-                                onLocationChange={handleLocationChange}
-                            />
-                        </div>                                        
+                    <div className="map-container">
+                        {!isStreetView && (
+                            <div className="autocomplete-container">
+                                <PlaceAutocomplete
+                                    onPlaceSelect={setSelectedPlace}
+                                    setCenter={setCenter}
+                                    onLocationChange={handleLocationChange}
+                                />
+                            </div>
+                        )}
+                        {!isStreetView && (
+                            <div className="control-container">
+                                {controlsModal && (
+                                    <div className="map-type-container">
+                                        <div className="map-type-controls">
+                                            <div className="close-type-container">
+                                                <div onClick={() => setControlsModal(false)} className="close-map-types"><MdClose/></div>
+                                            </div>
+                                            <div onClick={() => handleMapTypeChange('roadmap')}>Roadmap</div>
+                                            <div onClick={() => handleMapTypeChange('satellite')}>Satellite</div>
+                                            <div onClick={() => handleMapTypeChange('hybrid')}>Hybrid</div>
+                                            <div onClick={() => handleMapTypeChange('terrain')}>Terrain</div>
+                                        </div>
+                                    </div>
+                                )}
+                                <div className="map-type-buttons">
+                                    <div className="open-map-types control" onClick={() => setControlsModal(!controlsModal)}><TbMapCog /></div>
+                                    <ZoomControl />
+                                    <div className="control open-map-types" onClick={() => setCenter(defaultCenter)}><FaLocationCrosshairs /></div>
+                                </div>
+                            </div>
+                        )}                       
                         <Map
                             defaultZoom={15}
                             center={{ lat: center.lat, lng: center.lng }}
                             defaultCenter={{ lat: center.lat, lng: center.lng }}
                             gestureHandling={"greedy"}
-                            mapTypeId={"terrain"}
+                            mapTypeId={mapType}
                             mapId={MAP_ID}
                             fullscreenControl={false}
-                            mapTypeControlOptions={{ position: ControlPosition.TOP_RIGHT }}
+                            mapTypeControl={false}
+                            cameraControl={false}
                             onMousemove={(map) => handleMapLoad(map)}
-                            onIdle={loadPins}
+                            onIdle={handleIdle}
+                            onDrag={() => setDragging(true)}
                             onBoundsChanged={handleBoundsChanged}>
-                            <MapControl position={ControlPosition.BOTTOM_RIGHT}></MapControl>
                             <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}>
                                 {dragging ? (
                                     <div className="pick-up">
@@ -265,7 +419,7 @@ const Discover = () => {
                                     <BsPersonRaisedHand size={40} />
                                 )}
                             </AdvancedMarker>
-                            {pins.map((pin) => (
+                            {newFilteredPins.map((pin) => (
                                 <AdvancedMarker
                                     key={pin.locationId}
                                     ref={(ref) => { markerRefs[pin.locationId] = ref; }}
@@ -300,7 +454,7 @@ const Discover = () => {
                                 </AdvancedMarker>        
                             ))}
                         </Map>
-                        <MapHandler place={selectedPlace} marker={marker} />
+                        <MapHandler setIsStreetView={setIsStreetView} place={selectedPlace} marker={marker} />
                     </div>
                 </div>
             </APIProvider>
@@ -315,8 +469,38 @@ const Discover = () => {
     );
 };
 
-const MapHandler = ({ place, marker }) => {
+const ZoomControl = () => {
     const map = useMap();
+
+    if (!map) return;
+
+    return (
+        <div className="zoom-control">
+            <button className="control" id="zoom-in" onClick={() => map.setZoom(map.getZoom() + 1)}><ImPlus /></button>
+            <button className="control" id="zoom-out" onClick={() => map.setZoom(map.getZoom() - 1)}><ImMinus /></button>
+        </div>
+    );
+};
+
+const MapHandler = ({ setIsStreetView, place, marker }) => {
+    const map = useMap();
+
+    useEffect(() => {
+        if (!map || !map.streetView) return;
+
+        const streetView = map.streetView; // Access streetView from map
+
+        const handleStreetViewChange = () => {
+            setIsStreetView(streetView.visible); // Update state based on visibility
+        };
+
+        // Add listener to detect when 'visible' changes
+        const listener = streetView.addListener("visible_changed", handleStreetViewChange);
+
+        return () => {
+            listener.remove(); // Properly remove the event listener
+        };
+    }, [map]);
   
     useEffect(() => {
       if (!map || !place || !marker) return;
@@ -369,13 +553,14 @@ PlaceAutocomplete.propTypes = {
 };
 
 MapHandler.propTypes = {
-      place: PropTypes.shape({
+    place: PropTypes.shape({
         geometry: PropTypes.shape({
-          viewport: PropTypes.object,
-          location: PropTypes.object,
+        viewport: PropTypes.object,
+        location: PropTypes.object,
         }),
-      }),
-      marker: PropTypes.object, // Or a more specific type if you know the marker's structure
-    };
+    }),
+    marker: PropTypes.object, // Or a more specific type if you know the marker's structure
+    setIsStreetView: PropTypes.func,
+};
 
 export default Discover;

@@ -2,9 +2,12 @@ import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import { PiMapPinSimpleFill } from "react-icons/pi";
 import { IoBookmark  } from "react-icons/io5";
-import { MdLocationPin } from "react-icons/md";
+import { MdClose } from "react-icons/md";
+import { TbMapCog } from "react-icons/tb";
+import { FaLocationCrosshairs } from "react-icons/fa6";
+import { ImPlus, ImMinus } from "react-icons/im";
 import "./addLocMap.css";
-import { Map, AdvancedMarker, useMap, useAdvancedMarkerRef, APIProvider, ControlPosition, useMapsLibrary, MapControl } from "@vis.gl/react-google-maps";
+import { Map, AdvancedMarker, useMap, useAdvancedMarkerRef, InfoWindow, APIProvider, ControlPosition, useMapsLibrary, MapControl } from "@vis.gl/react-google-maps";
 import LocationModal from "../locationModal/LocationModal";
 
 const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onLocationChange }) => {
@@ -13,8 +16,13 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
     const [markerRef, marker] = useAdvancedMarkerRef();
     const [showModal, setShowModal] = useState(false);
     const [mapType, setMapType] = useState("terrain");
+    const [infoWindowOpen, setInfoWindowOpen] = useState(false);
+    const markerRefs = useRef({});
+    const [selectedPin, setSelectedPin] = useState(null);
     const [pins, setPins] = useState([]);
     const [selectedPost, setSelectedPost] = useState(null);
+    const [isStreetView, setIsStreetView] = useState(false);
+    const [controlsModal, setControlsModal] = useState(false);
     const [bounds, setBounds] = useState({ north: 0.0, south: 0.0, east: 0.0, west: 0.0 });
     const [selectedPlace, setSelectedPlace] = useState(null);
     const MAP_ID = import.meta.env.VITE_MAP_ID;
@@ -117,8 +125,8 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
     const handleBoundsChanged = () => {
         if (mapRef) {
             const mapBounds = mapRef.map.getBounds();
-            const north = mapBounds.ii.hi;
-            const south = mapBounds.ii.lo;
+            const north = mapBounds.ji.hi;
+            const south = mapBounds.ji.lo;
             const east = mapBounds.Gh.lo;
             const west = mapBounds.Gh.hi;
             setBounds({ north: north, south: south, east: east, west: west });
@@ -128,6 +136,25 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
             setCenter({ lat: newLat, lng: newLng });
             onLocationChange({ lat: newLat, lng: newLng});
         }
+    };
+
+    const handleMarkerClick = (pin) => {
+        setSelectedPin(pin);
+        setInfoWindowOpen(true);
+    };
+
+    const handlePinIconMouseOver = (pin) => {
+        setSelectedPin(pin);
+        setInfoWindowOpen(true);
+    };
+
+    const handlePinIconMouseOut = () => {
+        setInfoWindowOpen(false);
+    };
+
+    const handleCloseInfoWindow = () => {
+        setInfoWindowOpen(false);
+        setSelectedPin(null); // Clear the selected pin when the info window is closed
     };
 
     const loadPins = async () => {
@@ -163,11 +190,12 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
 
     return (
         <>
-            <div className="addloc-map-container">
-                <APIProvider
-                    apiKey={API_KEY}
-                    solutionChannel="GMP_devsite_samples_v3_rgmautocomplete"
-                    >                
+            <APIProvider
+                apiKey={API_KEY}
+                solutionChannel="GMP_devsite_samples_v3_rgmautocomplete"
+            >
+                <div className="map-container">                
+                    {!isStreetView && (
                         <div className="autocomplete-container">
                             <PlaceAutocomplete
                                 onPlaceSelect={setSelectedPlace}
@@ -175,58 +203,83 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                                 onLocationChange={onLocationChange}
                             />
                         </div>
-                        <Map
-                            defaultZoom={15}
-                            center={{ lat: center.lat, lng: center.lng }}
-                            defaultCenter={{ lat: center.lat, lng: center.lng }}
-                            gestureHandling={"greedy"}
-                            mapTypeId={mapType}
-                            mapId={MAP_ID}
-                            fullscreenControl={false}
-                            mapTypeControl={false}
-                            zoomControl={false}
-                            streetViewControlOptions={{ position: ControlPosition.TOP_RIGHT}}
-                            onMousemove={(map) => handleMapLoad(map)}
-                            onIdle={loadPins}
-                            onBoundsChanged={handleBoundsChanged}>
-                            <MapControl position={ControlPosition.TOP_RIGHT}><ZoomControl /></MapControl>
-                            <MapControl position={ControlPosition.TOP_RIGHT}>
-                                <button onClick={() => handleMapTypeChange('roadmap')} disabled={mapType === 'roadmap'}>Roadmap</button>
-                                <button onClick={() => handleMapTypeChange('satellite')} disabled={mapType === 'satellite'}>Satellite</button>
-                                <button onClick={() => handleMapTypeChange('hybrid')} disabled={mapType === 'hybrid'}>Hybrid</button>
-                                <button onClick={() => handleMapTypeChange('terrain')} disabled={mapType === 'terrain'}>Terrain</button>
-                            </MapControl>
-                            <MapControl position={ControlPosition.TOP_RIGHT}>
-                                <button onClick={() => setCenter({ lat: initialLatitude, lng: initialLongitude })}>Reset</button>
-                            </MapControl>
-                            <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}>
-                                <PiMapPinSimpleFill size={40} />
-                            </AdvancedMarker>
-                            {pins.map((pin) => (
-                                <AdvancedMarker
-                                    key={pin.locationId}
-                                    position={{ lat: pin.latitude, lng: pin.longitude }}
-                                    clickable="true"
-                                    className="marker"
-                                    >
-                                    <div className="pin-card" onClick={() => {openLocationModal(pin.locationId)}}>
-                                        <div className="pin-info">
-                                            <p className="pin-top">{pin.locationName}</p>
-                                            <p className="pin-city">{pin.city}</p>
-                                            <p className="pin-bottom"><IoBookmark/>{pin.saves}</p>
+                    )}
+                    {!isStreetView && (
+                        <div className="control-container">
+                            {controlsModal && (
+                                <div className="map-type-container">
+                                    <div className="map-type-controls">
+                                        <div className="close-type-container">
+                                            <div onClick={() => setControlsModal(false)} className="close-map-types"><MdClose/></div>
                                         </div>
-                                        <img src={pin.previewImage.imageUrl}></img>
+                                        <div onClick={() => handleMapTypeChange('roadmap')}>Roadmap</div>
+                                        <div onClick={() => handleMapTypeChange('satellite')}>Satellite</div>
+                                        <div onClick={() => handleMapTypeChange('hybrid')}>Hybrid</div>
+                                        <div onClick={() => handleMapTypeChange('terrain')}>Terrain</div>
                                     </div>
-                                    <div className="pin-icon-container">
+                                </div>
+                            )}
+                            <div className="map-type-buttons">
+                                <div className="open-map-types control" onClick={() => setControlsModal(!controlsModal)}><TbMapCog /></div>
+                                <ZoomControl />
+                                <div className="control open-map-types" onClick={() => setCenter( { lat: initialLatitude, lng: initialLongitude })}><FaLocationCrosshairs /></div>
+                            </div>
+                        </div>
+                    )} 
+                    <Map
+                        defaultZoom={15}
+                        center={{ lat: center.lat, lng: center.lng }}
+                        defaultCenter={{ lat: center.lat, lng: center.lng }}
+                        gestureHandling={"greedy"}
+                        mapTypeId={mapType}
+                        mapId={MAP_ID}
+                        fullscreenControl={false}
+                        mapTypeControl={false}
+                        mapTypeControlOptions={{ position: ControlPosition.TOP_RIGHT }}
+                        onMousemove={(map) => handleMapLoad(map)}
+                        onIdle={loadPins}
+                        onBoundsChanged={handleBoundsChanged}>
+                        <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}>
+                            <PiMapPinSimpleFill size={40} />
+                        </AdvancedMarker>
+                        {pins.map((pin) => (
+                            <AdvancedMarker
+                                key={pin.locationId}
+                                ref={(ref) => { markerRefs[pin.locationId] = ref; }}
+                                position={{ lat: pin.latitude, lng: pin.longitude }}
+                                clickable="true"
+                                className="marker"
+                                onClick={() => handleMarkerClick(pin)}
+                                >
+                                    <div
+                                        className="pin-icon-container"
+                                        onMouseOver={() => handlePinIconMouseOver(pin)}
+                                        onMouseOut={handlePinIconMouseOut}
+                                        onClick={() => openLocationModal(pin.locationId)}>
                                         <img className="pin-icon" src={"/assets/icons/marker.png"}/>
                                         <img className="pin-type" src={getPinIcon(pin.pinType)} />
                                     </div>
-                                </AdvancedMarker>
-                            ))}
-                        </Map>
-                        <MapHandler place={selectedPlace} marker={marker} />
-                </APIProvider>
-            </div>
+                                    {infoWindowOpen && selectedPin && selectedPin.locationId === pin.locationId && (
+                                        <InfoWindow
+                                            anchor={markerRefs[pin.locationId]}                                                
+                                            onCloseClick={() => handleCloseInfoWindow}>
+                                            <div className="pin-card"
+                                                onClick={() => {openLocationModal(pin.locationId)}}>
+                                                <div className="pin-info">
+                                                    <p className="pin-top">{pin.locationName}</p>
+                                                    <p className="pin-city">{pin.city}</p>
+                                                    <p className="pin-bottom"><IoBookmark/>{pin.saves}</p>
+                                                </div>
+                                                <img src={pin.previewImage.imageUrl}></img>
+                                            </div>
+                                        </InfoWindow>
+                                    )}
+                            </AdvancedMarker>      
+                        ))}
+                    </Map>
+                    <MapHandler setIsStreetView={setIsStreetView} place={selectedPlace} marker={marker} />                
+                </div>
+            </APIProvider>
 
             {showModal && (
                 <LocationModal
@@ -245,14 +298,31 @@ const ZoomControl = () => {
 
     return (
         <div className="zoom-control">
-            <button id="zoom-in" onClick={() => map.setZoom(map.getZoom() + 1)}>Zoom In</button>
-            <button id="zoom-out" onClick={() => map.setZoom(map.getZoom() - 1)}>Zoom Out</button>
+            <button className="control" id="zoom-in" onClick={() => map.setZoom(map.getZoom() + 1)}><ImPlus /></button>
+            <button className="control" id="zoom-out" onClick={() => map.setZoom(map.getZoom() - 1)}><ImMinus /></button>
         </div>
     );
 };
 
-const MapHandler = ({ place, marker }) => {
+const MapHandler = ({ setIsStreetView, place, marker }) => {
     const map = useMap();
+
+    useEffect(() => {
+        if (!map || !map.streetView) return;
+
+        const streetView = map.streetView; // Access streetView from map
+
+        const handleStreetViewChange = () => {
+            setIsStreetView(streetView.visible); // Update state based on visibility
+        };
+
+        // Add listener to detect when 'visible' changes
+        const listener = streetView.addListener("visible_changed", handleStreetViewChange);
+
+        return () => {
+            listener.remove(); // Properly remove the event listener
+        };
+    }, [map]);
   
     useEffect(() => {
       if (!map || !place || !marker) return;
@@ -305,20 +375,21 @@ PlaceAutocomplete.propTypes = {
 };
 
 MapHandler.propTypes = {
-      place: PropTypes.shape({
+    place: PropTypes.shape({
         geometry: PropTypes.shape({
-          viewport: PropTypes.object,
-          location: PropTypes.object,
+        viewport: PropTypes.object,
+        location: PropTypes.object,
         }),
-      }),
-      marker: PropTypes.object, // Or a more specific type if you know the marker's structure
-    };
+    }),
+    marker: PropTypes.object, // Or a more specific type if you know the marker's structure
+    setIsStreetView: PropTypes.func,
+};
 
 
 AddLocMap.propTypes = {
-    initialLatitude: PropTypes.number,
-    initialLongitude: PropTypes.number,
-    latitude: PropTypes.number,
+    initialLatitude: PropTypes.number.isRequired,
+    initialLongitude: PropTypes.number.isRequired,
+    latitude: PropTypes.number.isRequired,
     longitude: PropTypes.number,
     onLocationChange: PropTypes.func.isRequired,
 };
