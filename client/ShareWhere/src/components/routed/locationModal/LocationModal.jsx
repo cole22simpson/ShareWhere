@@ -25,22 +25,28 @@ const LocationModal = ({ selectedPost, closeLocationModal }) => {
     const [isMounted, setIsMounted] = useState(false);
     const [isSaved, setIsSaved] = useState(selectedPost.savedBy.includes(parseInt(localStorage.getItem("userId"))));
     const [numSaves, setNumSaves] = useState(selectedPost.saves);
+    const [commentImageOpen, setCommentImageOpen] = useState(false);
 
     useEffect(() => {
         setIsMounted(true);
-
+    
         const handleEscapeKey = (event) => {
             if (event.key === 'Escape' && isMounted) {
-            closeLocationModal(); 
+                if (commentImageOpen) {
+                    event.stopPropagation(); // Prevent post modal from closing
+                    setCommentImageOpen(false); // Close only the image modal
+                } else {
+                    closeLocationModal(); // Close the post modal if no image is open
+                }
             }
         };
-
+    
         window.addEventListener('keydown', handleEscapeKey);
-
+    
         return () => {
             window.removeEventListener('keydown', handleEscapeKey);
         };
-    }, [closeLocationModal, isMounted]);
+    }, [closeLocationModal, isMounted, commentImageOpen]);
 
     
 
@@ -154,7 +160,7 @@ const LocationModal = ({ selectedPost, closeLocationModal }) => {
                         </Map>
                     </APIProvider>
                 </div>
-                <CommentSection comments={comments} locationId={locationId} />
+                <CommentSection setCommentImageOpen={setCommentImageOpen} comments={comments} locationId={locationId} />
             </div>
         </div>
     );

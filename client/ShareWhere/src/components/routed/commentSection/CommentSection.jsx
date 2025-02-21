@@ -6,7 +6,7 @@ import { MdAddAPhoto } from "react-icons/md";
 import PropTypes from "prop-types";
 import Comment from "../comment/Comment";
 
-const CommentSection = ({ comments, locationId }) => {
+const CommentSection = ({ setCommentImageOpen, comments, locationId }) => {
 
     const [locationComments, setLocationComments] = useState(comments);
     const [commentText, setCommentText] = useState("");
@@ -69,7 +69,7 @@ const CommentSection = ({ comments, locationId }) => {
             ) : (
                 <div className="comments">
                     {locationComments.map((comment) => (
-                        <Comment key={comment.commentId} comment={comment} />
+                        <Comment key={comment.commentId} setCommentImageOpen={setCommentImageOpen} comment={comment} />
                     ))}
                 </div>
             )}
@@ -117,6 +117,7 @@ const CommentSection = ({ comments, locationId }) => {
 };
 
 CommentSection.propTypes = {
+    setCommentImageOpen: PropTypes.func.isRequired,
     comments: PropTypes.arrayOf(PropTypes.object).isRequired,
     locationId: PropTypes.number.isRequired,
 };

@@ -119,7 +119,7 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
                     <TagSelector tags={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
                     <PinSelector pinType={pinType} setPinType={setPinType} />
                 </div>
-                <button className="submit-location" disabled={submitted} onClick={handleSubmit}>Create post</button>
+                <button className="submit-location" disabled={submitted} onClick={handleSubmit}>Share Where</button>
             </div>
             <AddLocMap initialLatitude={initialLatitude} initialLongitude={initialLongitude} latitude={latitude} longitude={longitude} onLocationChange={handleLocationChange} />
         </div>

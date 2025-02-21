@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { TbMapCog } from "react-icons/tb";
 import { MdClose } from "react-icons/md";
 import { FaLocationCrosshairs } from "react-icons/fa6";
@@ -7,13 +7,11 @@ import { ImPlus, ImMinus } from "react-icons/im";
 import { IoBookmark  } from "react-icons/io5";
 import { BsPersonArmsUp, BsPersonRaisedHand } from "react-icons/bs";
 import { GiHandOk } from "react-icons/gi";
-import TagSelector from "../tagSelector/TagSelector";
 import "./discover.css";
 import { Map, AdvancedMarker, useMap, useAdvancedMarkerRef, APIProvider, useMapsLibrary, MapControl, InfoWindow, ControlPosition } from "@vis.gl/react-google-maps";
 import LocationModal from "../locationModal/LocationModal";
 
 const Discover = () => {
-    // const coordinates = JSON.parse(localStorage.getItem("user.latitude"));
     const user = JSON.parse(localStorage.getItem("user"));
     const defaultCenter = {lat: user.latitude, lng: user.longitude};
     const [center, setCenter] = useState({ lat: defaultCenter.lat, lng: defaultCenter.lng });
@@ -36,12 +34,13 @@ const Discover = () => {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
     const [isStreetView, setIsStreetView] = useState(false);
 
-    const [selectedTags, setSelectedTags] = useState({});
+    const [selectedTags, setSelectedTags] = useState([]); 
 
-    useEffect(() => {
-        console.log(selectedTags);
-    }, [selectedTags]);
-
+    const toggleTag = (tagName) => {
+        setSelectedTags((prev) =>
+            prev.includes(tagName) ? prev.filter((tag) => tag !== tagName) : [...prev, tagName]
+        );
+    };
 
     const toggleTagSelection = (tagGroup, tagName) => {
         setSelectedTags((prev) => ({
@@ -291,7 +290,16 @@ const Discover = () => {
         loadPins();
     }, [showModal]);
 
-    const newFilteredPins = pins.filter((pin) => activePinTypes[pin.pinType]);
+    const newFilteredPins = pins.filter((pin) => {
+        if (!activePinTypes[pin.pinType]) return false;
+    
+        const activeTags = Object.values(selectedTags).filter(Boolean);
+    
+        if (activeTags.length === 0) return true;
+    
+        const pinTagNames = pin.tags.map((tag) => tag.tagName);
+        return activeTags.every((selectedTag) => pinTagNames.includes(selectedTag));
+    });
 
     return (
         <>      
@@ -347,7 +355,7 @@ const Discover = () => {
                             </div>
                         </div>
                         <div className="tags-container">
-                            <p className="addloc-label">Add tags</p>
+                            <p className="search-name-label">Filter by tags</p>
                             {Object.entries(tags).map(([group, groupTags]) => (
                                 <div key={group} className="tag-group">
                                     {groupTags.map((tag) => (

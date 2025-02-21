@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="094d4d6e-c9c5-4d5f-ab14-99a0d7800aef" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/CommentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/CommentDTO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +45,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.ShareWhereApplication.executor": "Run",
-    "git-widget-placeholder": "develop",
+    "git-widget-placeholder": "discover-page-touches",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/cole2/Desktop/nurses",
@@ -150,7 +151,7 @@
       <workItem from="1738881140590" duration="689000" />
       <workItem from="1739066848459" duration="74605000" />
       <workItem from="1739824784120" duration="40497000" />
-      <workItem from="1739996787477" duration="11189000" />
+      <workItem from="1739996787477" duration="12261000" />
     </task>
     <servers />
   </component>
