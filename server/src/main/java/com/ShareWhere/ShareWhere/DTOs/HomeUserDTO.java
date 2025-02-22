@@ -4,40 +4,29 @@ import com.ShareWhere.ShareWhere.models.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
-public class UserDTO {
+public class HomeUserDTO {
     private int userId;
-    private String username;
     private String name;
-    private String email;
     private Double latitude;
     private Double longitude;
     private String city;
-    private String role;
-    private Integer numFollowers;
     private Set<Integer> following = new HashSet<>();
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private UserProfileDTO profile;
+    private List<HomeLocationDTO> followingPosts = new ArrayList<>();
 
-    public UserDTO(User user) {
+    public HomeUserDTO(User user) {
         this.userId = user.getUserId();
-        this.username = user.getUsername();
         this.name = user.getName();
-        this.email = user.getEmail();
         this.latitude = user.getLatitude();
         this.longitude = user.getLongitude();
-        this.city = user.getCity();
-        this.role = user.getRole();
-        this.numFollowers = user.getFollowers().size();
         for (User follow : user.getFollowing()) {
             following.add(follow.getUserId());
         }
-        this.createdAt = user.getCreatedAt();
-        this.updatedAt = user.getUpdatedAt();
-        this.profile = new UserProfileDTO(user.getProfile());
+        this.city = user.getCity();
     }
 }

@@ -29,12 +29,11 @@
     margin: 0 auto;
     padding-top: 1rem;
     padding-bottom: 0.75rem;
-
     background-color: var(--secondary-color);
     color: #fff;
     border-radius: 18px;
-
     text-align: center;
+    border: 2px solid var(--black-color);
 }
 
 
@@ -62,44 +61,14 @@
 }
 /*  */
 
-
-/* alternate auth */
-.alternate-auth {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.alternate-auth div {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-}
-
-.alternate-auth button {
-    display: flex;
-    justify-content: start;
-    gap: 2rem;
-}
-
 .google-btn {
     background-color: #4184F3;
     font-family: inherit;
 }
 
-.facebook-btn {
-    background-color: #3C5997;
-    font-family: inherit;
-}
-
-.apple-btn {
-    background-color: black;
-    font-family: inherit;
-}
-
-.signup-component__or {
+.signup-component-or {
     padding-top: 1rem;
-
+    padding-bottom: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -107,10 +76,8 @@
     
 }
 
-.signup-component__or hr {
+.signup-component-or hr {
     width: 20%;
-    margin: 0;
-
     border: none;
     height: 1px;
     background-color: #64ABE3;

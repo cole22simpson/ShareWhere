@@ -53,6 +53,10 @@
 }
 
 .submit-location:hover {
-    background-color: var(--secondary-color);
-    color: var(--black-color);
+    background-color: rgb(32, 31, 31);
+}
+
+.submit-location:disabled {
+    background-color: lightgray;
+    border: 1px solid black;
 }

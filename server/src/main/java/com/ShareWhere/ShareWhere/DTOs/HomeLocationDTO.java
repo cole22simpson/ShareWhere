@@ -1,31 +1,35 @@
 package com.ShareWhere.ShareWhere.DTOs;
 
 import com.ShareWhere.ShareWhere.models.Location;
-import com.ShareWhere.ShareWhere.models.Tag;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
-public class LocationPreviewDTO {
+public class HomeLocationDTO {
     private int locationId;
     private String locationName;
     private Double latitude;
     private Double longitude;
     private String city;
-    private String pinType;
+    private int createdByProfileID;
+    private ImageDTO creatorProfilePic;
+    private String creatorUsername;
     private ImageDTO previewImage;
+    private LocalDateTime createdAt;
     private Integer saves;
 
-    public LocationPreviewDTO(Location location) {
+    public HomeLocationDTO(Location location) {
         this.locationId = location.getLocationId();
         this.locationName = location.getLocationName();
         this.latitude = location.getLatitude();
         this.longitude = location.getLongitude();
-        this.pinType = location.getPinType();
+        this.creatorProfilePic = new ImageDTO(location.getCreatedBy().getProfilePic());
+        this.creatorUsername = location.getCreatedBy().getUser().getUsername();
+        this.createdByProfileID = location.getCreatedBy().getProfileId();
         this.city = location.getCity();
         this.saves = location.getSaves();
+        this.createdAt = location.getCreatedAt();
         this.previewImage = new ImageDTO(location.getImages().get(0));
     }
 }

@@ -66,22 +66,19 @@ function Login () {
 
     return (
         <div
-            className="page page__login"
+            className="page page-login"
             style={{backgroundImage: backgroundImage}}>
 
                 <div className="login-component">
-                    
-
                     <h2 className="login-header">
                         Welcome.
                         <br></br>
                         Log in to find new spots.
                     </h2>
-
                     <form className="login-container" onSubmit={ handleLogin }>
                         <input
                             id="email-input-el"
-                            className="login-container__input"
+                            className="login-container-input"
                             type="text"
                             name="email"
                             placeholder="Email address"
@@ -90,7 +87,7 @@ function Login () {
                         />
                         <input
                             id="password-input-el"
-                            className="login-container__input"
+                            className="login-container-input"
                             type="password"
                             name="password"
                             placeholder="Password"
@@ -98,41 +95,21 @@ function Login () {
                             required
                         />
                         <div>
-                            <input className="login__btn" type="submit" value="Log in"></input>
+                            <input className="login-btn" type="submit" value="Log in"></input>
                         </div>
                     </form>
-
-                    <div className="atag__forgot-password">
+                    <div className="atag-forgot-password">
                         <a href="/users/password/new"> <strong> Forgot your password? </strong> </a>
                     </div>
-
                     <div className="alternate-login">
-                        <div className="btn-container">
-                            <button className="login__btn google-btn" type="submit">
-                                <span> <FcGoogle></FcGoogle> </span>
-                                <span> Continue with Google </span>
-                            </button>
-                        </div>
-
-                        <div className="btn-container">
-                            <button className="login__btn facebook-btn" type="submit">
-                                <span> <BsFacebook></BsFacebook> </span>
-                                <span> Continue with Facebook </span>
-                            </button>
-                        </div>
-
-                        <div className="btn-container">
-                            <button className="login__btn apple-btn" type="submit">
-                                <span> <BsApple></BsApple> </span>
-                                <span> Continue with Apple </span>
-                            </button>
-                        </div>
+                        <button className="login-btn google-btn" type="submit">
+                            <span> <FcGoogle></FcGoogle> </span>
+                            <span> Continue with Google </span>
+                        </button>
                     </div>
-
                     <p className="no-account">
                         <span>Don&apos;t have an account?</span> <a href="/signup"> Sign up for free </a>
                     </p>
-
                     <p className="terms">By continuing to use ShareWhere, you agree to our <span>Terms of Service</span> and <span>Privacy Policy</span>. Personal data added to ShareWhere is public by default — refer to our <span>Privacy FAQs</span> to make changes.</p>
 
                 </div>

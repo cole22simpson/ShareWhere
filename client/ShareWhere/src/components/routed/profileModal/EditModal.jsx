@@ -34,10 +34,12 @@ const EditModal = ({ username, name, bio, profilePicUrl, backToProfile }) => {
 
         if (newName !== name || newUsername !== username) {
 
+            const lowerUsername = newUsername.toLowerCase();
+
             const formData = new FormData();
 
             formData.append("newName", newName);
-            formData.append("newUsername", newUsername);
+            formData.append("newUsername", lowerUsername);
 
             try {
                 const response = await fetch(`http://localhost:8080/users/${userId}/names`, {

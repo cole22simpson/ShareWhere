@@ -1,11 +1,16 @@
 import PropTypes from "prop-types";
 import "./imageUploader.css";
+import { useState } from "react";
 
 const ImageUploader = ({ images, setImages }) => {
+
+    const [imageError, setImageError] = useState(false);
+
     const handleImageUpload = (e) => {
+        setImageError(false);
         const files = Array.from(e.target.files);
-        if (images.length + files.length > 10) {
-            alert("You can only upload up to 10 photos.");
+        if (images.length + files.length > 5) {
+            setImageError(true);
             return;
         }
         // const newImages = files.map((file) => URL.createObjectURL(file));
@@ -40,7 +45,10 @@ const ImageUploader = ({ images, setImages }) => {
                     </div>
                 ))}
             </div>
-            <p className="photo-count">{images.length} / 10 photos uploaded</p>
+            <p className="photo-count">{images.length} / 5 photos uploaded</p>
+            <div className="error-container">
+                    <p className={`error ${imageError ? "shown" : ""}`}>You can only upload up to 5 photos</p>
+            </div>
         </div>
     );
 };

@@ -1,26 +1,18 @@
 package com.ShareWhere.ShareWhere.services;
 
 import com.ShareWhere.ShareWhere.DTOs.*;
-import com.ShareWhere.ShareWhere.models.Image;
-import com.ShareWhere.ShareWhere.models.Location;
-import com.ShareWhere.ShareWhere.models.User;
-import com.ShareWhere.ShareWhere.models.UserProfile;
+import com.ShareWhere.ShareWhere.models.*;
 import com.ShareWhere.ShareWhere.repositories.LocationRepo;
 import com.ShareWhere.ShareWhere.repositories.UserRepo;
 import com.ShareWhere.ShareWhere.utils.FileUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -91,6 +83,28 @@ public class UserService {
         return saved;
     }
 
+    public HomeUserDTO getFollowingPosts(int userId) {
+        return userRepo.findById(userId).map(follower -> {
+            List<HomeLocationDTO> followingPosts = new ArrayList<>();
+
+            for (User following : follower.getFollowing()) {
+                List<Location> userPosts = following.getProfile().getUserPosts();
+                for (Location post : userPosts) {
+                    followingPosts.add(new HomeLocationDTO(post));
+                }
+            }
+
+            followingPosts.sort(Comparator.comparing(HomeLocationDTO::getCreatedAt).reversed());
+
+            HomeUserDTO homeUserDTO = new HomeUserDTO(follower);
+            homeUserDTO.setFollowingPosts(followingPosts.stream()
+                    .limit(8)
+                    .collect(Collectors.toList()));
+
+            return homeUserDTO;  // Return the single HomeUserDTO
+        }).orElse(null);  // Return null if user is not found
+    }
+
     public Optional<User> getUserByUsername(String username) {
         return userRepo.findByUsername(username);
     }
@@ -101,6 +115,10 @@ public class UserService {
 
     public boolean existsByEmail(String email) {
         return userRepo.existsByEmail(email);
+    }
+
+    public boolean existsByUsername(String username) {
+        return userRepo.existsByUsername(username);
     }
 
     // The transactional annotation signifies that the entire transaction must be completed in order to execute
@@ -177,6 +195,32 @@ public class UserService {
             locationRepo.save(location);
             userRepo.save(existingUser);
             return new LocationDTO(location);
+        });
+    }
+
+    @Transactional
+    public Optional<UserDTO> updateUser(int followerId, int followeeId, String action) {
+        return userRepo.findById(followerId).map(follower -> {
+            User followee = userRepo.findById(followeeId).orElseThrow(
+                    () -> new EntityNotFoundException("User not found")
+            );
+            List<User> followerFollowing = follower.getFollowing();
+            List<User> followeeFollowers = followee.getFollowers();
+            if (action.equals("FOLLOW")) {
+                followerFollowing.add(followee);
+                follower.setFollowing(followerFollowing);
+                followeeFollowers.add(follower);
+                followee.setFollowers(followeeFollowers);
+            }
+            else if (action.equals("UNFOLLOW")) {
+                followerFollowing.remove(followee);
+                follower.setFollowing(followerFollowing);
+                followeeFollowers.remove(follower);
+                followee.setFollowers(followeeFollowers);
+            }
+            userRepo.save(follower);
+            userRepo.save(followee);
+            return new UserDTO(follower);
         });
     }
 

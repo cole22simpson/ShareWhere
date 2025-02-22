@@ -25,30 +25,30 @@
 }
 
 .signup-form-header {
-    width: 85%;
-    margin: 0 auto;
     color: var(--black-color);
-    font-weight: normal;
-    font-size: 35px;
-    font-weight: 700;
-    padding: 25px 0;
+    width: 75%;
+    font-size: 30px;
+    padding: 1.75rem 0;
 }
 
 .signup-form-container {
     width: 85%;
-    margin-bottom: 2vh;
 }
 
 .signup-form-input {
-    border: 1px solid var(--black-color);
     width: 100%;
-    margin-bottom: 1vh;
-    font-size: 20px;
     padding: 10px;
     padding-left: 15px;
-    border-radius: 15px;
     font-family: inherit;
+    border: 0.5px solid gray;
+    font-size: 16px;
+    border-radius: 10px;
     outline-color: #6E9CED;
+}
+
+.signup-form-input.input-error {
+    border: 2px solid red;
+    outline-color: red;
 }
 
 .location-container {
@@ -57,13 +57,14 @@
 }
 
 .location-text {
-    font-size: 20px;
+    font-size: 16px;
     font-family: inherit;
     color: var(--black-color);
 }
 
 .location-text span {
     text-decoration: underline;
+    color: black;
     padding-left: 5px;
 }
 
@@ -71,35 +72,68 @@
     padding: 5px;
     border-radius: 100px;
     color: var(--black-color);
+    background-color: #F9D199;
+    border: 2px solid black;
     font-family: inherit;
     margin-left: 10px;
 }
 
 .location-btn:hover {
     cursor: pointer;
-    background-color: var(--black-color);
-    color: white;
+    background-color: #ffe1b6;
 }
 
 .signup-modal-btn {
-    width: 40%;
+    width: 85%;
     padding: 15px;
     border-radius: 100px;
-    border: 2px solid var(--black-color);
+    border: none;
     font-size: 18px;
-    color: var(--black-color);
-    background-color: #6E9CED;
+    font-weight: 500;
     font-family: inherit;
-    font-weight: 700;
+    background-color: rgb(41, 41, 156);
+    color: white;
 }
 
 .signup-modal-btn:hover {
-    background-color: rgb(41, 41, 156);
-    color: white;
+    background-color: rgb(67, 67, 255);
     cursor: pointer;
 }
 
 .signup-modal-btn:disabled {
     background-color: lightgray;
     cursor: default;
+    border: 1px solid gray;
+}
+
+.error-container {
+    height: fit-content;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+.error {
+    display: none;
+}
+
+.error.shown {
+    display: flex;
+    font-size: 12px;
+    color: var(--black-color);
+    padding-left: 5px;
+}
+
+.password-input-container {
+    position: relative;
+}
+
+.eyeball {
+    position: absolute;
+    color: black;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
 }

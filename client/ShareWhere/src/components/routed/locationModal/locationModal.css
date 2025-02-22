@@ -84,6 +84,11 @@
     font-weight: 700;
 }
 
+.location-city {
+    font-size: 22px;
+    margin: 5px;
+}
+
 .saves {
     display: flex;
     flex-direction: row;

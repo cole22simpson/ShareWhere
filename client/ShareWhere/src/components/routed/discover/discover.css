@@ -131,7 +131,8 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    width: ;
+    width: 100%;
+    text-align: center;
     font-family: "Outfit", sans-serif;
     font-size: 15px;
 }
@@ -144,7 +145,6 @@
     width: 150px;
     text-align: center;
     font-family: "Outfit", sans-serif;
-    font-size: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -166,6 +166,10 @@
     top: 17px;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.pin-city {
+    font-weight: 700;
 }
 
 .gm-style-iw-chr {

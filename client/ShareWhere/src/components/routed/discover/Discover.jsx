@@ -36,12 +36,6 @@ const Discover = () => {
 
     const [selectedTags, setSelectedTags] = useState([]); 
 
-    const toggleTag = (tagName) => {
-        setSelectedTags((prev) =>
-            prev.includes(tagName) ? prev.filter((tag) => tag !== tagName) : [...prev, tagName]
-        );
-    };
-
     const toggleTagSelection = (tagGroup, tagName) => {
         setSelectedTags((prev) => ({
             ...prev,
@@ -115,15 +109,6 @@ const Discover = () => {
                 return "/assets/icons/default.svg";
         }
     }
-    
-    
-    const filteredPins = searchQuery 
-    ? pins
-        .filter((pin) => 
-          pin.locationName.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-        .slice(0, 5) 
-    : [];
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
@@ -131,6 +116,11 @@ const Discover = () => {
 
     const handleLocationChange = ({ lat, lng }) => {
         setCenter({ lat: lat, lng: lng });
+    };
+
+    const handleResultClick = (pin) => {
+        setCenter({ lat: pin.latitude, lng: pin.longitude });
+        handleMarkerClick(pin);
     };
 
     useEffect(() => {
@@ -290,16 +280,23 @@ const Discover = () => {
         loadPins();
     }, [showModal]);
 
-    const newFilteredPins = pins.filter((pin) => {
+    const filteredPins = pins.filter((pin) => {
         if (!activePinTypes[pin.pinType]) return false;
     
         const activeTags = Object.values(selectedTags).filter(Boolean);
+        if (activeTags.length > 0) {
+            const pinTagNames = pin.tags.map((tag) => tag.tagName);
+            if (!activeTags.every((selectedTag) => pinTagNames.includes(selectedTag))) {
+                return false;
+            }
+        }
     
-        if (activeTags.length === 0) return true;
+        if (searchQuery && !pin.locationName.toLowerCase().includes(searchQuery.toLowerCase())) {
+            return false;
+        }
     
-        const pinTagNames = pin.tags.map((tag) => tag.tagName);
-        return activeTags.every((selectedTag) => pinTagNames.includes(selectedTag));
-    });
+        return true;
+    }).slice(0, 5);
 
     return (
         <>      
@@ -327,6 +324,7 @@ const Discover = () => {
                                             <li
                                                 key={pin.id}
                                                 className="result"
+                                                onClick={() => handleResultClick(pin)}
                                             >
                                                 {pin.locationName}
                                             </li>
@@ -427,7 +425,7 @@ const Discover = () => {
                                     <BsPersonRaisedHand size={40} />
                                 )}
                             </AdvancedMarker>
-                            {newFilteredPins.map((pin) => (
+                            {filteredPins.map((pin) => (
                                 <AdvancedMarker
                                     key={pin.locationId}
                                     ref={(ref) => { markerRefs[pin.locationId] = ref; }}

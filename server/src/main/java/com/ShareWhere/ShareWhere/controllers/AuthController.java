@@ -23,11 +23,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.regex.Pattern;
 
 @RestController
 @RequiredArgsConstructor
@@ -72,12 +74,45 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody @Validated SignupRequest request) {
+        Map<String, String> errors = new HashMap<>();
+
+        if (request.getName().length() < 3 || request.getName().length() > 30) {
+            errors.put("name", "Name must be between 3 and 30 characters");
+        }
+
+        // Validate username length
+        if (request.getUsername().length() < 3 || request.getUsername().length() > 30) {
+            errors.put("username", "Username must be between 3 and 30 characters");
+        }
+
+        if (userService.existsByUsername(request.getUsername())) {
+            errors.put("username", "Username is taken");
+        }
+
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        if (!Pattern.matches(emailRegex, request.getEmail())) {
+            errors.put("email", "Invalid email format");
+        }
+
+        // Validate email uniqueness
         if (userService.existsByEmail(request.getEmail())) {
-            return ResponseEntity.badRequest().body(
-                    SignupResponse.builder()
-                            .message("Email is already in use")
-                            .build()
-            );
+            errors.put("email", "Email is already in use");
+        }
+
+        // Validate city is not empty
+        if (request.getCity() == null || request.getCity().isBlank()) {
+            errors.put("city", "City cannot be empty");
+        }
+
+        // Validate password
+        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%#*?&])[A-Za-z\\d@$!%#*?&]{8,}$";
+        if (!Pattern.matches(passwordPattern, request.getPasswordHash())) {
+            errors.put("password", "Password must be at least 8 characters long, include at least one letter, one number, and one special character");
+        }
+
+        // Return errors if any
+        if (!errors.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("errors", errors));
         }
 
         String encodedPassword = passwordEncoder.encode(request.getPasswordHash());
@@ -128,6 +163,5 @@ public class AuthController {
             // Catch any other unexpected exceptions
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while validating the token");
         }
-
     }
 }

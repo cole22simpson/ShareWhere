@@ -41,36 +41,20 @@ function Signup () {
                     <>
                         <h2 className="signup-header">Create your free account</h2>
                         
-                            <div className="alternate-auth">
-                                <div className="btn-container">
-                                    <button className="signup-btn google-btn" type="submit">
-                                        <span> <FcGoogle></FcGoogle> </span>
-                                        <span> Continue with Google </span>
-                                    </button>
-                                </div>
-
-                                <div className="btn-container">
-                                    <button className="signup-btn facebook-btn" type="submit">
-                                        <span> <BsFacebook></BsFacebook> </span>
-                                        <span> Continue with Facebook </span>
-                                    </button>
-                                </div>
-
-                                <div className="btn-container">
-                                    <button className="signup-btn apple-btn" type="submit">
-                                        <span> <BsApple></BsApple> </span>
-                                        <span> Continue with Apple </span>
-                                    </button>
-                                </div>
+                            <div className="login-btn-container">
+                                <button className="signup-btn google-btn" type="submit">
+                                    <span> <FcGoogle></FcGoogle> </span>
+                                    <span> Continue with Google </span>
+                                </button>
                             </div>
 
-                            <div className="signup-component__or">
+                            <div className="signup-component-or">
                                 <hr />
                                 <p>or</p>
                                 <hr />
                             </div>
 
-                            <div className="btn-container">
+                            <div className="login-btn-container">
                                 <button className="signup-btn" onClick={handleBasicClick}  type="submit">
                                     <span> Create a free account </span>
                                 </button>

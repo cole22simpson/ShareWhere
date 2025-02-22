@@ -110,6 +110,7 @@ const LocationModal = ({ selectedPost, closeLocationModal }) => {
                     <p className="created-at">Posted {timeAgo}</p>
                 </div>
                 <p className="location-name">{selectedPost.locationName}</p>
+                <p className="location-city">{selectedPost.city}</p>
                 <p className="saves">
                     {!isSaved ? (
                         <button onClick={(e) => {handleSave(e, "SAVE")}} className="save-btn"><IoBookmarkOutline /></button>
@@ -171,6 +172,7 @@ LocationModal.propTypes = {
         createdAt: PropTypes.string.isRequired,
         createdByProfileID: PropTypes.number.isRequired,
         comments: PropTypes.arrayOf(PropTypes.object).isRequired,
+        city: PropTypes.string.isRequired,
         creatorName: PropTypes.string.isRequired,
         creatorProfilePic: PropTypes.object.isRequired,
         images: PropTypes.arrayOf(PropTypes.object).isRequired, 

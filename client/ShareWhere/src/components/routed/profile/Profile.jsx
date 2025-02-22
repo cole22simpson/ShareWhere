@@ -13,6 +13,8 @@ function Profile() {
     const userNameClass = getUsernameClass(username);
     const [name, setName] = useState("");
     const [numPosts, setNumPosts] = useState(0);
+    const [numFollowers, setNumFollowers] = useState(0);
+    const [numFollowing, setNumFollowing] = useState(0);
     const [bio, setBio] = useState("");
     const [profilePicUrl, setProfilePicUrl] = useState("");
     const [isLoading, setIsLoading] = useState(true);
@@ -63,6 +65,8 @@ function Profile() {
                 const userData = await response.json(); // Extract the JSON data
                 setUsername(userData.username);
                 setNumPosts(userData.profile.userPosts.length);
+                setNumFollowers(userData.numFollowers);
+                setNumFollowing(userData.following.length);
                 setName(userData.name);
                 setBio(userData.profile.bio);
                 setProfilePicUrl(userData.profile.profilePic.imageUrl);   
@@ -125,8 +129,8 @@ function Profile() {
                                         </div>
                                         <div className="account-stats">
                                             <p className="stat" id="posts"><span>{numPosts}</span> posts</p>
-                                            <p className="stat" id="followers"><span>250</span> followers</p>
-                                            <p className="stat" id="following"><span>42</span> following</p>
+                                            <p className="stat" id="followers"><span>{numFollowers}</span> followers</p>
+                                            <p className="stat" id="following"><span>{numFollowing}</span> following</p>
                                         </div>
                                         <p className="name">{name}</p>
                                         <p className="bio">{bio}</p>

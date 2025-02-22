@@ -1,12 +1,15 @@
 import "./home.css"
 import {useState, useEffect} from "react"
-
+import LocationModal from "../locationModal/LocationModal";
+import HomePost from "../homePost/HomePost";
 
 
 function Home() {
 
     const [name, setName] = useState("");
     const [city, setCity] = useState("");
+    const [homeData, setHomeData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [hasAccount, setHasAccount] = useState(false);
 
     useEffect(() => {
@@ -20,6 +23,43 @@ function Home() {
         }
     }, []);
 
+    const loadFollowing = async () => {
+
+        setIsLoading(true);
+
+        try {
+            const userId = localStorage.getItem("userId");
+            const response = await fetch(`http://localhost:8080/users/${userId}/following`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+
+            if (!response.ok) { // Check for errors first!
+                const errorData = await response.json(); // Or response.text() for non-JSON errors
+                console.error("Error fetching user:", response.status, errorData);
+                return; // Or throw an error, or handle it as needed
+            }
+            
+            try {
+                const userData = await response.json(); // Extract the JSON data
+                setHomeData(userData);
+                console.log(userData);             
+            } catch (error) {
+                console.error("Error parsing JSON:", error); // Handle JSON parsing errors
+            }
+
+        } catch (error) {
+            console.error("Error loading user:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        loadFollowing();
+    }, []);
 
     return (
       <>
@@ -84,6 +124,24 @@ function Home() {
                         </a>
                     </div>
                 </div>
+            </div>
+
+            <div className="local-post-container">
+                <div className="local-favorites">
+                    <p className="favorites-title">
+                        Recents from your following
+                    </p>
+                    <a href="" className="home-see-more">
+                        See more
+                    </a>
+                </div>
+                {!isLoading && (
+                    <div className="home-posts">
+                        {homeData.followingPosts.map((post) => (
+                            <HomePost key={post.locationId} post={post} />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
       </> 

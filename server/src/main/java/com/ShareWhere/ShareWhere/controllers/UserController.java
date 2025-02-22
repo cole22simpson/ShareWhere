@@ -1,9 +1,6 @@
 package com.ShareWhere.ShareWhere.controllers;
 
-import com.ShareWhere.ShareWhere.DTOs.LocationDTO;
-import com.ShareWhere.ShareWhere.DTOs.LocationPreviewDTO;
-import com.ShareWhere.ShareWhere.DTOs.UserDTO;
-import com.ShareWhere.ShareWhere.DTOs.UserProfileDTO;
+import com.ShareWhere.ShareWhere.DTOs.*;
 import com.ShareWhere.ShareWhere.models.Location;
 import com.ShareWhere.ShareWhere.models.User;
 import com.ShareWhere.ShareWhere.services.LocationService;
@@ -60,6 +57,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserSavedPosts(userId));
     }
 
+    @GetMapping("/{userId}/following")
+    public ResponseEntity<HomeUserDTO> getFollowingPosts(@PathVariable("userId") int userId) {
+        return ResponseEntity.ok(userService.getFollowingPosts(userId));
+    }
+
     // In goes a save. I need to update the number of saves which would come from the location. I need a list of the locations saved by IDs
     @PatchMapping("/save")
     public ResponseEntity<Set<Integer>> updateUserSavedPosts(
@@ -77,15 +79,17 @@ public class UserController {
         return ResponseEntity.ok(savedLocations);
     }
 
-//    @PostMapping("/product")
-//    public ResponseEntity<?> createUserWithPic(@RequestBody User user, @RequestPart MultipartFile profilePicFile) {
-//        try {
-//            User userWithPic = userService.addUser(user, profilePicFile);
-//        }
-//        catch(Exception e) {
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    @PatchMapping("/follow")
+    public ResponseEntity<Set<Integer>> updateUserFollows(
+            @RequestParam("followerId") int followerId,
+            @RequestParam("followeeId") int followeeId,
+            @RequestParam("action") String action) {
+        Optional<UserDTO> updatedUser = userService.updateUser(followerId, followeeId, action);
+        Set<Integer> following = updatedUser
+                .map(UserDTO::getFollowing)
+                .orElse(Collections.emptySet());
+        return ResponseEntity.ok(following);
+    }
 
     @PutMapping("/{userId}")
     public ResponseEntity<User> updateUser(@PathVariable("userId") int userId, @RequestBody User userUpdates) {
@@ -102,8 +106,6 @@ public class UserController {
         return updatedUser.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable("userId") int userId) {
