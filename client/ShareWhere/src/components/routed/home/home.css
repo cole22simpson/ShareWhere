@@ -8,6 +8,7 @@
     align-items: center;
     height: 25vh;
     position: relative;
+    margin-bottom: 7vh;
 }
 
 .greeting {
@@ -33,16 +34,25 @@
 }
 
 .home-post-container {
-    background-color: var(--secondary-color);
+    /* background-color: var(--secondary-color); */
     display: flex;
     flex-direction: column;
+    align-items: center;
     margin: auto;
     height: 70vh;
     width: 50%;
 }
 
+.home-post-container hr {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-color: gray;
+    width: 30%;
+}
+
 .local-post-container {
-    margin-top: 7vh;
+    width: 100%;
+    /* border: 1px solid; */
 }
 
 .local-favorites {
@@ -71,6 +81,7 @@
 
 .local-posts {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
 }
 
@@ -81,4 +92,13 @@
 .local-post-img {
     height: 16vh;
     border-radius: 25px;
+}
+
+.no-following {
+    display: flex;
+    align-items: center;
+}
+
+.no-following span {
+    margin-left: 10px;
 }

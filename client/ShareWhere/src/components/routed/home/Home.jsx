@@ -1,15 +1,17 @@
 import "./home.css"
 import {useState, useEffect} from "react"
-import LocationModal from "../locationModal/LocationModal";
 import HomePost from "../homePost/HomePost";
-
+import { IoBookmark  } from "react-icons/io5";
+import { BsPersonPlusFill } from "react-icons/bs";
 
 function Home() {
 
     const [name, setName] = useState("");
     const [city, setCity] = useState("");
+    const [loggedIn, setLoggedIn] = useState(false);
     const [homeData, setHomeData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [modalOpened, setModalOpened] = useState(false);
     const [hasAccount, setHasAccount] = useState(false);
 
     useEffect(() => {
@@ -58,8 +60,16 @@ function Home() {
     }
 
     useEffect(() => {
+        if (loggedIn) {
         loadFollowing();
+        }
     }, []);
+
+    useEffect(() => {
+        if (loggedIn) {
+        loadFollowing();
+        }
+    }, [modalOpened]);
 
     return (
       <>
@@ -88,44 +98,69 @@ function Home() {
                     </a>
                 </div>
                 <div className="local-posts">
-                    <div className="local-post">
-                        <a href="" className="local-post-container">
-                            <img src="/assets/images/login-background.jpg" className="local-post-img"></img>
-                            <h4 className="local-post-name">
-                                Location name
-                            </h4>
-                        </a>
+                    <div className="home-post">
+                        <div className="home-post-poster">
+                            <img src="/assets/images/default-image.png" />
+                            <p>cole22simpson</p>
+                            <div></div>
+                        </div>
+                        <img src="/assets/images/tree-yosemite.PNG" className="home-post-img"></img>
+                        <div className="home-post-info">
+                            <div className="home-post-data">
+                                <p className="home-post-name">LocationZ</p>
+                                <p className="home-post-city">Poway</p>
+                                <p className="home-post-saves"><IoBookmark/>10</p>
+                            </div>
+                        </div>
                     </div>
-
-                    <div className="local-post">
-                        <a href="" className="local-post-container">
-                        <img src="/assets/images/login-background.jpg" className="local-post-img"></img>
-                            <h4 className="local-post-name">
-                                Location name
-                            </h4>
-                        </a>
+                    <div className="home-post">
+                        <div className="home-post-poster">
+                            <img src="/assets/images/default-image.png" />
+                            <p>cole22simpson</p>
+                            <div></div>
+                        </div>
+                        <img src="/assets/images/tree-yosemite.PNG" className="home-post-img"></img>
+                        <div className="home-post-info">
+                            <div className="home-post-data">
+                                <p className="home-post-name">LocationZ</p>
+                                <p className="home-post-city">Poway</p>
+                                <p className="home-post-saves"><IoBookmark/>10</p>
+                            </div>
+                        </div>
                     </div>
-
-                    <div className="local-post">
-                        <a href="" className="local-post-container">
-                        <img src="/assets/images/login-background.jpg" className="local-post-img"></img>
-                            <h4 className="local-post-name">
-                                Location name
-                            </h4>
-                        </a>
+                    <div className="home-post">
+                        <div className="home-post-poster">
+                            <img src="/assets/images/default-image.png" />
+                            <p>cole22simpson</p>
+                            <div></div>
+                        </div>
+                        <img src="/assets/images/tree-yosemite.PNG" className="home-post-img"></img>
+                        <div className="home-post-info">
+                            <div className="home-post-data">
+                                <p className="home-post-name">LocationZ</p>
+                                <p className="home-post-city">Poway</p>
+                                <p className="home-post-saves"><IoBookmark/>10</p>
+                            </div>
+                        </div>
                     </div>
-
-                    <div className="local-post">
-                        <a href="" className="local-post-container">
-                        <img src="/assets/images/login-background.jpg" className="local-post-img"></img>
-                            <h4 className="local-post-name">
-                                Location name
-                            </h4>
-                        </a>
+                    <div className="home-post">
+                        <div className="home-post-poster">
+                            <img src="/assets/images/default-image.png" />
+                            <p>cole22simpson</p>
+                            <div></div>
+                        </div>
+                        <img src="/assets/images/tree-yosemite.PNG" className="home-post-img"></img>
+                        <div className="home-post-info">
+                            <div className="home-post-data">
+                                <p className="home-post-name">LocationZ</p>
+                                <p className="home-post-city">Poway</p>
+                                <p className="home-post-saves"><IoBookmark/>10</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
+            <hr />
             <div className="local-post-container">
                 <div className="local-favorites">
                     <p className="favorites-title">
@@ -136,12 +171,93 @@ function Home() {
                     </a>
                 </div>
                 {!isLoading && (
+                    <>
+                    {homeData.followingPosts.length > 0 ? (
                     <div className="home-posts">
                         {homeData.followingPosts.map((post) => (
-                            <HomePost key={post.locationId} post={post} />
+                            <HomePost key={post.locationId} post={post} setModalOpened={setModalOpened} />
                         ))}
                     </div>
+                    ) : (
+                        <div className="no-following">
+                            You don&apos;t follow anyone yet&nbsp;<BsPersonPlusFill/>
+                        </div>
+                    )}
+                    </>
                 )}
+            </div>
+            <hr />
+            <div className="local-post-container">
+                <div className="local-favorites">
+                    <p className="favorites-title">
+                        Local favorites near <span>{city}</span>
+                    </p>
+                    <a href="" className="home-see-more">
+                        See more
+                    </a>
+                </div>
+                <div className="local-posts">
+                    <div className="home-post">
+                        <div className="home-post-poster">
+                            <img src="/assets/images/default-image.png" />
+                            <p>cole22simpson</p>
+                            <div></div>
+                        </div>
+                        <img src="/assets/images/tree-yosemite.PNG" className="home-post-img"></img>
+                        <div className="home-post-info">
+                            <div className="home-post-data">
+                                <p className="home-post-name">LocationZ</p>
+                                <p className="home-post-city">Poway</p>
+                                <p className="home-post-saves"><IoBookmark/>10</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="home-post">
+                        <div className="home-post-poster">
+                            <img src="/assets/images/default-image.png" />
+                            <p>cole22simpson</p>
+                            <div></div>
+                        </div>
+                        <img src="/assets/images/tree-yosemite.PNG" className="home-post-img"></img>
+                        <div className="home-post-info">
+                            <div className="home-post-data">
+                                <p className="home-post-name">LocationZ</p>
+                                <p className="home-post-city">Poway</p>
+                                <p className="home-post-saves"><IoBookmark/>10</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="home-post">
+                        <div className="home-post-poster">
+                            <img src="/assets/images/default-image.png" />
+                            <p>cole22simpson</p>
+                            <div></div>
+                        </div>
+                        <img src="/assets/images/tree-yosemite.PNG" className="home-post-img"></img>
+                        <div className="home-post-info">
+                            <div className="home-post-data">
+                                <p className="home-post-name">LocationZ</p>
+                                <p className="home-post-city">Poway</p>
+                                <p className="home-post-saves"><IoBookmark/>10</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="home-post">
+                        <div className="home-post-poster">
+                            <img src="/assets/images/default-image.png" />
+                            <p>cole22simpson</p>
+                            <div></div>
+                        </div>
+                        <img src="/assets/images/tree-yosemite.PNG" className="home-post-img"></img>
+                        <div className="home-post-info">
+                            <div className="home-post-data">
+                                <p className="home-post-name">LocationZ</p>
+                                <p className="home-post-city">Poway</p>
+                                <p className="home-post-saves"><IoBookmark/>10</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
       </> 

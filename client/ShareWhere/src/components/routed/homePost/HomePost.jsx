@@ -4,7 +4,7 @@ import { IoBookmark  } from "react-icons/io5";
 import "./homePost.css";
 import PropTypes from "prop-types";
 
-const HomePost = ({ post }) => {
+const HomePost = ({ post, setModalOpened }) => {
 
     const [showModal, setShowModal] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
@@ -28,7 +28,8 @@ const HomePost = ({ post }) => {
             try {
                 const pinData = await response.json(); // Extract the JSON data
                 setSelectedPost(pinData);
-                setShowModal(true);                              
+                setShowModal(true);  
+                setModalOpened(true);                            
             } catch (error) {
                 console.error("Error parsing JSON:", error); // Handle JSON parsing errors
             }
@@ -40,22 +41,23 @@ const HomePost = ({ post }) => {
     
     function closeLocationModal() {
         setShowModal(false);
+        setModalOpened(false);
     };
 
     return (
         <>
             <div onClick={() => openLocationModal(post.locationId)} className="home-post">
+                <div className="home-post-poster">
+                    <img src={post.creatorProfilePic.imageUrl} />
+                    <p>{post.creatorUsername}</p>
+                    <div></div>
+                </div>
                 <img src={post.previewImage.imageUrl} className="home-post-img"></img>
                 <div className="home-post-info">
                     <div className="home-post-data">
                         <p className="home-post-name">{post.locationName}</p>
                         <p className="home-post-city">{post.city}</p>
                         <p className="home-post-saves"><IoBookmark/>{post.saves}</p>
-                    </div>
-                    <div className="home-post-poster">
-                        <img src={post.creatorProfilePic.imageUrl} />
-                        <p>{post.creatorUsername}</p>
-                        <div></div>
                     </div>
                 </div>
             </div>
@@ -86,6 +88,7 @@ HomePost.propTypes = {
         likedBy: PropTypes.arrayOf(PropTypes.number).isRequired,
         saves: PropTypes.number.isRequired,
     }),
+    setModalOpened: PropTypes.func
 }
 
 export default HomePost;

@@ -20,6 +20,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
     const markerRefs = useRef({});
     const [selectedPin, setSelectedPin] = useState(null);
     const [pins, setPins] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [selectedPost, setSelectedPost] = useState(null);
     const [isStreetView, setIsStreetView] = useState(false);
     const [controlsModal, setControlsModal] = useState(false);
@@ -158,6 +159,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
     };
 
     const loadPins = async () => {
+
         try {
             const response = await fetch(`http://localhost:8080/locations/pins?north=${bounds.north}&south=${bounds.south}&east=${bounds.east}&west=${bounds.west}`, {
                 method: "GET",
@@ -174,7 +176,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
             
             try {
                 const locationData = await response.json(); // Extract the JSON data
-                setPins(locationData);                                
+                setPins(locationData);
             } catch (error) {
                 console.error("Error parsing JSON:", error); // Handle JSON parsing errors
             }
