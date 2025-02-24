@@ -17,7 +17,7 @@ public class UserDTO {
     private Double longitude;
     private String city;
     private String role;
-    private Integer numFollowers;
+    private Set<Integer> followers = new HashSet<>();
     private Set<Integer> following = new HashSet<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -32,7 +32,9 @@ public class UserDTO {
         this.longitude = user.getLongitude();
         this.city = user.getCity();
         this.role = user.getRole();
-        this.numFollowers = user.getFollowers().size();
+        for (User follower : user.getFollowers()) {
+            followers.add(follower.getUserId());
+        }
         for (User follow : user.getFollowing()) {
             following.add(follow.getUserId());
         }

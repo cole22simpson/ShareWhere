@@ -36,37 +36,37 @@ public class TagController {
         return ResponseEntity.status(HttpStatus.CREATED).body(tag);
     }
 
-    @GetMapping("/{tagId}")
-    public ResponseEntity<Tag> getTagById(@PathVariable("tagId") int tagId) {
+    @GetMapping("/{tag_id}")
+    public ResponseEntity<Tag> getTagById(@PathVariable("tag_id") int tagId) {
         return tagService.getTagById(tagId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/tagName")
-    public ResponseEntity<Tag> getTagByTagName(@RequestParam String tagName) {
+    @GetMapping("/tag_name")
+    public ResponseEntity<Tag> getTagByTagName(@RequestParam("tag_name") String tagName) {
         String noHyphens = tagName.replaceAll("-", " ");
         return tagService.getTagByTagName(noHyphens)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{tagId}")
-    public ResponseEntity<Tag> updateTag(@PathVariable("tagId") int tagId, @RequestBody Tag tag) {
+    @PutMapping("/{tag_id}")
+    public ResponseEntity<Tag> updateTag(@PathVariable("tag_id") int tagId, @RequestBody Tag tag) {
         Optional<Tag> updatedTag = tagService.updateTag(tagId, tag, false);
         return updatedTag.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PatchMapping("/{tagId}")
-    public ResponseEntity<Tag> updateTagFields(@PathVariable("tagId") int tagId, @RequestBody Tag tagUpdates) {
+    @PatchMapping("/{tag_id}")
+    public ResponseEntity<Tag> updateTagFields(@PathVariable("tag_id") int tagId, @RequestBody Tag tagUpdates) {
         Optional<Tag> updatedTag = tagService.updateTag(tagId, tagUpdates, true);
         return updatedTag.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{tagId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable("tagId") int tagId) {
+    @DeleteMapping("/{tag_id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("tag_id") int tagId) {
         if (tagService.deleteTag(tagId)) {
             return ResponseEntity.noContent().build();
         }

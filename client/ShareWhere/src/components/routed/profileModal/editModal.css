@@ -84,7 +84,7 @@
 
 .attribute input {
     border: 2px solid var(--black-color);
-    border-radius: 15px;
+    border-radius: 10px;
     font-family: inherit;
     font-size: 25px;
     padding: 3px 5px;
@@ -100,7 +100,7 @@
 
 .attribute textarea {
     border: 2px solid var(--black-color);
-    border-radius: 15px;
+    border-radius: 10px;
     font-family: inherit;
     font-size: 25px;
     padding: 3px 5px;
@@ -118,4 +118,19 @@
 
 .save {
     font-size: 20px;
+}
+
+.profile-modal-bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-error {
+    font-size: 12px;
+    padding-left: 10px;
+}
+
+.edit-profile-input.input-error {
+    border: 2px solid red;
+    outline-color: red;
 }

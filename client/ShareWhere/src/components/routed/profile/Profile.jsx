@@ -2,13 +2,19 @@ import "./profile.css";
 import { useState, useEffect } from "react";
 import EditModal from "../profileModal/EditModal";
 import { FaBookmark } from 'react-icons/fa';
+import { useParams } from "react-router-dom";
 import { MdOutlineGridOn } from "react-icons/md";
 import UseAnimations from "react-useanimations";
 import loading from 'react-useanimations/lib/loading';
 import Posts from "../posts/Posts";
 import Saved from "../saved/Saved";
+import useAuth from "../authContext/useAuth";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
+    const { user_id } = useParams();
+    const [userId, setUserId] = useState(null);
+    const [ownProfile, setOwnProfile] = useState(false);
     const [username, setUsername] = useState("");
     const userNameClass = getUsernameClass(username);
     const [name, setName] = useState("");
@@ -20,14 +26,7 @@ function Profile() {
     const [isLoading, setIsLoading] = useState(true);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showPosts, setShowPosts] = useState(true);
-
-    function handleShowPosts() {
-        setShowPosts(true);
-    };
-
-    function handleShowSaved() {
-        setShowPosts(false);
-    }
+    const [isFollowed, setIsFollowed] = useState(false);
 
     function getUsernameClass(username) {
         const length = username.length;
@@ -42,65 +41,86 @@ function Profile() {
         }
     }
 
-
     const loadProfile = async () => {
         setIsLoading(true);
-
         try {
-            const userId = localStorage.getItem("userId");
-            const response = await fetch(`http://localhost:8080/users/${userId}`, {
+            const loggedInUserId = localStorage.getItem("userId");
+            const profileUserId = user_id || loggedInUserId;
+            setUserId(profileUserId);
+            setOwnProfile(profileUserId === loggedInUserId);
+
+            const response = await fetch(`http://localhost:8080/users/${profileUserId}`, {
                 method: "GET",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
+                credentials: "include",
             });
 
-            if (!response.ok) { // Check for errors first!
-                const errorData = await response.json(); // Or response.text() for non-JSON errors
-                console.error("Error fetching user:", response.status, errorData);
-                return; // Or throw an error, or handle it as needed
-            }
-            
-            try {
-                const userData = await response.json(); // Extract the JSON data
-                setUsername(userData.username);
-                setNumPosts(userData.profile.userPosts.length);
-                setNumFollowers(userData.numFollowers);
-                setNumFollowing(userData.following.length);
-                setName(userData.name);
-                setBio(userData.profile.bio);
-                setProfilePicUrl(userData.profile.profilePic.imageUrl);   
-                                
-                if (profilePicUrl !== "") {  // Important: Check if image data exists
-                    const imgElement = document.getElementById('profile-pic');
-                    if(imgElement) {
-                        imgElement.src = '/assets/images/default-image.png';
-                    } else {
-                        console.error("Image element not found!")
-                    }
-                }
-            } catch (error) {
-                console.error("Error parsing JSON:", error); // Handle JSON parsing errors
+            if (!response.ok) {
+                console.error("Error fetching user:", response.status);
+                return;
             }
 
+            const userData = await response.json();
+            setUsername(userData.username);
+            setNumPosts(userData.profile.userPosts.length);
+            setNumFollowers(userData.followers.length);
+            setNumFollowing(userData.following.length);
+            setIsFollowed(userData.followers.includes(parseInt(loggedInUserId))); // ✅ Fix here
+            setName(userData.name);
+            setBio(userData.profile.bio);
+            setProfilePicUrl(userData.profile.profilePic.imageUrl);
         } catch (error) {
             console.error("Error loading user:", error);
         } finally {
             setIsLoading(false);
         }
-    }
+    };
 
-    useEffect(() => {
+    useEffect(() => {    
         loadProfile();
-    }, []);
+    }, [user_id, showEditModal]); // ✅ Removed isFollowed to prevent infinite re-renders
+    
+    const handleFollow = async (event, action) => {
+        event.preventDefault();
+    
+        const type = action;
+        const followerId = localStorage.getItem("userId");
+    
+        const formData = new FormData();
+        formData.append("follower_id", followerId);
+        formData.append("followee_id", user_id); // ✅ Use user_id instead of userId
+        formData.append("action", type);
+    
+        try {
+            const response = await fetch(`http://localhost:8080/users/follow`, {
+                method: "PATCH",
+                credentials: "include",
+                body: formData
+            });
+    
+            if (response.ok) {
+                setIsFollowed(!isFollowed);
+                if (action === "FOLLOW") {
+                    setNumFollowers(numFollowers + 1);
+                }
+                else if (action === "UNFOLLOW") {
+                    setNumFollowers(numFollowers - 1);
+                }
+            } else {
+                console.error("Follow failed: ", await response.text());
+            }
+        } catch (error) {
+            console.error("Error during follow: ", error);
+        }
+    };
 
-    function handleButtonClick() {
+    const handleBackToProfile = () => {
+        setShowEditModal(false);
+    };
+
+    const handleButtonClick =() => {
         setShowEditModal(true);
     }
-
-    function handleBackToProfile() {
-        setShowEditModal(false);
-    }
+    
 
     return (
         <>
@@ -108,29 +128,44 @@ function Profile() {
                 <div className="loading"><UseAnimations animation={loading} size={56} /></div>
             ) : (
                 <div className="profile-page">
-                    <div className="profile-container">
+                    <div className={`profile-container ${showEditModal ? "modal-open" : ""}`}>
                         {showEditModal ? (
                             <EditModal
-                            username={username}
-                            name={name}
-                            bio={bio}
-                            profilePicUrl={profilePicUrl}
-                            backToProfile={handleBackToProfile} />
+                                username={username}
+                                name={name}
+                                bio={bio}
+                                profilePicUrl={profilePicUrl}
+                                backToProfile={handleBackToProfile}
+                            />
                         ) : (
                             <>
                                 <div className="attributes-container">
                                     <div className="profile-pic-container">
-                                        <img id="profile-pic" src={profilePicUrl} />
+                                        <img id="profile-pic" src={profilePicUrl || '/assets/images/default-image.png'} alt="Profile" />
                                     </div>
                                     <div className="attributes">
                                         <div className="username-row">
                                         <p className={`username ${userNameClass}`}>{username}</p>
-                                            <button className="edit-profile" onClick={handleButtonClick}>Edit profile</button>
+                                            {ownProfile ? (
+                                                <button
+                                                    className="edit-profile"
+                                                    onClick={handleButtonClick}>
+                                                        Edit profile
+                                                </button>
+                                            ) : (
+                                                <>
+                                                    {isFollowed ? (
+                                                        <button className="edit-profile follow following" onClick={(e) => handleFollow(e, "UNFOLLOW")}>Following</button>
+                                                    ) : (
+                                                        <button className="edit-profile follow" onClick={(e) => handleFollow(e, "FOLLOW")}>Follow</button>
+                                                    )}
+                                                </>
+                                            )}
                                         </div>
                                         <div className="account-stats">
-                                            <p className="stat" id="posts"><span>{numPosts}</span> posts</p>
-                                            <p className="stat" id="followers"><span>{numFollowers}</span> followers</p>
-                                            <p className="stat" id="following"><span>{numFollowing}</span> following</p>
+                                            <p className="stat"><span>{numPosts}</span> posts</p>
+                                            <p className="stat"><span>{numFollowers}</span> followers</p>
+                                            <p className="stat"><span>{numFollowing}</span> following</p>
                                         </div>
                                         <p className="name">{name}</p>
                                         <p className="bio">{bio}</p>
@@ -138,21 +173,17 @@ function Profile() {
                                 </div>
                                 <hr />
                                 <div className="pick-content-container">
-                                    <div className={`pick-content-btn ${showPosts ? 'chosen' : ''}`} onClick={handleShowPosts}>
-                                        <MdOutlineGridOn/>
+                                    <div className={`pick-content-btn ${showPosts ? 'chosen' : ''}`} onClick={() => setShowPosts(true)}>
+                                        <MdOutlineGridOn />
                                     </div>
-                                    <div className={`pick-content-btn ${showPosts ? '' : 'chosen'}`} onClick={handleShowSaved}>
-                                        <FaBookmark/>
-                                    </div>
+                                    {ownProfile && (
+                                        <div className={`pick-content-btn ${showPosts ? '' : 'chosen'}`} onClick={() => setShowPosts(false)}>
+                                            <FaBookmark />
+                                        </div>
+                                    )}
                                 </div>
                                 <hr />
-                                {showPosts && (
-                                    <Posts />
-                                )}
-                                {!showPosts && (
-                                    <Saved />
-                                )}
-                                
+                                {showPosts ? <Posts userId={userId} /> : <Saved />}
                             </>
                         )}
                     </div>

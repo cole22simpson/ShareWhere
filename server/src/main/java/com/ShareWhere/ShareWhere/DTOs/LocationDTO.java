@@ -32,7 +32,7 @@ public class LocationDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Set<Integer> savedBy = new HashSet<>();
-    private List<TagDTO> tags = new ArrayList<>();
+    private Set<TagDTO> tags = new HashSet<>();
     private List<CommentDTO> comments = new ArrayList<>();
 
     // Constructor

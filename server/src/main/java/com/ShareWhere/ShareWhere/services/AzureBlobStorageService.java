@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 @Service
 public class AzureBlobStorageService {
@@ -35,9 +36,12 @@ public class AzureBlobStorageService {
     }
 
     // Method to upload files to Azure Blob Storage
+
+    // Method to upload files to Azure Blob Storage
     public String uploadFile(MultipartFile file) throws IOException {
-        String blobName = file.getOriginalFilename();
-        BlobClient blobClient = containerClient.getBlobClient(blobName);
+        // Generate a unique filename using UUID and the original file name
+        String uniqueFileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+        BlobClient blobClient = containerClient.getBlobClient(uniqueFileName);
 
         try (InputStream inputStream = file.getInputStream()) {
             blobClient.upload(inputStream, file.getSize(), true);
@@ -46,4 +50,5 @@ public class AzureBlobStorageService {
         // Return the URL of the uploaded blob
         return blobClient.getBlobUrl();
     }
+
 }

@@ -25,6 +25,7 @@ const Discover = () => {
     const [infoWindowOpen, setInfoWindowOpen] = useState(false);
     const markerRefs = useRef({});
     const [tags, setTags] = useState([]);
+    const [mapLoading, setMapLoading] = useState(true);
     const [selectedPin, setSelectedPin] = useState(null);
     const [selectedPost, setSelectedPost] = useState(null);
     const [bounds, setBounds] = useState({ north: 0.0, south: 0.0, east: 0.0, west: 0.0 });
@@ -34,14 +35,16 @@ const Discover = () => {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
     const [isStreetView, setIsStreetView] = useState(false);
 
-    const [selectedTags, setSelectedTags] = useState([]); 
-
-    const toggleTagSelection = (tagGroup, tagName) => {
-        setSelectedTags((prev) => ({
-            ...prev,
-            [tagGroup]: prev[tagGroup] === tagName ? null : tagName,
-        }));
+    const handleModalOpened = (action) => {
+        if (action === true) {
+            document.body.classList.add("hidden");
+        }
+        else {
+            document.body.classList.remove("hidden");
+        }
     };
+
+    const [selectedTags, setSelectedTags] = useState([]); 
 
     const pinOptions = [
         "DEFAULT",
@@ -61,6 +64,13 @@ const Discover = () => {
         "SWIM",
         "READING"
     ];
+
+    const toggleTagSelection = (tagGroup, tagName) => {
+        setSelectedTags((prev) => ({
+            ...prev,
+            [tagGroup]: prev[tagGroup] === tagName ? null : tagName,
+        }));
+    };
 
     const [activePinTypes, setActivePinTypes] = useState(
         pinOptions.reduce((acc, type) => ({ ...acc, [type]: true }), {}) // Initialize all pin types as active
@@ -126,10 +136,9 @@ const Discover = () => {
     useEffect(() => {
         const fetchTags = async () => {
             try {
-                const token = localStorage.getItem("jwtToken");
                 const response = await fetch("http://localhost:8080/tags", {
                     method: "GET",
-                    headers: { Authorization: `Bearer ${token}` },
+                    credentials: "include",
                 });
                 if (!response.ok) throw new Error("Failed to fetch tags");
 
@@ -150,13 +159,11 @@ const Discover = () => {
     }, []);
 
     const openLocationModal  = async (pinId) => {
-        const locationId = pinId;
+        const location_id = pinId;
         try {
-            const response = await fetch(`http://localhost:8080/locations/${locationId}`, {
+            const response = await fetch(`http://localhost:8080/locations/${location_id}`, {
                 method: "GET",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
+                credentials: "include",
             });
 
             if (!response.ok) {
@@ -201,7 +208,8 @@ const Discover = () => {
         setInfoWindowOpen(false);
     };
 
-    const handleIdle = () => {
+    const handleIdle = (map) => {
+        handleMapLoad(map);
         setDragging(false);
         loadPins();
     }
@@ -253,9 +261,7 @@ const Discover = () => {
         try {
             const response = await fetch(`http://localhost:8080/locations/pins?north=${bounds.north}&south=${bounds.south}&east=${bounds.east}&west=${bounds.west}`, {
                 method: "GET",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
+                credentials: "include",
             });
 
             if (!response.ok) {
@@ -266,7 +272,8 @@ const Discover = () => {
             
             try {
                 const locationData = await response.json(); // Extract the JSON data
-                setPins(locationData);                                
+                setPins(locationData);
+                setMapLoading(false);                               
             } catch (error) {
                 console.error("Error parsing JSON:", error); // Handle JSON parsing errors
             }
@@ -279,6 +286,12 @@ const Discover = () => {
     useEffect(() => {
         loadPins();
     }, [showModal]);
+
+    useEffect(() => {
+        if (bounds.north !== 0 && bounds.south !== 0 && bounds.east !== 0 && bounds.west !== 0) {
+            loadPins();
+        }
+    }, [bounds]);
 
     const filteredPins = pins.filter((pin) => {
         if (!activePinTypes[pin.pinType]) return false;
@@ -400,7 +413,8 @@ const Discover = () => {
                                     <div className="control open-map-types" onClick={() => setCenter(defaultCenter)}><FaLocationCrosshairs /></div>
                                 </div>
                             </div>
-                        )}                       
+                        )}
+                        {!mapLoading && (                       
                         <Map
                             defaultZoom={15}
                             center={{ lat: center.lat, lng: center.lng }}
@@ -411,8 +425,9 @@ const Discover = () => {
                             fullscreenControl={false}
                             mapTypeControl={false}
                             cameraControl={false}
-                            onMousemove={(map) => handleMapLoad(map)}
-                            onIdle={handleIdle}
+                            onIdle={(map) => handleIdle(map)}
+                            onMouseover={(map) => handleMapLoad(map)}
+                            onTilesLoaded={(map) => handleMapLoad(map)}
                             onDrag={() => setDragging(true)}
                             onBoundsChanged={handleBoundsChanged}>
                             <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}>
@@ -460,6 +475,7 @@ const Discover = () => {
                                 </AdvancedMarker>        
                             ))}
                         </Map>
+                        )}
                         <MapHandler setIsStreetView={setIsStreetView} place={selectedPlace} marker={marker} />
                     </div>
                 </div>
@@ -467,6 +483,7 @@ const Discover = () => {
 
         {showModal && (
             <LocationModal
+                handleModalOpened={handleModalOpened}
                 selectedPost={selectedPost}
                 closeLocationModal={closeLocationModal}
             />

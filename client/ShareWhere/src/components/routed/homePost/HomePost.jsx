@@ -4,19 +4,17 @@ import { IoBookmark  } from "react-icons/io5";
 import "./homePost.css";
 import PropTypes from "prop-types";
 
-const HomePost = ({ post, setModalOpened }) => {
+const HomePost = ({ post, handleModalOpened, setModalOpened }) => {
 
     const [showModal, setShowModal] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
 
     const openLocationModal  = async (pinId) => {
-        const locationId = pinId;
+        const location_id = pinId;
         try {
-            const response = await fetch(`http://localhost:8080/locations/${locationId}`, {
+            const response = await fetch(`http://localhost:8080/locations/${location_id}`, {
                 method: "GET",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
+                credentials: "include",
             });
 
             if (!response.ok) {
@@ -28,7 +26,8 @@ const HomePost = ({ post, setModalOpened }) => {
             try {
                 const pinData = await response.json(); // Extract the JSON data
                 setSelectedPost(pinData);
-                setShowModal(true);  
+                setShowModal(true);
+                handleModalOpened(true);  
                 setModalOpened(true);                            
             } catch (error) {
                 console.error("Error parsing JSON:", error); // Handle JSON parsing errors
@@ -42,6 +41,7 @@ const HomePost = ({ post, setModalOpened }) => {
     function closeLocationModal() {
         setShowModal(false);
         setModalOpened(false);
+        handleModalOpened(false);
     };
 
     return (
@@ -54,11 +54,9 @@ const HomePost = ({ post, setModalOpened }) => {
                 </div>
                 <img src={post.previewImage.imageUrl} className="home-post-img"></img>
                 <div className="home-post-info">
-                    <div className="home-post-data">
-                        <p className="home-post-name">{post.locationName}</p>
-                        <p className="home-post-city">{post.city}</p>
-                        <p className="home-post-saves"><IoBookmark/>{post.saves}</p>
-                    </div>
+                    <p className="home-post-name">{post.locationName}</p>
+                    <p className="home-post-city">{post.city}</p>
+                    <p className="home-post-saves"><IoBookmark/>{post.saves}</p>
                 </div>
             </div>
 
@@ -66,6 +64,7 @@ const HomePost = ({ post, setModalOpened }) => {
                     <LocationModal
                         selectedPost={selectedPost}
                         closeLocationModal={closeLocationModal}
+                        handleModalOpened={handleModalOpened}
                     />
             )}
         </>
@@ -74,21 +73,22 @@ const HomePost = ({ post, setModalOpened }) => {
 
 HomePost.propTypes = {
     post: PropTypes.shape({
-        locationId: PropTypes.number.isRequired,
+        locationId: PropTypes.number,
         creatorProfilePic: PropTypes.shape({
-            imageUrl: PropTypes.string.isRequired,
-            }).isRequired,
+            imageUrl: PropTypes.string,
+            }),
         previewImage: PropTypes.shape({
-            imageUrl: PropTypes.string.isRequired,
-            }).isRequired,
-        locationName: PropTypes.string.isRequired,
-        creatorUsername: PropTypes.string.isRequired,
-        city: PropTypes.string.isRequired,
-        images: PropTypes.arrayOf(PropTypes.object).isRequired, 
-        likedBy: PropTypes.arrayOf(PropTypes.number).isRequired,
-        saves: PropTypes.number.isRequired,
+            imageUrl: PropTypes.string,
+            }),
+        locationName: PropTypes.string,
+        creatorUsername: PropTypes.string,
+        city: PropTypes.string,
+        images: PropTypes.arrayOf(PropTypes.object), 
+        likedBy: PropTypes.arrayOf(PropTypes.number),
+        saves: PropTypes.number,
     }),
-    setModalOpened: PropTypes.func
+    setModalOpened: PropTypes.func,
+    handleModalOpened: PropTypes.func,
 }
 
 export default HomePost;

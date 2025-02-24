@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./nav.css"
 import { IconContext } from 'react-icons';
 import { Link } from 'react-router-dom';
@@ -9,12 +9,8 @@ import { FiLogIn } from "react-icons/fi";
 import { AiFillHome } from "react-icons/ai"
 import { MdOutlineLogout } from 'react-icons/md'
 import useAuth from '../authContext/useAuth';
-// import signOut from "../../../api/users/signOut"
-
-
 
 function Nav() {
-
     const [sidebar, setSidebar] = useState(false);
     const { userLoggedIn, setUserLoggedIn } = useAuth();
 
@@ -22,12 +18,30 @@ function Nav() {
         setSidebar(!sidebar);
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem("jwtToken");
-        localStorage.removeItem("userData");
-        setUserLoggedIn(false);
-    };
+    const handleLogout = async () => {
+        try {
+            const response = await fetch("http://localhost:8080/auth/logout", {
+                method: "POST",
+                credentials: "include", // Send the cookie with the request
+            });
     
+            if (response.ok) {
+                localStorage.removeItem("jwtToken");
+                localStorage.removeItem("userData");
+                localStorage.removeItem("userId");
+                localStorage.removeItem("name");
+                localStorage.removeItem("city");
+                localStorage.removeItem("coords");
+
+                setUserLoggedIn(false);
+            } else {
+                console.error("Logout failed");
+            }
+        } catch (error) {
+            console.error("Error during logout:", error);
+        }
+    };
+
     return (
         <IconContext.Provider value={{ color: 'black' }}>
             <div className='navbar'>

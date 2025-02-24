@@ -21,3 +21,7 @@ body {
   align-items: center; 
   height: 95vh;
 }
+
+body.hidden {
+  overflow-y: hidden;
+}

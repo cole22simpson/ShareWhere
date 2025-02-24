@@ -7,9 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Data
@@ -60,7 +58,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "follower_id")
     )
-    private List<User> followers = new ArrayList<>();
+    private Set<User> followers = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -68,7 +66,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "following_id")
     )
-    private List<User> following = new ArrayList<>();
+    private Set<User> following = new HashSet<>();
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -96,7 +94,7 @@ public class User {
     }
 
     public User(String email, String password, String username, String name, Double latitude, Double longitude, String city, String role) {
-        this.username = validateNotEmptyString(username, "Username");
+        this.username = validateNotEmptyString(username, "Username").toLowerCase();
         this.email = validateNotEmptyString(email, "Email");
         this.passwordHash = validateNotEmptyString(password, "Password");
         this.name = validateNotEmptyString(name, "Name");

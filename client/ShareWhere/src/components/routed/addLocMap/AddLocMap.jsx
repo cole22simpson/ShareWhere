@@ -24,10 +24,20 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
     const [selectedPost, setSelectedPost] = useState(null);
     const [isStreetView, setIsStreetView] = useState(false);
     const [controlsModal, setControlsModal] = useState(false);
+    const [mapLoading, setMapLoading] = useState(true);
     const [bounds, setBounds] = useState({ north: 0.0, south: 0.0, east: 0.0, west: 0.0 });
     const [selectedPlace, setSelectedPlace] = useState(null);
     const MAP_ID = import.meta.env.VITE_MAP_ID;
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
+
+    const handleModalOpened = (action) => {
+        if (action === true) {
+            document.body.classList.add("hidden");
+        }
+        else {
+            document.body.classList.remove("hidden");
+        }
+    };
 
     const getPinIcon = (pinType) => {
         switch (pinType) {
@@ -86,13 +96,11 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
     };
 
     const openLocationModal  = async (pinId) => {
-        const locationId = pinId;
+        const location_id = pinId;
         try {
-            const response = await fetch(`http://localhost:8080/locations/${locationId}`, {
+            const response = await fetch(`http://localhost:8080/locations/${location_id}`, {
                 method: "GET",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
+                credentials: "include",
             });
 
             if (!response.ok) {
@@ -121,6 +129,11 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
     const handleMapLoad = (map) => {
         setMapRef(map);
         handleBoundsChanged();
+    };
+
+    const handleIdle = (map) => {
+        handleMapLoad(map);
+        loadPins();
     };
 
     const handleBoundsChanged = () => {
@@ -159,13 +172,10 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
     };
 
     const loadPins = async () => {
-
         try {
             const response = await fetch(`http://localhost:8080/locations/pins?north=${bounds.north}&south=${bounds.south}&east=${bounds.east}&west=${bounds.west}`, {
                 method: "GET",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
+                credentials: "include",
             });
 
             if (!response.ok) {
@@ -177,6 +187,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
             try {
                 const locationData = await response.json(); // Extract the JSON data
                 setPins(locationData);
+                setMapLoading(false);                               
             } catch (error) {
                 console.error("Error parsing JSON:", error); // Handle JSON parsing errors
             }
@@ -189,6 +200,18 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
     useEffect(() => {
         loadPins();
     }, [showModal]);
+
+    useEffect(() => {
+        if (bounds.north !== 0 && bounds.south !== 0 && bounds.east !== 0 && bounds.west !== 0) {
+            loadPins();
+        }
+    }, [bounds]);
+
+    useEffect(() => {
+        if (mapRef && !mapLoading) {
+            setCenter({ lat: latitude, lng: longitude });
+        }
+    }, [mapRef, latitude, longitude, mapLoading]);
 
     return (
         <>
@@ -214,10 +237,34 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                                         <div className="close-type-container">
                                             <div onClick={() => setControlsModal(false)} className="close-map-types"><MdClose/></div>
                                         </div>
-                                        <div onClick={() => handleMapTypeChange('roadmap')}>Roadmap</div>
-                                        <div onClick={() => handleMapTypeChange('satellite')}>Satellite</div>
-                                        <div onClick={() => handleMapTypeChange('hybrid')}>Hybrid</div>
-                                        <div onClick={() => handleMapTypeChange('terrain')}>Terrain</div>
+                                        <div 
+      className={`map-type ${mapType === 'roadmap' ? 'selected' : ''}`} 
+      onClick={() => handleMapTypeChange('roadmap')}
+    >
+      <p>Roadmap</p>
+      <img src={"/assets/images/roadmap.png"} alt="Roadmap" /> {/* Add alt attribute */}
+    </div>
+    <div 
+      className={`map-type ${mapType === 'satellite' ? 'selected' : ''}`} 
+      onClick={() => handleMapTypeChange('satellite')}
+    >
+      <p>Satellite</p>
+      <img src={"/assets/images/satellite.png"} alt="Satellite" /> {/* Add alt attribute */}
+    </div>
+    <div 
+      className={`map-type ${mapType === 'hybrid' ? 'selected' : ''}`} 
+      onClick={() => handleMapTypeChange('hybrid')}
+    >
+      <p>Hybrid</p>
+      <img src={"/assets/images/hybrid.png"} alt="Hybrid" /> {/* Add alt attribute */}
+    </div>
+    <div 
+      className={`map-type ${mapType === 'terrain' ? 'selected' : ''}`} 
+      onClick={() => handleMapTypeChange('terrain')}
+    >
+      <p>Terrain</p>
+      <img src={"/assets/images/terrain.png"} alt="Terrain" /> {/* Add alt attribute */}
+    </div>
                                     </div>
                                 </div>
                             )}
@@ -227,7 +274,8 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                                 <div className="control open-map-types" onClick={() => setCenter( { lat: initialLatitude, lng: initialLongitude })}><FaLocationCrosshairs /></div>
                             </div>
                         </div>
-                    )} 
+                    )}
+                    {!mapLoading && ( 
                     <Map
                         defaultZoom={15}
                         center={{ lat: center.lat, lng: center.lng }}
@@ -238,8 +286,9 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                         fullscreenControl={false}
                         mapTypeControl={false}
                         mapTypeControlOptions={{ position: ControlPosition.TOP_RIGHT }}
-                        onMousemove={(map) => handleMapLoad(map)}
-                        onIdle={loadPins}
+                        onIdle={(map) => handleIdle(map)}
+                        onMouseover={(map) => handleMapLoad(map)}
+                        onTilesLoaded={(map) => handleMapLoad(map)}
                         onBoundsChanged={handleBoundsChanged}>
                         <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}>
                             <PiMapPinSimpleFill size={40} />
@@ -279,12 +328,14 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                             </AdvancedMarker>      
                         ))}
                     </Map>
+                    )}
                     <MapHandler setIsStreetView={setIsStreetView} place={selectedPlace} marker={marker} />                
                 </div>
             </APIProvider>
 
             {showModal && (
                 <LocationModal
+                    handleModalOpened={handleModalOpened}
                     selectedPost={selectedPost}
                     closeLocationModal={closeLocationModal}
                 />

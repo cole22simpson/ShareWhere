@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -144,22 +145,62 @@ public class UserService {
     }
 
     @Transactional
-    public Optional<UserDTO> updateUser(int userId, String newName, String newUsername, boolean isPartial) {
-        return userRepo.findById(userId).map(existingUser -> { // Fetch user, get Optional<User>. The map says if user is found, map it
-            if (newName != null || !isPartial) {
-                existingUser.setName(newName);
+    public Map<String, String> validateAndUpdateUser(int userId, String newName, String newUsername, boolean isPartial) {
+        Map<String, String> errors = new HashMap<>();
+
+        Optional<User> optionalUser = userRepo.findById(userId);
+        if (optionalUser.isEmpty()) {
+            errors.put("user", "User not found.");
+            return errors;
+        }
+
+        User existingUser = optionalUser.get();
+
+        // Validate newName
+        if (newName != null || !isPartial) {
+            if (newName == null || newName.length() < 3 || newName.length() > 30) {
+                errors.put("name", "Name must be between 3 and 30 characters.");
             }
-            if (newUsername != null || !isPartial) {
-                existingUser.setUsername(newUsername);
+        }
+
+        // Validate newUsername
+        if (newUsername != null || !isPartial) {
+            if (newUsername == null || newUsername.length() < 3 || newUsername.length() > 30) {
+                errors.put("username", "Username must be between 3 and 30 characters.");
+            } else {
+                // Regex check for valid characters
+                String usernameRegex = "^[A-Za-z0-9_.]+$";
+                if (!Pattern.matches(usernameRegex, newUsername)) {
+                    errors.put("username", "Username can only contain letters, numbers, underscores, and periods.");
+                }
+
+                // **Check if username is already taken, but only if it's different from the existing one**
+                if (!newUsername.equals(existingUser.getUsername()) && userRepo.existsByUsername(newUsername)) {
+                    errors.put("username", "Username is already taken.");
+                }
             }
+        }
 
-            existingUser.getProfile().setUpdatedAt(LocalDateTime.now());
+        // If there are validation errors, return them
+        if (!errors.isEmpty()) {
+            return errors;
+        }
 
-            userRepo.save(existingUser);
+        // Proceed with updating the user if no validation errors exist
+        if (newName != null || !isPartial) {
+            existingUser.setName(newName);
+        }
+        if (newUsername != null || !isPartial) {
+            existingUser.setUsername(newUsername);
+        }
 
-            return new UserDTO(existingUser);
-        });
+        existingUser.getProfile().setUpdatedAt(LocalDateTime.now());
+        userRepo.save(existingUser);
+
+        return Collections.emptyMap(); // No errors, return an empty map
     }
+
+
 
     @Transactional
     public Optional<LocationDTO> updateUser(int userId, Location location, String field) {
@@ -204,19 +245,23 @@ public class UserService {
             User followee = userRepo.findById(followeeId).orElseThrow(
                     () -> new EntityNotFoundException("User not found")
             );
-            List<User> followerFollowing = follower.getFollowing();
-            List<User> followeeFollowers = followee.getFollowers();
+            Set<User> followerFollowing = follower.getFollowing();
+            Set<User> followeeFollowers = followee.getFollowers();
             if (action.equals("FOLLOW")) {
-                followerFollowing.add(followee);
-                follower.setFollowing(followerFollowing);
-                followeeFollowers.add(follower);
-                followee.setFollowers(followeeFollowers);
+                if (!followerFollowing.contains(followee)) {
+                    followerFollowing.add(followee);
+                    follower.setFollowing(followerFollowing);
+                    followeeFollowers.add(follower);
+                    followee.setFollowers(followeeFollowers);
+                }
             }
             else if (action.equals("UNFOLLOW")) {
-                followerFollowing.remove(followee);
-                follower.setFollowing(followerFollowing);
-                followeeFollowers.remove(follower);
-                followee.setFollowers(followeeFollowers);
+                if (followerFollowing.contains(followee)) {
+                    followerFollowing.remove(followee);
+                    follower.setFollowing(followerFollowing);
+                    followeeFollowers.remove(follower);
+                    followee.setFollowers(followeeFollowers);
+                }
             }
             userRepo.save(follower);
             userRepo.save(followee);

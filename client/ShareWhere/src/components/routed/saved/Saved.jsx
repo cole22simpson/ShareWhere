@@ -1,5 +1,4 @@
 import "./saved.css";
-import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import LocationModal from "../locationModal/LocationModal";
 import UseAnimations from "react-useanimations";
@@ -13,13 +12,11 @@ const Saved = () => {
     const [selectedPin, setSelectedPin] = useState(null);
 
     const openLocationModal  = async (pinId) => {
-        const locationId = pinId;
+        const location_id = pinId;
         try {
-            const response = await fetch(`http://localhost:8080/locations/${locationId}`, {
+            const response = await fetch(`http://localhost:8080/locations/${location_id}`, {
                 method: "GET",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
+                credentials: "include",
             });
 
             if (!response.ok) {
@@ -45,16 +42,23 @@ const Saved = () => {
         setShowModal(false);
     };
 
+    const handleModalOpened = (action) => {
+        if (action === true) {
+            document.body.classList.add("hidden");
+        }
+        else {
+            document.body.classList.remove("hidden");
+        }
+    };
+
     const loadSaved = async () => {
         setIsLoading(true);
 
         try {
-            const userId = localStorage.getItem("userId");
-            const response = await fetch(`http://localhost:8080/users/${userId}/saved`, {
+            const user_id = localStorage.getItem("userId");
+            const response = await fetch(`http://localhost:8080/users/${user_id}/saved`, {
                 method: "GET",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
+                credentials: "include",
             });
 
             if (!response.ok) {
@@ -106,6 +110,7 @@ const Saved = () => {
                     </div>
                     {showModal && (
                         <LocationModal
+                            handleModalOpened={handleModalOpened}
                             selectedPost={selectedPin}
                             closeLocationModal={closeLocationModal}
                         />

@@ -25,10 +25,8 @@ function SignupForm({ onBackToBasic }) {
     const [showPassword, setShowPassword] = useState("password");
     const [city, setCity] = useState("");
     const navigate = useNavigate();
-    const { setUserLoggedIn } = useAuth();
+    const { userLoggedIn, setUserLoggedIn } = useAuth();
     const GEOCODE_API_KEY = import.meta.env.VITE_GEOCODE_API;
-    // const { setUserInfo } = useUser();
-    
 
     const handleLocationPermission = async () => {
         try {
@@ -36,6 +34,7 @@ function SignupForm({ onBackToBasic }) {
             setLocation(coords);
             setLatitude(coords.lat);
             setLongitude(coords.lng);
+            localStorage.setItem("coords", location);
             const response = await fetch(`https://geocode.maps.co/reverse?lat=${coords.lat}&lon=${coords.lng}&api_key=${GEOCODE_API_KEY}`, {
                 method: "GET"
             });
@@ -63,7 +62,7 @@ function SignupForm({ onBackToBasic }) {
         );
 
         try {
-            const response = await fetch("http://localhost:8080/signup", {
+            const response = await fetch("http://localhost:8080/auth/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -82,7 +81,6 @@ function SignupForm({ onBackToBasic }) {
             if (response.ok) {
                 const data = await response.json(); 
 
-                localStorage.setItem("jwtToken", data.token);
                 localStorage.setItem("user", JSON.stringify(data.user));
                 localStorage.setItem("userId", JSON.parse(data.user.userId));
                 localStorage.setItem("name", data.user.name);

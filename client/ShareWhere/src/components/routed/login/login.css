@@ -50,7 +50,6 @@
   .login-container {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
   }
   
   .login-container-input {
@@ -63,6 +62,46 @@
     padding-left: 1rem;
     border-radius: 10px;
   }
+
+.login-container-input.input-error {
+    border: 2px solid red;
+    outline-color: red;
+}
+
+.login-error-container {
+  border: none;
+  display: flex;
+  height: fit-content;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.error {
+  display: none;
+}
+
+.error.shown {
+  display: flex;
+  font-size: 12px;
+  color: var(--black-color);
+  padding-left: 5px;
+}
+
+.password-input-container {
+  margin-top: 10px;
+  position: relative;
+}
+
+.eyeball {
+  position: absolute;
+  color: black;
+  right: 70px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
   
   .login-container div {
     padding-top: 5px;

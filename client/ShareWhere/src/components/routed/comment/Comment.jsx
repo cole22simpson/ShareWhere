@@ -4,16 +4,23 @@ import { FaHeart } from "react-icons/fa";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdClose } from "react-icons/md";
 import PropTypes from 'prop-types';
 import "./comment.css";
+import { BsThreeDots } from "react-icons/bs";
 import dayjs from "dayjs";
 import updateLocale from 'dayjs/plugin/updateLocale';
+import useAuth from "../authContext/useAuth";
+import { useNavigate } from "react-router-dom";
 
-const Comment = ({ setCommentImageOpen, comment }) => {
+const Comment = ({ setCommentImageOpen, handleCommentDeleted, comment }) => {
     const [isLiked, setIsLiked] = useState(comment.likedBy.includes(parseInt(localStorage.getItem("userId"))));
     const [numLikes, setNumLikes] = useState(comment.likes);
     const [imagesOpen, setImagesOpen] = useState(false);
     const createdAtDate = dayjs(comment.timeCreated);
     const timeAgo = createdAtDate.fromNow();
     const [selectedImage, setSelectedImage] = useState(null);
+    const { userLoggedIn, setUserLoggedIn } = useAuth();
+    const [deleteComment, setDeleteComment] = useState(false);
+    const ownedComment = comment.commenterId === parseInt(localStorage.getItem("userId"));
+    const navigate = useNavigate();
 
     const openImage = (imageUrl) => {
         setSelectedImage(imageUrl);
@@ -65,6 +72,10 @@ const Comment = ({ setCommentImageOpen, comment }) => {
     }, [selectedImage]);
 
     const handleLike = async (event, action) => {
+        if (!userLoggedIn) {
+            navigate("/login")
+        }
+
         event.preventDefault();
         const type = action;
 
@@ -72,16 +83,14 @@ const Comment = ({ setCommentImageOpen, comment }) => {
 
         const formData = new FormData();
 
-        formData.append("userId", userId);
-        formData.append("commentId", comment.commentId);
+        formData.append("user_id", userId);
+        formData.append("comment_id", comment.commentId);
         formData.append("field", type);
 
         try {
             const response = await fetch(`http://localhost:8080/comments/like`, {
                 method: "PATCH",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                },
+                credentials: "include",
                 body: formData
             });
 
@@ -98,67 +107,106 @@ const Comment = ({ setCommentImageOpen, comment }) => {
         }
     }
 
+    const handleDeleteComment = async (event, commentId) => {
+        event.preventDefault();
+
+        try {
+            const response = await fetch(`http://localhost:8080/comments/${commentId}`, {
+                method: "DELETE",
+                credentials: "include",
+            });
+
+            if (response.ok) {
+                handleCommentDeleted(commentId);
+            }
+            else {
+                console.error("Delete comment failed: ", await response.text());
+            }
+        } catch (error) {
+            console.error("Error during delete: ", error);
+        }
+    }
+
   return (
-    <>
-    <div className="location-comment">
-        <img 
-            className="commenter-prof-pic" 
-            src={comment.commenterProfilePic.imageUrl} 
-        />
-        <div className="comment-middle">
-            <div className="comment-top">
-                <p className="commenter-username">{comment.commenterUser}</p>
-                <p className="comment-time">{timeAgo}</p>
+    <div className="comment-row">
+        {deleteComment && (
+            <div  className="invisible-delete">Delete</div>
+        )}
+        <>
+        <div className="location-comment">
+            <img 
+                className="commenter-prof-pic" 
+                src={comment.commenterProfilePic.imageUrl} 
+            />
+            <div className="comment-middle">
+                <div className="comment-top">
+                    <p className="commenter-username">{comment.commenterUser}</p>
+                    <p className="comment-time">{timeAgo}</p>
+                </div>
+                <p className="comment-text">{comment.commentText}</p>
+                {comment.images.length > 0 && (
+                    <>
+                        {!imagesOpen ? (
+                            <p className="view-images" onClick={() => setImagesOpen(true)}>View images <MdKeyboardArrowDown/></p>
+                        ) : (
+                            <>
+                                <div className="comment-images">
+                                    {comment.images.map((image) => (
+                                        <img
+                                            className="comment-image"
+                                            key={image.imageId}
+                                            src={image.imageUrl}
+                                            onClick={() => openImage(image.imageUrl)}
+                                        />
+                                    ))}
+                                </div>
+                                <p className="view-images" onClick={() => setImagesOpen(false)}>Collapse <MdKeyboardArrowUp/></p>
+                            </>
+                        )}
+                    </>
+                )}
             </div>
-            <p className="comment-text">{comment.commentText}</p>
-            {comment.images.length > 0 && (
-                <>
-                    {!imagesOpen ? (
-                        <p className="view-images" onClick={() => setImagesOpen(true)}>View images <MdKeyboardArrowDown/></p>
-                    ) : (
-                        <>
-                            <div className="comment-images">
-                                {comment.images.map((image) => (
-                                    <img
-                                        className="comment-image"
-                                        key={image.imageId}
-                                        src={image.imageUrl}
-                                        onClick={() => openImage(image.imageUrl)}
-                                    />
-                                ))}
-                            </div>
-                            <p className="view-images" onClick={() => setImagesOpen(false)}>Collapse <MdKeyboardArrowUp/></p>
-                        </>
-                    )}
-                </>
-            )}
+            <div className="likes-container">
+                {!isLiked ? (
+                    <button 
+                        className="like-comment"
+                        onClick={(e) => handleLike(e, "LIKE")}>
+                        <FiHeart />
+                    </button>
+                ) : (
+                    <button 
+                        className="unlike-comment" 
+                        onClick={(e) => handleLike(e, "UNLIKE")}>
+                        <FaHeart />
+                    </button>
+                )}
+                <p className="comment-likes">{numLikes}</p>
+            </div>
+            <button onClick={() => setDeleteComment(!deleteComment)} disabled={!ownedComment} className="delete-comment">
+                {ownedComment ? (
+                    <BsThreeDots />
+                ) : (
+                    <div className="delete-comment" />
+                )}
+            </button>
         </div>
-        <div className="likes-container">
-            {!isLiked ? (
-                <button 
-                    className="like-comment"
-                    onClick={(e) => handleLike(e, "LIKE")}>
-                    <FiHeart />
-                </button>
-            ) : (
-                <button 
-                    className="unlike-comment" 
-                    onClick={(e) => handleLike(e, "UNLIKE")}>
-                    <FaHeart />
-                </button>
+        {selectedImage && (
+            <div className="image-modal" onClick={closeImage}>
+                <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
+                    <p className="close-btn" onClick={closeImage}><MdClose /></p>
+                    <img src={selectedImage} />
+                </div>
+            </div>
+        )}
+        </>
+            {deleteComment && (
+                <div className="delete-final-container">
+                    <div onClick={(e) => handleDeleteComment(e, comment.commentId)}  className="delete-final">
+                        Delete
+                    </div>
+                </div>
             )}
-            <p className="comment-likes">{numLikes}</p>
-        </div>
     </div>
-    {selectedImage && (
-        <div className="image-modal" onClick={closeImage}>
-            <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
-                <p className="close-btn" onClick={closeImage}><MdClose /></p>
-                <img src={selectedImage} />
-            </div>
-        </div>
-    )}
-    </>
   );
 };
 
@@ -173,9 +221,11 @@ Comment.propTypes = {
         likes: PropTypes.number.isRequired,
         likedBy: PropTypes.arrayOf(PropTypes.number).isRequired,
         commentId: PropTypes.number.isRequired,
+        commenterId: PropTypes.number.isRequired,
         timeCreated: PropTypes.string.isRequired,
     }),
     setCommentImageOpen: PropTypes.func.isRequired,
+    handleCommentDeleted: PropTypes.func.isRequired,
   };
 
 export default Comment;

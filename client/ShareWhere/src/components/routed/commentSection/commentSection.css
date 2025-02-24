@@ -1,0 +1,15 @@
+.submit-comment {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 40px;
+}
+.submit-comment:disabled {
+    background: none;
+}
+
+.submit-comment:disabled:hover {
+    cursor: default;
+    background: none;
+}

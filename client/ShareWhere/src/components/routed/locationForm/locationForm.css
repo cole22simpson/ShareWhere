@@ -10,6 +10,7 @@
     justify-content: space-between;
     width: 20%;
     margin-left: 10px;
+    height: 100%;
 }
 
 .addloc-label {
@@ -50,6 +51,10 @@
     margin-bottom: 10px;
     border: 3px solid var(--black-color);
     font-family: "Outfit", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
 }
 
 .submit-location:hover {
@@ -59,4 +64,9 @@
 .submit-location:disabled {
     background-color: lightgray;
     border: 1px solid black;
+}
+
+.loading-location {
+    height: 20px;
+    width: 20px;
 }

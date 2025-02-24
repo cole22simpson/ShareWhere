@@ -18,6 +18,7 @@ public class CommentDTO {
     private String commentText;
     private int locationId;
     private String commenterUser;
+    private int commenterId;
     private ImageDTO commenterProfilePic;
     private List<ImageDTO> images = new ArrayList<>();
     private Set<Integer> likedBy = new HashSet<>();
@@ -32,6 +33,7 @@ public class CommentDTO {
         for (Image image : comment.getImages()) {
             this.images.add(new ImageDTO(image));
         }
+        this.commenterId = comment.getWrittenBy().getProfileId();
         this.likes = comment.getLikes();
         this.likedBy.addAll(comment.getLikedBy());
         this.timeCreated = comment.getTimeCreated();

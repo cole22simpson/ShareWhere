@@ -1,14 +1,8 @@
 package com.ShareWhere.ShareWhere.services;
 
-import com.ShareWhere.ShareWhere.DTOs.LocationDTO;
-import com.ShareWhere.ShareWhere.DTOs.LocationPreviewDTO;
-import com.ShareWhere.ShareWhere.DTOs.UserDTO;
-import com.ShareWhere.ShareWhere.DTOs.UserProfileDTO;
-import com.ShareWhere.ShareWhere.models.Image;
-import com.ShareWhere.ShareWhere.models.Location;
+import com.ShareWhere.ShareWhere.DTOs.*;
+import com.ShareWhere.ShareWhere.models.*;
 //import com.ShareWhere.ShareWhere.models.LocationRequest;
-import com.ShareWhere.ShareWhere.models.Tag;
-import com.ShareWhere.ShareWhere.models.UserProfile;
 import com.ShareWhere.ShareWhere.repositories.LocationRepo;
 import com.ShareWhere.ShareWhere.repositories.TagRepo;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,10 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,6 +46,12 @@ public class LocationService {
     public List<LocationPreviewDTO> getAllLocationPreviews() {
         return locationRepo.findAll().stream()
                 .map(LocationPreviewDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<HomeLocationDTO> getAllHomeLocations() {
+        return locationRepo.findAll().stream()
+                .map(HomeLocationDTO::new)
                 .collect(Collectors.toList());
     }
 
@@ -121,6 +118,24 @@ public class LocationService {
         }
         return locationsOnMap;
     };
+
+    public List<HomeLocationDTO> getHomePosts(Double north, Double south, Double east, Double west) {
+            List<HomeLocationDTO> homePosts = this.getAllHomeLocations();
+
+            for (HomeLocationDTO location : homePosts) {
+                if (location.getLatitude() > south && location.getLatitude() < north &&
+                        location.getLongitude() > east && location.getLongitude() < west) {
+                    homePosts.add(location);
+                }
+            }
+
+            homePosts.sort(Comparator.comparing(HomeLocationDTO::getSaves));
+
+            return homePosts.stream()
+                        .limit(8)
+                        .collect(Collectors.toList());
+
+    }
 
     @Transactional
     public Optional<Location> updateLocation(int locationId, Location location, boolean isPartial) {

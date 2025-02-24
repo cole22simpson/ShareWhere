@@ -1,5 +1,6 @@
 package com.ShareWhere.ShareWhere.controllers;
 
+import com.ShareWhere.ShareWhere.DTOs.HomeLocationDTO;
 import com.ShareWhere.ShareWhere.DTOs.LocationDTO;
 import com.ShareWhere.ShareWhere.DTOs.LocationPreviewDTO;
 import com.ShareWhere.ShareWhere.models.Image;
@@ -50,15 +51,15 @@ public class LocationController {
 
     @PostMapping(value = "/post", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createLocation(
-            @RequestParam(value = "userId") String userId,
-            @RequestParam(value = "locationName") String locationName,
-            @RequestParam(value = "locationDescription") String locationDescription,
+            @RequestParam(value = "user_id") String userId,
+            @RequestParam(value = "location_name") String locationName,
+            @RequestParam(value = "location_description") String locationDescription,
             @RequestParam(value = "latitude") String latitude,
             @RequestParam(value = "longitude") String longitude,
             @RequestParam(value = "city") String city,
-            @RequestParam(value = "pinType") String pinType,
-            @RequestParam(value = "tagNames") String tagNames,
-            @RequestPart(value = "imageFiles") List<MultipartFile> imageFiles) throws IOException {
+            @RequestParam(value = "pin_type") String pinType,
+            @RequestParam(value = "tag_names") String tagNames,
+            @RequestPart(value = "image_files") List<MultipartFile> imageFiles) throws IOException {
 
         Double latitudeDouble;
         Double longitudeDouble;
@@ -86,8 +87,8 @@ public class LocationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new LocationDTO(location));
     }
 
-    @GetMapping("/{locationId}")
-    public ResponseEntity<LocationDTO> getLocationById(@PathVariable int locationId) {
+    @GetMapping("/{location_id}")
+    public ResponseEntity<LocationDTO> getLocationById(@PathVariable("location_id") int locationId) {
         return locationService.getLocationDTOById(locationId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -103,22 +104,32 @@ public class LocationController {
         return ResponseEntity.ok(locations);
     }
 
-    @PutMapping("/{locationId}")
-    public ResponseEntity<Location> updateLocation(@PathVariable("locationId") int locationId, @RequestBody Location locationUpdates) {
+    @GetMapping("/home-posts")
+    public ResponseEntity<List<HomeLocationDTO>> getHomePosts(
+            @RequestParam(value = "north") Double north,
+            @RequestParam(value = "south") Double south,
+            @RequestParam(value = "east") Double east,
+            @RequestParam(value = "west") Double west) {
+        List<HomeLocationDTO> locations = locationService.getHomePosts(north, south, east, west);
+        return ResponseEntity.ok(locations);
+    }
+
+    @PutMapping("/{location_id}")
+    public ResponseEntity<Location> updateLocation(@PathVariable("location_id") int locationId, @RequestBody Location locationUpdates) {
         Optional<Location> updatedLocation = locationService.updateLocation(locationId, locationUpdates, false);
         return updatedLocation.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PatchMapping("/{locationId}")
-    public ResponseEntity<Location> updateLocationFields(@PathVariable("locationId") int locationId, @RequestBody Location locationUpdates) {
+    @PatchMapping("/{location_id}")
+    public ResponseEntity<Location> updateLocationFields(@PathVariable("location_id") int locationId, @RequestBody Location locationUpdates) {
         Optional<Location> updatedLocation = locationService.updateLocation(locationId, locationUpdates, true);
         return updatedLocation.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/locations/{locationId}")
-    public ResponseEntity<Location> deleteUser(@PathVariable("locationId") int locationId) {
+    @DeleteMapping("/locations/{location_id}")
+    public ResponseEntity<Location> deleteUser(@PathVariable("location_id") int locationId) {
         if (locationService.deleteLocation(locationId)) {
             return ResponseEntity.noContent().build();
         }

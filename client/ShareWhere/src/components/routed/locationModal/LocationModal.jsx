@@ -7,11 +7,13 @@ import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
 import { IoBookmarkOutline, IoBookmark  } from "react-icons/io5";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
+import useAuth from "../authContext/useAuth";
+import { useNavigate } from "react-router-dom";
 import { Map, AdvancedMarker, APIProvider} from "@vis.gl/react-google-maps";
 
 dayjs.extend(relativeTime);
 
-const LocationModal = ({ selectedPost, closeLocationModal }) => {
+const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) => {
     const MAP_ID = import.meta.env.VITE_MAP_ID;
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
     
@@ -22,10 +24,13 @@ const LocationModal = ({ selectedPost, closeLocationModal }) => {
     const multipleImages = selectedPost.images.length > 1;
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const locationTags = selectedPost.tags;
+    const navigate = useNavigate();
     const [isMounted, setIsMounted] = useState(false);
     const [isSaved, setIsSaved] = useState(selectedPost.savedBy.includes(parseInt(localStorage.getItem("userId"))));
     const [numSaves, setNumSaves] = useState(selectedPost.saves);
     const [commentImageOpen, setCommentImageOpen] = useState(false);
+    const userNameClass = getUsernameClass(selectedPost.creatorName);
+    const { userLoggedIn, setUserLoggedIn } = useAuth();
 
     useEffect(() => {
         setIsMounted(true);
@@ -37,6 +42,7 @@ const LocationModal = ({ selectedPost, closeLocationModal }) => {
                     setCommentImageOpen(false); // Close only the image modal
                 } else {
                     closeLocationModal(); // Close the post modal if no image is open
+                    handleModalOpened(false);
                 }
             }
         };
@@ -46,40 +52,66 @@ const LocationModal = ({ selectedPost, closeLocationModal }) => {
         return () => {
             window.removeEventListener('keydown', handleEscapeKey);
         };
-    }, [closeLocationModal, isMounted, commentImageOpen]);
+    }, [isMounted, commentImageOpen]);
 
-    
+    function getUsernameClass(username) {
+        const length = username.length;
+        if (length <= 10) {
+            return "big";
+        } else if (length <= 20) {
+            return "medium";
+        } else if (length <= 30) {
+            return "small";
+        } else {
+            return "";
+        }
+    }
 
     const handleNextImage = () => {
+        console.log("NEXT");
         setCurrentImageIndex((prevIndex) =>
             (prevIndex + 1) % selectedPost.images.length 
         );
     };
 
     const handlePrevImage = () => {
+        console.log("PREV");
         setCurrentImageIndex((prevIndex) =>
             (prevIndex - 1 + selectedPost.images.length) % selectedPost.images.length 
         );
     };
 
+    const handleProfileClick = (user_id) => {
+        if (!userLoggedIn) {
+            navigate("/login");
+        }
+        else {
+            navigate(`/profile/${user_id}`);
+        }
+
+    }
+
     const handleSave = async (event, action) => {
         event.preventDefault();
+
+        if (!userLoggedIn) {
+            navigate("/login");
+        }
+
         const type = action;
 
         const userId = localStorage.getItem("userId");
 
         const formData = new FormData();
 
-        formData.append("userId", userId);
-        formData.append("locationId", locationId);
+        formData.append("user_id", userId);
+        formData.append("location_id", locationId);
         formData.append("field", type);
 
         try {
             const response = await fetch(`http://localhost:8080/users/save`, {
                 method: "PATCH",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                },
+                credentials: "include",
                 body: formData
             });
 
@@ -96,16 +128,21 @@ const LocationModal = ({ selectedPost, closeLocationModal }) => {
         }
     }
 
+    const handleCloseModal = () => {
+        closeLocationModal();
+        handleModalOpened(false);
+    };
+
     return (
         <div className="location-modal-container">
             <div className="info-container">
                 <div className="back-btn-container">
-                    <button className="back-to-map" onClick={closeLocationModal}><MdClose/></button>
+                    <button className="back-to-map" onClick={handleCloseModal}><MdClose/></button>
                 </div>
                 <div className="top-row">
                     <div className="creator-info">
                         <img className="creator-profile-pic" src={selectedPost.creatorProfilePic.imageUrl}></img>
-                        <p className="creator-name">{selectedPost.creatorName}</p>
+                        <p className={`creator-name ${userNameClass}`} onClick={() => handleProfileClick(selectedPost.createdByProfileID)}>{selectedPost.creatorName}</p>
                     </div>
                     <p className="created-at">Posted {timeAgo}</p>
                 </div>
@@ -185,7 +222,8 @@ LocationModal.propTypes = {
         savedBy: PropTypes.arrayOf(PropTypes.number).isRequired,
         tags: PropTypes.arrayOf(PropTypes.object).isRequired, 
       }).isRequired,
-    closeLocationModal: PropTypes.func.isRequired
+    closeLocationModal: PropTypes.func,
+    handleModalOpened: PropTypes.func,
 }
 
 export default LocationModal;

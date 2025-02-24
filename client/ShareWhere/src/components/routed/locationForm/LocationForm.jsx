@@ -6,6 +6,8 @@ import TagSelector from "../tagSelector/TagSelector.jsx";
 import ImageUploader from "../imageUploader/ImageUploader";
 import AddLocMap from "../addLocMap/AddLocMap";
 import PinSelector from "../pinSelector/PinSelector.jsx";
+import UseAnimations from "react-useanimations";
+import loading from 'react-useanimations/lib/loading';
 
 const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, setSelectedTags, images, setImages }) => {
     const [rawName, setName] = useState("");
@@ -15,7 +17,18 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
     const [longitude, setLongitude] = useState(initialLongitude);
     const [submitted, setSubmitted] = useState(false);
     const GEOCODE_API_KEY = import.meta.env.VITE_GEOCODE_API;
+    const [disabled, setDisabled] = useState(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setDisabled(
+            submitted ||
+            rawName === "" ||
+            rawDetails === "" ||
+            images.length === 0 ||
+            Object.keys(selectedTags).length === 0
+        );
+    }, [submitted, rawName, rawDetails, images, selectedTags]);
 
     const handleCharCount = (e, maxLength) => `${e.target.value.length} / ${maxLength}`;
 
@@ -53,25 +66,23 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
     
         const formData = new FormData();
     
-        formData.append("userId", userId);
-        formData.append("locationName", name);
-        formData.append("locationDescription", details);
+        formData.append("user_id", userId);
+        formData.append("location_name", name);
+        formData.append("location_description", details);
         formData.append("latitude", parseFloat(latitude));
         formData.append("longitude", parseFloat(longitude));
         formData.append("city", city);  // This should now have the correct value
-        formData.append("pinType", pinType);
-        formData.append("tagNames", selectedTagsArray.join(","));
+        formData.append("pin_type", pinType);
+        formData.append("tag_names", selectedTagsArray.join(","));
         images.forEach(image => {
-            formData.append("imageFiles", image);
+            formData.append("image_files", image);
         });
     
         try {
             const response = await fetch("http://localhost:8080/locations/post", {
                 method: "POST",
                 body: formData,
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
+                credentials: "include",
             });
     
             if (!response.ok) {
@@ -120,14 +131,14 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
                 </div>
                 <button
                     className="submit-location"
-                    disabled={
-                        submitted ||
-                        rawName === "" ||
-                        rawDetails === "" ||
-                        images.length === 0 ||
-                        Object.keys(selectedTags).length === 0
-                    }
-                    onClick={handleSubmit}>Share Where</button>
+                    disabled={disabled}
+                    onClick={handleSubmit}>
+                        {submitted ? (
+                            <UseAnimations animation={loading} size={30} />
+                        ) : (
+                            <p>Share Where</p>
+                        )}
+                </button>
             </div>
             <AddLocMap initialLatitude={initialLatitude} initialLongitude={initialLongitude} latitude={latitude} longitude={longitude} onLocationChange={handleLocationChange} />
         </div>

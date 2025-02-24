@@ -37,6 +37,42 @@
     border-radius: 10px;
 }
 
+.map-type-controls {
+    height: 100%;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.map-type {
+    border: 1px solid gray;
+    height: 100px;
+    margin: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 5px;
+}
+
+.map-type.selected {
+    background-color: rgb(173, 173, 173);
+}
+
+.map-type:hover {
+    background-color: rgb(173, 173, 173);
+    cursor: pointer;
+}
+
+.map-type img {
+    height: 100%;
+    width: 100px;
+    border-radius: 10px;
+    border: 1px solid;
+}
+
 .close-type-container {
     width: 100%;
     display: flex;
@@ -52,7 +88,6 @@
     align-items: center;
     border-radius: 100%;
     padding: 5px;
-
 }
 
 .close-map-types:hover{

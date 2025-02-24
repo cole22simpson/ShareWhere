@@ -1,0 +1,206 @@
+import {useState, useEffect} from "react";
+import useAuth from "../authContext/useAuth";
+import HomePost from "../homePost/HomePost";
+import PropTypes from "prop-types";
+import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
+import { BsPersonPlusFill } from "react-icons/bs";
+import { getLocation } from "../../../assets/helpers/getLocation";
+
+const HomePostSection = ({ postType }) => {
+    const { userLoggedIn } = useAuth(); // No need to set userLoggedIn here
+    const [postData, setPostData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [modalOpened, setModalOpened] = useState(false);
+    const [locationLoaded, setLocationLoaded] = useState(false); // Track location loading
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const postsPerPage = 4;
+
+    const noPostsMessage = postType === "FOLLOWING" ? (
+        <>You don&apos;t follow anyone yet</>
+    ) : (
+        "No posts nearby"
+    );
+
+    const renderPosts = (posts) => {
+        const startIndex = (currentPage - 1) * postsPerPage;
+        const endIndex = Math.min(startIndex + postsPerPage, posts.length); // Handle last page
+
+        const currentPosts = posts.slice(startIndex, endIndex);
+
+        return currentPosts.length > 0 ? (
+            <div className="local-posts">
+                {currentPosts.map((post) => (
+                    <HomePost
+                        key={post.locationId}
+                        post={post}
+                        handleModalOpened={handleModalOpened}
+                        setModalOpened={setModalOpened}
+                    />
+                ))}
+            </div>
+        ) : (
+            <div className="no-following">
+                {noPostsMessage}
+            </div>
+        );
+    };
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const renderPagination = (posts) => {
+        const totalPages = Math.ceil(posts.length / postsPerPage);
+
+        if (totalPages <= 1) {
+            return null;
+        }
+
+        const pageNumbers = [];
+        for (let i = 1; i <= totalPages; i++) {
+            pageNumbers.push(i);
+        }
+
+        return (
+            <div className="pagination">
+                    <button
+                        onClick={() => handlePageChange(1)}
+                        disabled={currentPage === 1} // Disable left arrow on first page
+                    >
+                        <RiArrowLeftCircleLine />
+                    </button>
+                    <button
+                        onClick={() => handlePageChange(2)}
+                        disabled={currentPage === 2 || totalPages === 1} // Disable right arrow on second or only page
+                    >
+                        <RiArrowRightCircleLine />
+                    </button>
+            </div>
+        );
+    };
+
+    const handleModalOpened = (action) => {
+        if (action) {
+            setModalOpened(true);
+            document.body.classList.add("hidden");
+        } else {
+            setModalOpened(false);
+            document.body.classList.remove("hidden");
+        }
+    };
+
+    const getBoundingCoordinates = (lat, lng, distanceInMiles) => {
+        const milesPerDegreeLat = 69;
+        const milesPerDegreeLng = 69 * Math.cos((lat * Math.PI) / 180);
+
+        return {
+            north: lat + (distanceInMiles / milesPerDegreeLat),
+            south: lat - (distanceInMiles / milesPerDegreeLat),
+            east: lng + (distanceInMiles / milesPerDegreeLng),
+            west: lng - (distanceInMiles / milesPerDegreeLng),
+        };
+    };
+
+    const loadFollowing = async () => {
+        setIsLoading(true);
+        try {
+            const user_id = localStorage.getItem("userId");
+            const response = await fetch(`http://localhost:8080/users/${user_id}/following`, {
+                method: "GET",
+                credentials: "include",
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error fetching following data:", response.status, errorData);
+            } else {
+                const userData = await response.json();
+                setPostData(userData.followingPosts);
+            }
+        } catch (error) {
+            console.error("Error loading following data:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const loadHomePosts = async () => {
+        setIsLoading(true); // Set loading to true before fetching
+        try {
+            const coords = JSON.parse(localStorage.getItem("coords"));
+            const lat = coords.lat;
+            const lng = coords.lng;
+            const { north, south, east, west } = getBoundingCoordinates(lat, lng, 30);
+
+            const response = await fetch(
+                `http://localhost:8080/locations/home-posts?north=${north}&south=${south}&east=${east}&west=${west}`,
+                {
+                    method: "GET",
+                    credentials: "include",
+                }
+            );
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error fetching home posts:", response.status, errorData);
+            } else {
+              const locationData = await response.json();
+              setPostData(locationData);
+            }
+
+        } catch (error) {
+            console.error("Error loading home posts:", error);
+        } finally {
+            setIsLoading(false); // Set loading to false whether successful or not
+        }
+    };
+
+    const handleGetLocation = async () => {
+        try {
+            const coords = await getLocation();
+            localStorage.setItem("coords", JSON.stringify(coords));
+            setLocationLoaded(true);
+        } catch (error) {
+            console.error("Error getting location:", error);
+            setLocationLoaded(true);
+        }
+    };
+
+    useEffect(() => {
+        if (!localStorage.getItem("coords")) {
+            handleGetLocation();
+        } else {
+          setLocationLoaded(true);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (locationLoaded && postType === "NEARBY") {
+            loadHomePosts();
+        }
+    }, [locationLoaded]);
+
+    useEffect(() => {
+        if (userLoggedIn && postType === "FOLLOWING") {
+            loadFollowing();
+        }
+    }, [userLoggedIn, modalOpened]);
+
+    return (        
+        <>
+            {!isLoading && postData && (
+                <>
+                    {renderPosts(postData)}
+                    {renderPagination(postData)}
+                </>
+            )}
+        </>
+    );
+};
+
+HomePostSection.propTypes = {
+    postType: PropTypes.string.isRequired,
+}
+
+export default HomePostSection;
