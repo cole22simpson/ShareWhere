@@ -16,6 +16,8 @@ public class LocationPreviewDTO {
     private Double latitude;
     private Double longitude;
     private String city;
+//    private String latitudeHemisphere;
+//    private String longitudeHemisphere;
     private String pinType;
     private ImageDTO previewImage;
     private Set<Tag> tags = new HashSet<>();
@@ -29,6 +31,8 @@ public class LocationPreviewDTO {
         this.pinType = location.getPinType();
         this.tags.addAll(location.getTags());
         this.city = location.getCity();
+//        this.latitudeHemisphere = location.getLatitudeHemisphere();
+//        this.longitudeHemisphere = location.getLongitudeHemisphere();
         this.saves = location.getSaves();
         this.previewImage = new ImageDTO(location.getImages().get(0));
     }

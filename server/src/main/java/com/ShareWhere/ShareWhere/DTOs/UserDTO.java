@@ -16,6 +16,8 @@ public class UserDTO {
     private Double latitude;
     private Double longitude;
     private String city;
+//    private String latitudeHemisphere;
+//    private String longitudeHemisphere;
     private String role;
     private Set<Integer> followers = new HashSet<>();
     private Set<Integer> following = new HashSet<>();
@@ -31,6 +33,8 @@ public class UserDTO {
         this.latitude = user.getLatitude();
         this.longitude = user.getLongitude();
         this.city = user.getCity();
+//        this.latitudeHemisphere = user.getLatitudeHemisphere();
+//        this.longitudeHemisphere = user.getLongitudeHemisphere();
         this.role = user.getRole();
         for (User follower : user.getFollowers()) {
             followers.add(follower.getUserId());

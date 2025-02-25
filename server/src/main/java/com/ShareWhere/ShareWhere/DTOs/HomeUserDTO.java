@@ -16,6 +16,8 @@ public class HomeUserDTO {
     private Double latitude;
     private Double longitude;
     private String city;
+//    private String latitudeHemisphere;
+//    private String longitudeHemisphere;
     private Set<Integer> following = new HashSet<>();
     private List<HomeLocationDTO> followingPosts = new ArrayList<>();
 
@@ -28,5 +30,7 @@ public class HomeUserDTO {
             following.add(follow.getUserId());
         }
         this.city = user.getCity();
+//        this.latitudeHemisphere = user.getLatitudeHemisphere();
+//        this.longitudeHemisphere = user.getLongitudeHemisphere();
     }
 }

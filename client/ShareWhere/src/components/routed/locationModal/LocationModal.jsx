@@ -8,6 +8,7 @@ import { IoBookmarkOutline, IoBookmark  } from "react-icons/io5";
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import useAuth from "../authContext/useAuth";
+import { BsThreeDots } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { Map, AdvancedMarker, APIProvider} from "@vis.gl/react-google-maps";
 
@@ -31,6 +32,8 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
     const [commentImageOpen, setCommentImageOpen] = useState(false);
     const userNameClass = getUsernameClass(selectedPost.creatorName);
     const { userLoggedIn, setUserLoggedIn } = useAuth();
+    const [deletePost, setDeletePost] = useState(false);
+    const ownedPost = selectedPost.createdByProfileID === parseInt(localStorage.getItem("userId"));
 
     useEffect(() => {
         setIsMounted(true);
@@ -88,7 +91,29 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
         else {
             navigate(`/profile/${user_id}`);
         }
+    }
 
+    const handleDeletePost = async (event, postId) => {
+        event.preventDefault();
+
+        try {
+            const response = await fetch(`http://localhost:8080/locations/${postId}`, {
+                method: "DELETE",
+                credentials: "include",
+            });
+
+            if (response.ok) {
+                closeLocationModal();
+                if (window.location.pathname === "/") {
+                    window.location.reload();
+                }
+            }
+            else {
+                console.error("Delete location failed: ", await response.text());
+            }
+        } catch (error) {
+            console.error("Error during delete: ", error);
+        }
     }
 
     const handleSave = async (event, action) => {
@@ -137,6 +162,20 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
         <div className="location-modal-container">
             <div className="info-container">
                 <div className="back-btn-container">
+                    {deletePost && (
+                        <div className="delete-post-container">
+                            <div onClick={(e) => handleDeletePost(e, selectedPost.locationId)}  className="delete-post">
+                                Delete Post
+                            </div>
+                        </div>
+                    )}
+                    <button onClick={() => setDeletePost(!deletePost)} disabled={!ownedPost} className="delete-comment">
+                        {ownedPost ? (
+                            <BsThreeDots className="dots" />
+                        ) : (
+                            <div className="delete-comment" />
+                        )}
+                    </button>
                     <button className="back-to-map" onClick={handleCloseModal}><MdClose/></button>
                 </div>
                 <div className="top-row">

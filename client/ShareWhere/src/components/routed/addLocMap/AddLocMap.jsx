@@ -144,7 +144,6 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
             const east = mapBounds.Gh.lo;
             const west = mapBounds.Gh.hi;
             setBounds({ north: north, south: south, east: east, west: west });
-            
             const newLat = mapRef.map.center.lat();
             const newLng = mapRef.map.center.lng();
             setCenter({ lat: newLat, lng: newLng });
@@ -238,33 +237,33 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                                             <div onClick={() => setControlsModal(false)} className="close-map-types"><MdClose/></div>
                                         </div>
                                         <div 
-      className={`map-type ${mapType === 'roadmap' ? 'selected' : ''}`} 
-      onClick={() => handleMapTypeChange('roadmap')}
-    >
-      <p>Roadmap</p>
-      <img src={"/assets/images/roadmap.png"} alt="Roadmap" /> {/* Add alt attribute */}
-    </div>
-    <div 
-      className={`map-type ${mapType === 'satellite' ? 'selected' : ''}`} 
-      onClick={() => handleMapTypeChange('satellite')}
-    >
-      <p>Satellite</p>
-      <img src={"/assets/images/satellite.png"} alt="Satellite" /> {/* Add alt attribute */}
-    </div>
-    <div 
-      className={`map-type ${mapType === 'hybrid' ? 'selected' : ''}`} 
-      onClick={() => handleMapTypeChange('hybrid')}
-    >
-      <p>Hybrid</p>
-      <img src={"/assets/images/hybrid.png"} alt="Hybrid" /> {/* Add alt attribute */}
-    </div>
-    <div 
-      className={`map-type ${mapType === 'terrain' ? 'selected' : ''}`} 
-      onClick={() => handleMapTypeChange('terrain')}
-    >
-      <p>Terrain</p>
-      <img src={"/assets/images/terrain.png"} alt="Terrain" /> {/* Add alt attribute */}
-    </div>
+                                            className={`map-type ${mapType === 'roadmap' ? 'selected' : ''}`} 
+                                            onClick={() => handleMapTypeChange('roadmap')}
+                                        >
+                                            <p>Roadmap</p>
+                                            <img src={"/assets/images/roadmap.png"} alt="Roadmap" /> {/* Add alt attribute */}
+                                        </div>
+                                        <div 
+                                            className={`map-type ${mapType === 'satellite' ? 'selected' : ''}`} 
+                                            onClick={() => handleMapTypeChange('satellite')}
+                                        >
+                                            <p>Satellite</p>
+                                            <img src={"/assets/images/satellite.png"} alt="Satellite" /> {/* Add alt attribute */}
+                                        </div>
+                                        <div 
+                                            className={`map-type ${mapType === 'hybrid' ? 'selected' : ''}`} 
+                                            onClick={() => handleMapTypeChange('hybrid')}
+                                        >
+                                            <p>Hybrid</p>
+                                            <img src={"/assets/images/hybrid.png"} alt="Hybrid" /> {/* Add alt attribute */}
+                                        </div>
+                                        <div 
+                                            className={`map-type ${mapType === 'terrain' ? 'selected' : ''}`} 
+                                            onClick={() => handleMapTypeChange('terrain')}
+                                        >
+                                            <p>Terrain</p>
+                                            <img src={"/assets/images/terrain.png"} alt="Terrain" /> {/* Add alt attribute */}
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -283,6 +282,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                         gestureHandling={"greedy"}
                         mapTypeId={mapType}
                         mapId={MAP_ID}
+                        minZoom={6}
                         fullscreenControl={false}
                         mapTypeControl={false}
                         mapTypeControlOptions={{ position: ControlPosition.TOP_RIGHT }}

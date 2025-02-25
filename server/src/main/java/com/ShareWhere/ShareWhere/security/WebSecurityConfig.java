@@ -48,9 +48,14 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(registry -> registry
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/tags").permitAll()
-                                .requestMatchers("/locations/{location_id}").permitAll()
+                                .requestMatchers("/search").permitAll()
+                        .requestMatchers("/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/locations/{location_id}").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/locations/{location_id}").permitAll()
                                 .requestMatchers("/locations/pins").permitAll()
+                        .requestMatchers("/locations").permitAll()
                                 .requestMatchers("/locations/home-posts").permitAll()
+                                .requestMatchers("/locations/home-posts/{tag_id}").permitAll()
                                 .requestMatchers("/").permitAll()
                                 .anyRequest().authenticated()
                 );

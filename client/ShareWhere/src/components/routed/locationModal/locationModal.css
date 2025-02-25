@@ -384,3 +384,24 @@
     color: rgb(61, 57, 57);
     cursor: pointer;
 }
+
+.delete-post-container {
+    display: flex;
+    align-items: center;
+}
+
+.delete-post {
+    cursor: pointer;
+    background-color: rgb(199, 73, 73);
+    border: 2px solid;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.delete-post:hover {
+    background-color: rgb(201, 16, 16);
+}
+
+.dots {
+    font-size: 20px;
+}

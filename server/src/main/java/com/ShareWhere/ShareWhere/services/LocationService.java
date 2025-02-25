@@ -8,6 +8,7 @@ import com.ShareWhere.ShareWhere.repositories.TagRepo;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,13 +29,15 @@ public class LocationService {
     private final TagService tagService;
     private final UserService userService;
     private final AzureBlobStorageService azureBlobStorageService;
+    private final DataSourceTransactionManagerAutoConfiguration dataSourceTransactionManagerAutoConfiguration;
 
-    public LocationService(LocationRepo locationRepo, TagRepo tagRepo, TagService tagService, UserService userService, AzureBlobStorageService azureBlobStorageService) {
+    public LocationService(LocationRepo locationRepo, TagRepo tagRepo, TagService tagService, UserService userService, AzureBlobStorageService azureBlobStorageService, DataSourceTransactionManagerAutoConfiguration dataSourceTransactionManagerAutoConfiguration) {
         this.locationRepo = locationRepo;
         this.tagRepo = tagRepo;
         this.tagService = tagService;
         this.userService = userService;
         this.azureBlobStorageService = azureBlobStorageService;
+        this.dataSourceTransactionManagerAutoConfiguration = dataSourceTransactionManagerAutoConfiguration;
     }
 
     public List<LocationDTO> getAllLocations() {
@@ -107,34 +110,67 @@ public class LocationService {
     }
 
     public List<LocationPreviewDTO> getLocationsOnMap(Double north, Double south, Double east, Double west) {
-        List<LocationPreviewDTO> locations = this.getAllLocationPreviews();
-
+        List<LocationPreviewDTO> locations = getAllLocationPreviews();
         List<LocationPreviewDTO> locationsOnMap = new ArrayList<>();
+
         for (LocationPreviewDTO location : locations) {
-            if (location.getLatitude() > south && location.getLatitude() < north &&
-                    location.getLongitude() > east && location.getLongitude() < west) {
+            if (withinBounds(location, north, south, east, west)) {
                 locationsOnMap.add(location);
             }
         }
         return locationsOnMap;
-    };
+    }
 
     public List<HomeLocationDTO> getHomePosts(Double north, Double south, Double east, Double west) {
-            List<HomeLocationDTO> homePosts = this.getAllHomeLocations();
+        List<HomeLocationDTO> homePosts = new ArrayList<>(); // Initialize as an empty list
+        List<HomeLocationDTO> allLocations = getAllHomeLocations(); // Get all locations
 
-            for (HomeLocationDTO location : homePosts) {
-                if (location.getLatitude() > south && location.getLatitude() < north &&
-                        location.getLongitude() > east && location.getLongitude() < west) {
-                    homePosts.add(location);
-                }
+        for (HomeLocationDTO location : allLocations) {
+            if (withinBounds(location, north, south, east, west)) {
+                homePosts.add(location);
             }
+        }
 
-            homePosts.sort(Comparator.comparing(HomeLocationDTO::getSaves));
+        homePosts.sort(Comparator.comparing(HomeLocationDTO::getSaves));
 
-            return homePosts.stream()
-                        .limit(8)
-                        .collect(Collectors.toList());
+        return homePosts.stream()
+                .limit(8)
+                .collect(Collectors.toList());
+    }
 
+    public List<HomeSearchResultDTO> getAllLocationNames(String query) {
+        List<Location> locations = locationRepo.findAll();
+        List<HomeSearchResultDTO> filteredLocations = new ArrayList<>();
+        for (Location location : locations) {
+            if (location.getLocationName().toLowerCase().contains(query.toLowerCase())) {
+
+                filteredLocations.add(new HomeSearchResultDTO(
+                        location.getLocationName(), location.getLocationId(),
+                        location.getImages().get(0).getImageUrl(),
+                        "LOCATION"
+
+                ));
+            }
+        }
+        return filteredLocations;
+    };
+
+    public List<HomeLocationDTO> getHomePostsByType(Double north, Double south, Double east, Double west, int tagId) {
+        List<HomeLocationDTO> homePosts = new ArrayList<>();
+        List<HomeLocationDTO> allLocations = getAllHomeLocations();
+
+        for (HomeLocationDTO location : allLocations) {
+            if (withinBounds(location, north, south, east, west) &&
+                    location.getTags().stream().anyMatch(tag -> tag.getTagId() == tagId)) {
+                homePosts.add(location);
+            }
+        }
+
+        homePosts.sort(Comparator.comparing(HomeLocationDTO::getSaves).reversed());
+
+        return homePosts.stream()
+                .limit(8)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -163,5 +199,29 @@ public class LocationService {
             return true;
         }
         return false;
+    }
+
+    public boolean withinBounds(LocationPreviewDTO location, Double north, Double south, Double east, Double west) {
+        double locLat = location.getLatitude();
+        double locLon = location.getLongitude();
+
+        if (west < east) {
+            return locLat > south && locLat < north && locLon > west && locLon < east;
+        }
+        else {
+            return locLat > south && locLat < north && !(locLon > west || locLon < east);
+        }
+    }
+
+    public boolean withinBounds(HomeLocationDTO location, Double north, Double south, Double east, Double west) {
+        double locLat = location.getLatitude();
+        double locLon = location.getLongitude();
+
+        if (west < east) {
+            return locLat > south && locLat < north && locLon > west && locLon < east;
+        }
+        else {
+            return locLat > south && locLat < north && (locLon > west || locLon < east);
+        }
     }
 }

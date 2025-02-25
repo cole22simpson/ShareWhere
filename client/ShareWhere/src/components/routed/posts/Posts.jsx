@@ -118,7 +118,7 @@ const Posts = ({ userId }) => {
                     </div>
                     {showModal && (
                             <LocationModal
-                                handleModalOpened={(handleModalOpened)}
+                                handleModalOpened={handleModalOpened}
                                 selectedPost={selectedPost}
                                 closeLocationModal={closeLocationModal}
                             />

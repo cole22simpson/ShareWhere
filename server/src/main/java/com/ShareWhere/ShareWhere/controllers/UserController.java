@@ -79,6 +79,7 @@ public class UserController {
         return ResponseEntity.ok(savedLocations);
     }
 
+
     @PatchMapping("/follow")
     public ResponseEntity<Set<Integer>> updateUserFollows(
             @RequestParam("follower_id") int followerId,
@@ -89,6 +90,25 @@ public class UserController {
                 .map(UserDTO::getFollowing)
                 .orElse(Collections.emptySet());
         return ResponseEntity.ok(following);
+    }
+
+    @PatchMapping("/{user_id}/change-location")
+    public ResponseEntity<?> changedLocation(
+            @PathVariable("user_id") int userId,
+            @RequestParam("latitude") Double latitude,
+            @RequestParam("longitude") Double longitude,
+            @RequestParam("city") String city) {
+
+        try {
+            userService.updateUserLocation(userId, latitude, longitude, city);
+            return ResponseEntity.ok().build(); // 200 OK - Successful update
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage()); // 400 Bad Request
+        } catch (Exception e) { // Catch other exceptions (e.g., database errors)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 Internal Server Error
+        }
     }
 
     @PutMapping("/{user_id}")

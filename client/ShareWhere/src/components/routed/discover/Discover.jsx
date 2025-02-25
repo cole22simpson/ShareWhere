@@ -400,10 +400,34 @@ const Discover = () => {
                                             <div className="close-type-container">
                                                 <div onClick={() => setControlsModal(false)} className="close-map-types"><MdClose/></div>
                                             </div>
-                                            <div onClick={() => handleMapTypeChange('roadmap')}>Roadmap</div>
-                                            <div onClick={() => handleMapTypeChange('satellite')}>Satellite</div>
-                                            <div onClick={() => handleMapTypeChange('hybrid')}>Hybrid</div>
-                                            <div onClick={() => handleMapTypeChange('terrain')}>Terrain</div>
+                                            <div 
+                                                className={`map-type ${mapType === 'roadmap' ? 'selected' : ''}`} 
+                                                onClick={() => handleMapTypeChange('roadmap')}
+                                            >
+                                                <p>Roadmap</p>
+                                                <img src={"/assets/images/roadmap.png"} alt="Roadmap" /> {/* Add alt attribute */}
+                                            </div>
+                                            <div 
+                                                className={`map-type ${mapType === 'satellite' ? 'selected' : ''}`} 
+                                                onClick={() => handleMapTypeChange('satellite')}
+                                            >
+                                                <p>Satellite</p>
+                                                <img src={"/assets/images/satellite.png"} alt="Satellite" /> {/* Add alt attribute */}
+                                            </div>
+                                            <div 
+                                                className={`map-type ${mapType === 'hybrid' ? 'selected' : ''}`} 
+                                                onClick={() => handleMapTypeChange('hybrid')}
+                                            >
+                                                <p>Hybrid</p>
+                                                <img src={"/assets/images/hybrid.png"} alt="Hybrid" /> {/* Add alt attribute */}
+                                            </div>
+                                            <div 
+                                                className={`map-type ${mapType === 'terrain' ? 'selected' : ''}`} 
+                                                onClick={() => handleMapTypeChange('terrain')}
+                                            >
+                                                <p>Terrain</p>
+                                                <img src={"/assets/images/terrain.png"} alt="Terrain" /> {/* Add alt attribute */}
+                                            </div>
                                         </div>
                                     </div>
                                 )}
@@ -424,6 +448,7 @@ const Discover = () => {
                             mapId={MAP_ID}
                             fullscreenControl={false}
                             mapTypeControl={false}
+                            minZoom={6}
                             cameraControl={false}
                             onIdle={(map) => handleIdle(map)}
                             onMouseover={(map) => handleMapLoad(map)}

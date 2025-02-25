@@ -29,19 +29,26 @@ const HomePostSection = ({ postType }) => {
         const currentPosts = posts.slice(startIndex, endIndex);
 
         return currentPosts.length > 0 ? (
-            <div className="local-posts">
-                {currentPosts.map((post) => (
-                    <HomePost
-                        key={post.locationId}
-                        post={post}
-                        handleModalOpened={handleModalOpened}
-                        setModalOpened={setModalOpened}
-                    />
-                ))}
+            <div className="posts-housing">
+                <div className="local-posts">
+                    {currentPosts.map((post) => (
+                        <HomePost
+                            key={post.locationId}
+                            post={post}
+                            handleModalOpened={handleModalOpened}
+                            setModalOpened={setModalOpened}
+                        />
+                    ))}
+                </div>
+                <hr />
             </div>
+            
         ) : (
-            <div className="no-following">
-                {noPostsMessage}
+            <div className="posts-housing">
+                <div className="no-following">
+                    {noPostsMessage}
+                </div>
+                <hr />
             </div>
         );
     };
@@ -125,21 +132,26 @@ const HomePostSection = ({ postType }) => {
         }
     };
 
-    const loadHomePosts = async () => {
-        setIsLoading(true); // Set loading to true before fetching
+    const loadHomePosts = async (type) => {
+        setIsLoading(true);
         try {
             const coords = JSON.parse(localStorage.getItem("coords"));
             const lat = coords.lat;
             const lng = coords.lng;
             const { north, south, east, west } = getBoundingCoordinates(lat, lng, 30);
 
-            const response = await fetch(
-                `http://localhost:8080/locations/home-posts?north=${north}&south=${south}&east=${east}&west=${west}`,
-                {
-                    method: "GET",
-                    credentials: "include",
-                }
-            );
+            let url = `http://localhost:8080/locations/home-posts?north=${north}&south=${south}&east=${east}&west=${west}`;
+
+            if (type === "WATER") {
+                url = `http://localhost:8080/locations/home-posts/16?north=${north}&south=${south}&east=${east}&west=${west}`;
+            } else if (type === "VIEW") {
+                url = `http://localhost:8080/locations/home-posts/21?north=${north}&south=${south}&east=${east}&west=${west}`;
+            }
+
+            const response = await fetch(url, {
+                method: "GET",
+                credentials: "include",
+            });
 
             if (!response.ok) {
                 const errorData = await response.json();
@@ -176,8 +188,8 @@ const HomePostSection = ({ postType }) => {
     }, []);
 
     useEffect(() => {
-        if (locationLoaded && postType === "NEARBY") {
-            loadHomePosts();
+        if (locationLoaded && postType !== "FOLLOWING") {
+            loadHomePosts(postType);
         }
     }, [locationLoaded]);
 

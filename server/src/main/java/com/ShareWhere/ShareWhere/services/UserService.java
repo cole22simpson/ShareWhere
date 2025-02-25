@@ -73,6 +73,25 @@ public class UserService {
         return posts;
     }
 
+    public List<HomeSearchResultDTO> getAllUsernames(String query) {
+        List<User> users = userRepo.findAll();
+        List<HomeSearchResultDTO> filteredUsers = new ArrayList<>();
+        for (User user : users) {
+            if (user.getUsername().toLowerCase().contains(query.toLowerCase()) ||
+                    user.getName().toLowerCase().contains(query.toLowerCase())) {
+
+                filteredUsers.add(new HomeSearchResultDTO(
+                        user.getUsername(), user.getName(),
+                        user.getUserId(),
+                        user.getProfile().getProfilePic().getImageUrl(),
+                        "USER"
+
+                ));
+            }
+        }
+        return filteredUsers;
+    };
+
     public List<LocationPreviewDTO> getUserSavedPosts(int userId) {
         UserProfile profile = this.getUserProfileById(userId).orElseThrow(
                 () -> new EntityNotFoundException("User not found")
@@ -286,6 +305,31 @@ public class UserService {
     public Optional<UserProfile> getUserProfileById(int userId) {
         return userRepo.findById(userId)
                 .map(User::getProfile);
+    }
+
+    @Transactional
+    public void updateUserLocation(int userId, Double latitude, Double longitude, String city) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        // Validate inputs (optional, but highly recommended)
+        if (latitude == null || longitude == null || city == null || city.isEmpty()) {
+            throw new IllegalArgumentException("Latitude, longitude, and city are required.");
+        }
+
+        if (latitude < -90 || latitude > 90) {
+            throw new IllegalArgumentException("Invalid latitude. Must be between -90 and 90.");
+        }
+
+        if (longitude < -180 || longitude > 180) {
+            throw new IllegalArgumentException("Invalid longitude. Must be between -180 and 180.");
+        }
+
+        user.setLatitude(latitude);
+        user.setLongitude(longitude);
+        user.setCity(city);
+
+        userRepo.save(user);
     }
 
     @Transactional

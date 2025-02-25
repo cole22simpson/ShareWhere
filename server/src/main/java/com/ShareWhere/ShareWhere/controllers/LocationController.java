@@ -78,7 +78,6 @@ public class LocationController {
         List<String> tagNamesList = Arrays.asList(tagNames.split(","));
 
         int intUserId = Integer.parseInt(userId);
-        System.out.println("Id: " + intUserId);
 
         Location location = locationService.createLocation(
                 intUserId, locationName, locationDescription, latitudeDouble, longitudeDouble, city, pinType, tagNamesList, imageFiles
@@ -114,6 +113,17 @@ public class LocationController {
         return ResponseEntity.ok(locations);
     }
 
+    @GetMapping("/home-posts/{tag_id}")
+    public ResponseEntity<List<HomeLocationDTO>> getHomePosts(
+            @RequestParam(value = "north") Double north,
+            @RequestParam(value = "south") Double south,
+            @RequestParam(value = "east") Double east,
+            @RequestParam(value = "west") Double west,
+            @PathVariable(value = "tag_id") int tagId) {
+        List<HomeLocationDTO> locations = locationService.getHomePostsByType(north, south, east, west, tagId);
+        return ResponseEntity.ok(locations);
+    }
+
     @PutMapping("/{location_id}")
     public ResponseEntity<Location> updateLocation(@PathVariable("location_id") int locationId, @RequestBody Location locationUpdates) {
         Optional<Location> updatedLocation = locationService.updateLocation(locationId, locationUpdates, false);
@@ -128,7 +138,7 @@ public class LocationController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/locations/{location_id}")
+    @DeleteMapping("/{location_id}")
     public ResponseEntity<Location> deleteUser(@PathVariable("location_id") int locationId) {
         if (locationService.deleteLocation(locationId)) {
             return ResponseEntity.noContent().build();

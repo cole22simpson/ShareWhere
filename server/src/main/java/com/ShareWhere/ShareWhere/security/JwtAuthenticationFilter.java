@@ -31,7 +31,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 request.getRequestURI().startsWith("/auth/") ||
                 request.getRequestURI().equals("/") ||
                 request.getRequestURI().equals("/tags") ||
+                        request.getRequestURI().equals("/search") ||
+                        request.getRequestURI().equals("/users") ||
                 request.getRequestURI().equals("/locations/home-posts") ||
+                        request.getRequestURI().equals("/locations") ||
+                request.getRequestURI().equals("/locations/home-posts/{tag_id}") ||
                 request.getRequestURI().equals("/locations/{location_id}") ||
                 request.getRequestURI().equals("/locations/pins")) {
             filterChain.doFilter(request, response);
@@ -42,16 +46,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Optional<String> token = extractTokenFromRequest(request);
         if (token.isPresent()) {
             try {
-                // Decode and validate the token, then convert it to UserPrincipal
                 var decodedToken = jwtDecoder.decode(token.get());
                 var principal = jwtToPrincipalConverter.convert(decodedToken);
 
-                // Set the authentication in the SecurityContext
                 var authentication = new UserPrincipalAuthenticationToken(principal);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
             } catch (Exception e) {
-                // Log if token is invalid or any other error
                 logger.error("Authentication failed: " + e.getMessage());
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Set HTTP status to 401
                 response.getWriter().write("Authentication failed");

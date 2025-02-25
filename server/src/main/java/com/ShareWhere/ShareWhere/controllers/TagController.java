@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/tags")
@@ -25,8 +26,8 @@ public class TagController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Tag>> getAllTags() {
-        List<Tag> tags = tagService.getAllTags();
+    public ResponseEntity<Set<Tag>> getAllTags() {
+        Set<Tag> tags = tagService.getAllTags();
         return ResponseEntity.ok(tags);
     }
 
