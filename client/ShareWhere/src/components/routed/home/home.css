@@ -34,6 +34,7 @@
     border-radius: 100px;
     padding-left: 25px;
     font-size: 20px;
+    font-family: inherit;
 }
 
 .clear-query {
@@ -215,4 +216,10 @@
 
 .no-following span {
     margin-left: 10px;
+}
+
+@media (max-width: 700px) {
+    .banner-container {
+        background-size: auto;
+    }
 }

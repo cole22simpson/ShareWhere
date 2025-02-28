@@ -212,3 +212,188 @@
     background-color: rgb(201, 16, 16);
     cursor: pointer;
 }
+
+@media (max-width: 1500px) {
+    .comment-text {
+        font-size: 12px;
+    }
+
+    .delete-final {
+        font-size: 10px;
+        padding: 2px;
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 1500px) {
+    .commenter-prof-pic {
+        width: 30px;
+        height: 30px;
+    }
+
+    .commenter-username {
+        font-size: 10px;
+    }
+
+    .comment-time {
+        font-size: 10px;
+    }
+
+    .comment-text {
+        font-size: 10px;
+    }
+
+    .like-comment {
+        font-size: 10px;
+    }
+
+    .unlike-comment {
+        font-size: 10px;
+    }
+
+    .likes-container p {
+        font-size: 12px;
+    }
+
+    .comment-image {
+        height: 80px;
+    }
+
+    .view-images {
+        font-size: 10px;
+    }
+
+    .delete-final {
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .commenter-prof-pic {
+        width: 25px;
+        height: 25px;
+    }
+
+    .commenter-username {
+        font-size: 8px;
+    }
+
+    .comment-time {
+        font-size: 8px;
+    }
+
+    .comment-text {
+        font-size: 8px;
+    }
+
+    .comment-image {
+        height: 60px;
+    }
+
+    .view-images {
+        font-size: 8px;
+    }
+
+    .likes-container {
+        margin-left: 5px;
+    }
+
+    .delete-comment {
+        margin: 0;
+        margin-left: 7px;
+    }
+
+    .delete-final {
+        border-width: 1px;
+        margin-left: 5px;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .commenter-username {
+        font-size: 7px;
+    }
+
+    .comment-time {
+        font-size: 7px;
+    }
+
+    .comment-text {
+        font-size: 7px;
+    }
+
+    .comment-images {
+        gap: 3px;
+    }
+
+    .comment-image {
+        height: 50px;
+        border-radius: 3px;
+    }
+
+    .comment-images::-webkit-scrollbar {
+        height: 5px;
+    }    
+
+    .view-images {
+        font-size: 7px;
+    }
+
+    .likes-container {
+        margin-left: 5px;
+    }
+
+    .like-comment {
+        font-size: 7px;
+    }
+
+    .unlike-comment {
+        font-size: 7px;
+    }
+
+    .likes-container p {
+        font-size: 8px;
+    }
+
+    .delete-comment {
+        font-size: 8px;
+    }
+
+    .delete-final {
+        font-size: 7px;
+        padding: 1px;
+        margin-left: 5px;
+    }
+}
+
+@media (max-width: 350px) {
+
+    .comment-images {
+        gap: 2px;
+    }
+
+    .comment-image {
+        height: 40px;
+    }
+
+    .comment-images::-webkit-scrollbar {
+        height: 4px;
+    }    
+
+    .view-images {
+        font-size: 6px;
+    }
+
+    .delete-comment {
+        font-size: 8px;
+        margin-left: 3px;
+    }
+
+    .delete-final {
+        font-size: 7px;
+        padding: 1px;
+        margin-left: 3px;
+    }
+}

@@ -6,7 +6,8 @@ import { MdLocationPin, MdClose } from "react-icons/md";
 import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
 import { IoBookmarkOutline, IoBookmark  } from "react-icons/io5";
 import dayjs from "dayjs";
-import relativeTime from 'dayjs/plugin/relativeTime';
+import relativeTime from "dayjs/plugin/relativeTime";
+import updateLocale from 'dayjs/plugin/updateLocale';
 import useAuth from "../authContext/useAuth";
 import { BsThreeDots } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -15,16 +16,18 @@ import { Map, AdvancedMarker, APIProvider} from "@vis.gl/react-google-maps";
 dayjs.extend(relativeTime);
 
 const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) => {
+    
     const MAP_ID = import.meta.env.VITE_MAP_ID;
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
     
     const createdAtDate = dayjs(selectedPost.createdAt);
+    const timeAgo = createdAtDate.fromNow();
     const comments = selectedPost.comments;
     const locationId = selectedPost.locationId;
-    const timeAgo = createdAtDate.fromNow();
     const multipleImages = selectedPost.images.length > 1;
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const locationTags = selectedPost.tags;
+    const [selectedImage, setSelectedImage] = useState(null);
     const navigate = useNavigate();
     const [isMounted, setIsMounted] = useState(false);
     const [isSaved, setIsSaved] = useState(selectedPost.savedBy.includes(parseInt(localStorage.getItem("userId"))));
@@ -34,17 +37,53 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
     const { userLoggedIn, setUserLoggedIn } = useAuth();
     const [deletePost, setDeletePost] = useState(false);
     const ownedPost = selectedPost.createdByProfileID === parseInt(localStorage.getItem("userId"));
+    const [zoomedOutMap, setZoomedOutMap] = useState(15);
 
+    useEffect(() => {
+        function handleResize() {
+            if (window.innerWidth < 700) {
+                setZoomedOutMap(14);
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+    
+    useEffect(() => {
+        dayjs.extend(updateLocale);
+
+        dayjs.updateLocale('en', {
+            relativeTime: {
+                future: "in %s",
+                past: "%s",
+                s: '%ds',
+                m: "1m",
+                mm: "%dm",
+                h: "1h",
+                hh: "%dh",
+                d: "1d",
+                dd: "%dd",
+                M: "1mon",
+                MM: "%dmon",
+                y: "1y",
+                yy: "%dy"
+            }
+        });
+    }, []);
+    
     useEffect(() => {
         setIsMounted(true);
     
         const handleEscapeKey = (event) => {
             if (event.key === 'Escape' && isMounted) {
                 if (commentImageOpen) {
-                    event.stopPropagation(); // Prevent post modal from closing
-                    setCommentImageOpen(false); // Close only the image modal
+                    event.stopPropagation();
+                    setCommentImageOpen(false);
                 } else {
-                    closeLocationModal(); // Close the post modal if no image is open
+                    closeLocationModal();
                     handleModalOpened(false);
                 }
             }
@@ -56,6 +95,33 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
             window.removeEventListener('keydown', handleEscapeKey);
         };
     }, [isMounted, commentImageOpen]);
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") {
+                event.stopPropagation(); // Stop event from affecting post modal
+                closeImage();
+            }
+        };
+
+        if (selectedImage) {
+            window.addEventListener("keydown", handleKeyDown);
+        }
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [selectedImage]);
+
+    const openImage = (imageUrl) => {
+        setSelectedImage(imageUrl);
+        setCommentImageOpen(true);
+    };
+
+    const closeImage = () => {
+        setSelectedImage(null);
+        setCommentImageOpen(false);
+    };
 
     function getUsernameClass(username) {
         const length = username.length;
@@ -71,14 +137,12 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
     }
 
     const handleNextImage = () => {
-        console.log("NEXT");
         setCurrentImageIndex((prevIndex) =>
             (prevIndex + 1) % selectedPost.images.length 
         );
     };
 
     const handlePrevImage = () => {
-        console.log("PREV");
         setCurrentImageIndex((prevIndex) =>
             (prevIndex - 1 + selectedPost.images.length) % selectedPost.images.length 
         );
@@ -158,6 +222,43 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
         handleModalOpened(false);
     };
 
+    const getPinIcon = (pinType) => {
+        switch (pinType) {
+            case "VIEW":
+                return "/assets/icons/sunset.svg";
+            case "ROCKCLIMB":
+                return "/assets/icons/rock-climb.svg";
+            case "DATE":
+                return "/assets/icons/date.svg";
+            case "ART":
+                return "/assets/icons/art.svg";
+            case "BIKE":
+                return "/assets/icons/bike.svg";
+            case "BUILDING":
+                return "/assets/icons/building.svg";
+            case "PICTURES":
+                return "/assets/icons/camera.svg";
+            case "CAVE":
+                return "/assets/icons/cave.svg";
+            case "GRAFFITI":
+                return "/assets/icons/graffiti.svg";
+            case "HIKE":
+                return "/assets/icons/hike.svg";
+            case "NATURE":
+                return "/assets/icons/nature.svg";
+            case "SKATEBOARD":
+                return "/assets/icons/skateboard.svg";
+            case "STARGAZING":
+                return "/assets/icons/star-gazing.svg";
+            case "SWIM":
+                return "/assets/icons/swim.svg";
+            case "READING":
+                return "/assets/icons/reading.svg";
+            default:
+                return "/assets/icons/default.svg";
+        }
+    }
+
     return (
         <div className="location-modal-container">
             <div className="info-container">
@@ -183,7 +284,7 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
                         <img className="creator-profile-pic" src={selectedPost.creatorProfilePic.imageUrl}></img>
                         <p className={`creator-name ${userNameClass}`} onClick={() => handleProfileClick(selectedPost.createdByProfileID)}>{selectedPost.creatorName}</p>
                     </div>
-                    <p className="created-at">Posted {timeAgo}</p>
+                    <p className="created-at">{timeAgo}</p>
                 </div>
                 <p className="location-name">{selectedPost.locationName}</p>
                 <p className="location-city">{selectedPost.city}</p>
@@ -203,13 +304,16 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
                     <img 
                         src={selectedPost.images[currentImageIndex].imageUrl} 
                         alt={`Image ${currentImageIndex + 1} of ${selectedPost.locationName}`} 
+                        onClick={() => openImage(selectedPost.images[currentImageIndex].imageUrl)}
                     />
                     <div className={`img-arrow ${multipleImages ? '' : 'none'}`} onClick={handleNextImage}>
                         <RiArrowRightCircleLine/>
                     </div>
                 </div>
                 <hr/>
-                <p className="location-description"><span>{selectedPost.creatorName}</span>&nbsp;{selectedPost.locationDescription}</p>
+                {selectedPost.locationDescription.length > 0 && (
+                    <p className="location-description"><span>{selectedPost.creatorName}</span>&nbsp;{selectedPost.locationDescription}</p>
+                )}
                 <p className="location-header">Tags</p>
                 <div className="location-tags-container">
                     {locationTags.map((tag, index) => (
@@ -225,20 +329,32 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
                         solutionChannel="GMP_devsite_samples_v3_rgmautocomplete"
                     >
                         <Map
-                            defaultZoom={15}
-                            defaultCenter={{ lat: selectedPost.latitude, lng: selectedPost.longitude }}
+                            zoom={zoomedOutMap}
+                            minZoom={10}
+                            center={{ lat: selectedPost.latitude, lng: selectedPost.longitude }}
                             gestureHandling={"greedy"}
                             disableDefaultUI={true}
                             mapTypeId={"terrain"}
                             mapId={MAP_ID}>
                             <AdvancedMarker position={{ lat: selectedPost.latitude, lng: selectedPost.longitude }}>
-                                <MdLocationPin size={40} />
+                                    <div className="modal-pin-icon-container">
+                                        <img className="modal-pin-icon" src={"/assets/icons/marker.png"}/>
+                                        <img className="modal-pin-type" src={getPinIcon(selectedPost.pinType)} />
+                                    </div>
                             </AdvancedMarker>
                         </Map>
                     </APIProvider>
                 </div>
                 <CommentSection setCommentImageOpen={setCommentImageOpen} comments={comments} locationId={locationId} />
             </div>
+            {selectedImage && (
+                <div className="image-modal" onClick={closeImage}>
+                    <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
+                        <p className="close-btn" onClick={closeImage}><MdClose /></p>
+                        <img src={selectedImage} />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
@@ -256,6 +372,7 @@ LocationModal.propTypes = {
         locationDescription: PropTypes.string.isRequired,
         locationId: PropTypes.number.isRequired,
         locationName: PropTypes.string.isRequired,
+        pinType: PropTypes.string.isRequired,
         longitude: PropTypes.number.isRequired,
         saves: PropTypes.number.isRequired,
         savedBy: PropTypes.arrayOf(PropTypes.number).isRequired,

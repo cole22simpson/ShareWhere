@@ -127,6 +127,24 @@ const EditModal = ({ username, name, bio, profilePicUrl, backToProfile }) => {
     };
 
     useEffect(() => {
+        const textarea = document.querySelector('.attribute textarea');
+
+        const handleInput = () => {
+            if (textarea.scrollHeight > textarea.clientHeight) {
+                textarea.value = textarea.value.slice(0, -1);
+            }
+        };
+
+        if (textarea) {
+            textarea.addEventListener('input', handleInput);
+
+            return () => {
+                textarea.removeEventListener('input', handleInput);
+            };
+        }
+    }, []);
+
+    useEffect(() => {
         if (errors.name) {
             setNameError(true);
         }

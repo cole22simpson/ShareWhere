@@ -2,12 +2,6 @@
     margin-bottom: 10px;
 }
 
-.tags-only {
-    border: 3px solid var(--black-color);
-    border-radius: 15px;
-    padding: 5px;
-}
-
 .tag-group {
     
 }
@@ -32,4 +26,127 @@
 .tag-btn.selected {
     background-color:var(--black-color);
     color: white;
+}
+
+@media (max-width: 2250px) {
+    .tag-btn {
+        padding: 7px 15px;
+    }
+}
+
+@media (max-width: 2100px) {
+    .tag-btn {
+        padding: 7px 10px;
+        margin: 3px 5px;
+    }
+}
+
+@media (max-width: 1950px) {
+    .tag-btn {
+        padding: 5px 10px;
+        margin: 3px 5px;
+    }
+}
+
+@media (max-width: 1600px) {
+    .tag-btn {
+        padding: 5px;
+        margin: 3px;
+    }
+}
+
+@media (max-width: 1300px) {
+    .tag-btn {
+        padding: 3px 5px;
+        font-size: 12px;
+        margin: 3px;
+    }
+}
+
+@media (max-height: 700px) {
+    .tag-btn {
+        padding: 2px 3px;
+        font-size: 10px;
+        margin: 2px 3px;
+        border-radius: 8px;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .tag-btn {
+        padding: 2px 3px;
+        font-size: 9px;
+        margin: 1px 2px;
+    }
+}
+
+@media (max-width: 850px) {
+    .tags-container {
+        width: 50%;
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 775px) {
+
+    .tag-btn {
+        font-size: 8px;
+        margin: 1px;
+    }
+}
+
+@media (max-height: 650px) {
+
+    .tags-only {
+        line-height: 15px;
+    }
+
+    .tag-btn {
+        font-size: 9px;
+        margin: 2px;
+    }
+}
+
+@media (max-width: 630px) {
+    .tags-container {
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 550px) {
+    .tag-btn {
+        font-size: 8px;
+        margin: 1px;
+    }
+}
+
+@media (max-width: 500px) {
+    .tag-btn {
+        font-size: 7px;
+    }
+}
+
+@media (max-width: 430px) {
+    .tags-only {
+        line-height: 10px;
+    }
+}
+
+@media (max-width: 375px) {
+
+    .tag-btn {
+        font-size: 6px;
+    }
+
+    .tags-only {
+        line-height: 7px;
+    }
+
+    .tags-label {
+    }
+
+    .tags-container {
+        margin-bottom: 0;
+    }
 }

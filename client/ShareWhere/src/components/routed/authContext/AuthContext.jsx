@@ -18,6 +18,11 @@ export const AuthProvider = ({ children }) => {
                     setUserLoggedIn(true);
                 } else {
                     setUserLoggedIn(false);
+                    localStorage.removeItem("jwtToken");
+                    localStorage.removeItem("userData");
+                    localStorage.removeItem("userId");
+                    localStorage.removeItem("name");
+                    localStorage.removeItem("city");
                 }
             } catch (error) {
                 console.error("Error checking authentication:", error);

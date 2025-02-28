@@ -27,6 +27,18 @@ function Profile() {
     const [showEditModal, setShowEditModal] = useState(false);
     const [showPosts, setShowPosts] = useState(true);
     const [isFollowed, setIsFollowed] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 450);
+
+    useEffect(() => {
+        function handleResize() {
+        setIsMobile(window.innerWidth < 450);
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     function getUsernameClass(username) {
         const length = username.length;
@@ -139,51 +151,107 @@ function Profile() {
                             />
                         ) : (
                             <>
-                                <div className="attributes-container">
-                                    <div className="profile-pic-container">
-                                        <img id="profile-pic" src={profilePicUrl || '/assets/images/default-image.png'} alt="Profile" />
-                                    </div>
-                                    <div className="attributes">
-                                        <div className="username-row">
-                                        <p className={`username ${userNameClass}`}>{username}</p>
-                                            {ownProfile ? (
-                                                <button
-                                                    className="edit-profile"
-                                                    onClick={handleButtonClick}>
-                                                        Edit profile
-                                                </button>
-                                            ) : (
-                                                <>
-                                                    {isFollowed ? (
-                                                        <button className="edit-profile follow following" onClick={(e) => handleFollow(e, "UNFOLLOW")}>Following</button>
-                                                    ) : (
-                                                        <button className="edit-profile follow" onClick={(e) => handleFollow(e, "FOLLOW")}>Follow</button>
-                                                    )}
-                                                </>
+                                {!isMobile ? (
+                                    <>
+                                        <div className="attributes-container">
+                                            <div className="profile-pic-container">
+                                                <img id="profile-pic" src={profilePicUrl || '/assets/images/default-image.png'} alt="Profile" />
+                                            </div>
+                                            <div className="attributes">
+                                                <div className="username-row">
+                                                    <p className={`username ${userNameClass}`}>{username}</p>
+                                                        {ownProfile ? (
+                                                            <button
+                                                                className="edit-profile"
+                                                                onClick={handleButtonClick}>
+                                                                    Edit profile
+                                                            </button>
+                                                        ) : (
+                                                            <>
+                                                                {isFollowed ? (
+                                                                    <button className="edit-profile follow following" onClick={(e) => handleFollow(e, "UNFOLLOW")}>Following</button>
+                                                                ) : (
+                                                                    <button className="edit-profile follow" onClick={(e) => handleFollow(e, "FOLLOW")}>Follow</button>
+                                                                )}
+                                                            </>
+                                                        )}
+                                                </div>
+                                                <div className="account-stats">
+                                                    <p className="stat"><span>{numPosts}</span> posts</p>
+                                                    <p className="stat"><span>{numFollowers}</span> followers</p>
+                                                    <p className="stat"><span>{numFollowing}</span> following</p>
+                                                </div>
+                                                <p className="name">{name}</p>
+                                                <p className="bio">{bio}</p>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div className="pick-content-container">
+                                            <div className={`pick-content-btn ${showPosts ? 'chosen' : ''}`} onClick={() => setShowPosts(true)}>
+                                                <MdOutlineGridOn />
+                                            </div>
+                                            {ownProfile && (
+                                                <div className={`pick-content-btn ${showPosts ? '' : 'chosen'}`} onClick={() => setShowPosts(false)}>
+                                                    <FaBookmark />
+                                                </div>
                                             )}
                                         </div>
-                                        <div className="account-stats">
-                                            <p className="stat"><span>{numPosts}</span> posts</p>
-                                            <p className="stat"><span>{numFollowers}</span> followers</p>
-                                            <p className="stat"><span>{numFollowing}</span> following</p>
+                                        <hr />
+                                        {showPosts ? <Posts userId={userId} /> : <Saved />}
+                                    </>
+                                    ) : (
+                                        <>
+                                        <div className="attributes-container">
+                                            <div className="attributes">
+                                                <div className="username-row">
+                                                    <div className="profile-pic-container">
+                                                        <img id="profile-pic" src={profilePicUrl || '/assets/images/default-image.png'} alt="Profile" />
+                                                    </div>
+                                                    <div className="small-profile-info">
+                                                        <div className="small-profile-top">
+                                                            <p className={`username ${userNameClass}`}>{username}</p>
+                                                                {ownProfile ? (
+                                                                    <button
+                                                                        className="edit-profile"
+                                                                        onClick={handleButtonClick}>
+                                                                            Edit profile
+                                                                    </button>
+                                                                ) : (
+                                                                    <>
+                                                                        {isFollowed ? (
+                                                                            <button className="edit-profile follow following" onClick={(e) => handleFollow(e, "UNFOLLOW")}>Following</button>
+                                                                        ) : (
+                                                                            <button className="edit-profile follow" onClick={(e) => handleFollow(e, "FOLLOW")}>Follow</button>
+                                                                        )}
+                                                                    </>
+                                                                )}
+                                                        </div>
+                                                        <div className="account-stats">
+                                                            <p className="stat"><span>{numPosts}</span> posts</p>
+                                                            <p className="stat"><span>{numFollowers}</span> followers</p>
+                                                            <p className="stat"><span>{numFollowing}</span> following</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <p className="name">{name}</p>
+                                                <p className="bio">{bio}</p>
+                                            </div>
                                         </div>
-                                        <p className="name">{name}</p>
-                                        <p className="bio">{bio}</p>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="pick-content-container">
-                                    <div className={`pick-content-btn ${showPosts ? 'chosen' : ''}`} onClick={() => setShowPosts(true)}>
-                                        <MdOutlineGridOn />
-                                    </div>
-                                    {ownProfile && (
-                                        <div className={`pick-content-btn ${showPosts ? '' : 'chosen'}`} onClick={() => setShowPosts(false)}>
-                                            <FaBookmark />
+                                        <hr />
+                                        <div className="pick-content-container">
+                                            <div className={`pick-content-btn ${showPosts ? 'chosen' : ''}`} onClick={() => setShowPosts(true)}>
+                                                <MdOutlineGridOn />
+                                            </div>
+                                            {ownProfile && (
+                                                <div className={`pick-content-btn ${showPosts ? '' : 'chosen'}`} onClick={() => setShowPosts(false)}>
+                                                    <FaBookmark />
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
-                                <hr />
-                                {showPosts ? <Posts userId={userId} /> : <Saved />}
+                                        <hr />
+                                        {showPosts ? <Posts userId={userId} /> : <Saved />}
+                                    </>
+                                )}
                             </>
                         )}
                     </div>

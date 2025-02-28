@@ -22,6 +22,7 @@
 
 .search-name-container {
     margin-top: 15px;
+    position: relative;
 }
 
 .search-name-label {
@@ -35,14 +36,23 @@
     font-size: 20px;
     height: 50px;
     width: 100%;
-    padding-left: 1rem;
+    position: relative;
+    z-index: 700;
+    padding-left: 7px;
     border-radius: 15px;
     font-family: "Outfit", sans-serif;
     resize: none;
     outline: none;
 }
 
+.results-container {
+    position: absolute;
+    z-index: 600;
+    width: 100%;
+}
+
 .results {
+    position: absolute;
     width: 100%;
     background-color: #fff;
     border: 3px solid var(--black-color);
@@ -52,21 +62,22 @@
     -webkit-box-shadow: none;
     box-shadow: none;
     margin-top: -15px;
-    z-index: 2;
+    z-index: 500;
     padding-top: 10px;
 }
 
-.filter-icon {
-    margin-top: 10px;
-}
-
 .result {
+    width: 100%;
     padding: 7px;
     text-overflow: ellipsis;
     cursor: pointer;
     color: var(--black-color);
     font-family: "Outfit", sans-serif;
     border-top: 1px solid rgb(226, 226, 226);
+}
+
+.filter-icon {
+    margin-top: 10px;
 }
 
 .result:hover {
@@ -76,15 +87,6 @@
 .result.active
 .result.active:hover {
     background-color: var(--secondary-color);
-}
-
-
-.discover-map-container {
-    width: 80%;
-    border: 3px solid var(--black-color);
-    border-radius: 20px;
-    overflow: hidden;
-    margin: 10px;
 }
 
 .pin-card {
@@ -194,64 +196,6 @@
     display: none;
 }
 
-
-/* .marker:hover {
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    border: 3px solid;
-}
-
-.marker:hover .pin-card {
-    display: flex;
-    flex-direction: row;
-}
-
-.marker:hover .pin-info {
-    height: 100px;
-    width: 200px;
-    border: 2px solid var(--black-color);
-    border-right: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px 0 0 10px;
-    background-color: var(--secondary-color);
-    overflow: hidden;
-}
-
-.marker:hover .pin-card img {
-    height: 100px;
-    width: 100px;
-    border: 2px solid;
-    border-radius: 0 10px 10px 0;
-}
-
-.marker:hover .pin-card .pin-top {
-    padding: 5px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    width: ;
-    font-family: "Outfit", sans-serif;
-    font-size: 15px;
-}
-
-.marker:hover .pin-card .pin-bottom {
-    padding: 5px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 150px;
-    text-align: center;
-    font-family: "Outfit", sans-serif;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */
-
 .pick-up {
     display: flex;
     flex-direction: column;
@@ -272,4 +216,236 @@
 
 .pin-container {
     display: flex;
+}
+
+@media (max-width: 1600px) {
+    .discover-sidebar-header {
+        font-size: 26px;
+    }
+
+    .search-name-label {
+        margin-top: 5px;
+    }
+
+    .pin-option {
+        height: 30px;
+        margin: 3px;
+    }
+
+    .pin-option.selected {
+        outline-width: 2px;
+    }
+
+    .search-by-name {
+        border-width: 2px;
+        padding: 3px 5px;
+        height: 40px;
+        border-radius: 10px;
+    }
+
+    .results {
+        border-width: 2px;
+        border-radius: 0 0 10px 10px;
+        margin-top: -15px;
+    }
+    
+    .result {
+        padding: 3px 5px;
+    }
+}
+
+@media (max-width: 1500px) {
+    .pin-option {
+        height: 25px;
+        border-radius: 5px;
+    }
+
+    .search-name-label {
+        margin-left: 0;
+    }
+}
+
+@media (max-height: 1100px) {
+    .search-sidebar {
+        margin-top: 0;
+    }
+
+    .discover-sidebar-header {
+        font-size: 22px;
+    }
+
+    .search-name-label {
+        font-size: 14px;
+    }
+
+    .search-by-name {
+        font-size: 18px;
+        height: 40px;
+        border-radius: 10px;
+    }
+
+    .results {
+        margin-top: -13px;
+        border-radius: 0 0 10px 10px;
+    }
+
+    .result {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 850px) {
+    .discover-container {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .search-sidebar {
+        flex-direction: row;
+        width: 90%;
+        height: auto;
+        padding: 5px;
+    }
+
+    .map-container {
+        width: 90%;
+        height: 100%;
+    }
+
+    .search-name-label {
+        margin: 0;
+    }
+
+    .search-name-container {
+        width: 50%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .search-by-name {
+        border: 2px solid;
+        border-radius: 7px;
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .filter-icon {
+        width: 100%;
+        margin: 0;
+    }
+
+    .pin-option {
+        padding: 2px;
+        height: 20px;
+        margin-right: 3px;
+    }
+
+    .pin-option.selected {
+        outline-width: 2px;
+        outline-color: rgb(58, 72, 216);
+    }
+}
+
+
+@media (max-height: 700px) {
+
+    .map-container {
+        border-width: 2px;
+    }
+
+    .discover-sidebar-header {
+        font-size: 20px;
+    }
+
+    .search-name-label {
+        font-size: 16px;
+    }
+
+    .search-by-name {
+        height: 30px;
+        border-radius: 7px;
+        font-size: 14px;
+    }
+    
+    .result {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 775px) {
+    .pin-option {
+        padding: 1px;
+        height: 18px;
+        margin-right: 3px;
+    }
+
+    .pin-option img {
+        height: 90%;
+        width: 90%;
+    }
+
+    .pin-option.selected {
+        outline-width: 1px;
+        outline-color: rgb(58, 72, 216);
+        filter: drop-shadow(0px 0px 2px rgb(58, 72, 216));
+    }
+}
+
+@media (max-width: 500px) {
+    .search-by-name {
+        font-size: 12px;
+        height: 25px;
+        border-width: 1px;
+        border-radius: 5px;
+    }
+
+    .search-name-label {
+        font-size: 12px;
+    }
+
+    .results {
+        border-width: 1px;
+        border-radius: 0 0 5px 5px;
+    }
+
+    .result {
+        font-size: 12px;
+    }
+
+    .search-name-label {
+        height: fit-content;
+    }
+}
+
+@media (max-width: 450px) {
+    .search-by-name {
+        font-size: 10px;
+        height: 20px;
+        border-width: 1px;
+    }
+
+    .search-name-label {
+        font-size: 14px;
+    }
+
+    .results {
+        border-width: 1px;
+    }
+
+    .result {
+        font-size: 10px;
+    }
+
+}
+
+@media (max-width: 350px) {
+    .search-name-label {
+        font-size: 10px;
+    }
+    
+    .hand {
+        top: 10px;
+        left: 14px;
+    }
 }

@@ -6,9 +6,12 @@ import PropTypes from 'prop-types';
 import "./comment.css";
 import { BsThreeDots } from "react-icons/bs";
 import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import useAuth from "../authContext/useAuth";
 import { useNavigate } from "react-router-dom";
+
+dayjs.extend(relativeTime);
 
 const Comment = ({ setCommentImageOpen, handleCommentDeleted, comment }) => {
     const [isLiked, setIsLiked] = useState(comment.likedBy.includes(parseInt(localStorage.getItem("userId"))));

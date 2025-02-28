@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import "./nav.css"
 import { IconContext } from 'react-icons';
 import { Link } from 'react-router-dom';
-import * as FaIcons from 'react-icons/fa';
-import * as FaIcons6 from 'react-icons/fa6';
+import { FaGlobeAmericas, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { GiTreeSwing } from "react-icons/gi";
-import { FiLogIn } from "react-icons/fi";
+import { FiLogIn, FiLogOut } from "react-icons/fi";
 import { AiFillHome } from "react-icons/ai"
-import { MdOutlineLogout } from 'react-icons/md'
+import { FaBars, FaCircleUser, FaXmark } from "react-icons/fa6";
+import { MdOutlineLogout, MdClose } from 'react-icons/md'
 import useAuth from '../authContext/useAuth';
 
 function Nav() {
@@ -46,11 +46,9 @@ function Nav() {
         <IconContext.Provider value={{ color: 'black' }}>
             <div className='navbar'>
                 <Link to='#' className='hamburger-menu-wrap'>
-                    <img
-                        src={""}
-                        onClick={showSidebar}
-                        alt='hamburger menu'
-                        className='hamburger-menu-img' />
+                    <div className='hamburger-menu-img'  onClick={showSidebar}>
+                        <FaBars />
+                    </div>
                 </Link>
                 <a href="/" className="logo-link-container">
                     <div className="logo-container">
@@ -60,7 +58,7 @@ function Nav() {
                 </a>
 
                 <nav className='pc-nav'>
-                    <ul className='nav-menu-items' onClick={showSidebar}>
+                    <ul className='nav-menu-items'>
                         <li className="nav-item">
                             <Link to='/'>
                                 <AiFillHome className='nav-icon' />
@@ -70,7 +68,7 @@ function Nav() {
                     
                         <li className="nav-item">
                             <Link to='/discover'>
-                                <FaIcons.FaGlobeAmericas className='nav-icon' />
+                                <FaGlobeAmericas className='nav-icon' />
                                 <span>Discover</span>
                             </Link>
                         </li>
@@ -79,14 +77,14 @@ function Nav() {
                             <>
                                 <li className="nav-item">
                                     <Link to='/add-location'>
-                                        <FaIcons.FaPlusCircle className='nav-icon' />
+                                        <FaPlusCircle className='nav-icon' />
                                         <span>Add location</span>
                                     </Link>
                                 </li>
                                 
                                 <li className="nav-item">
                                     <Link to='/profile'>
-                                        <FaIcons6.FaCircleUser className='nav-icon' />
+                                        <FaCircleUser className='nav-icon' />
                                         <span>Profile</span>
                                     </Link>
                                 </li>
@@ -111,40 +109,52 @@ function Nav() {
             </div>
         
     
-            <nav className={sidebar ? 'nav active' : 'nav'} style={{ zIndex: 99 }}>
-                <ul className='nav-menu-items' onClick={showSidebar}>
-                    <li className='navbar-toggle'>
-                        <Link to='#' className='hamburger-menu-wrap'>
-                            <FaIcons6.FaXmark />
-                        </Link>
+                <nav className={`sidebar-active ${sidebar ? 'show' : ''}`} style={{ zIndex: 99 }}>                <ul className='sidebar-menu-items' onClick={showSidebar}>
+                    <li className="sidebar-item close-sidebar">
+                        <MdClose onClick={() => setSidebar(false)} className='sidebar-icon' />
                     </li>
-                    <li className="nav-item">
+                    <li className="sidebar-item">
                         <Link to='/'>
-                            <FaIcons.FaSearch className='nav-icon' />
+                            <FaSearch className='sidebar-icon' />
                             <span>Home</span>
                         </Link>
                     </li>
-
-                    <li className="nav-item">
-                        <Link to='/add-location'>
-                            <FaIcons.FaPlusCircle className='nav-icon' />
-                            <span>Add location</span>
+                    <li className="sidebar-item">
+                        <Link to='/discover'>
+                            <FaGlobeAmericas className='sidebar-icon' />
+                            <span>Discover</span>
                         </Link>
                     </li>
+                    {userLoggedIn ? (
+                        <>
+                            <li className="sidebar-item">
+                                <Link to='/add-location'>
+                                    <FaPlusCircle className='sidebar-icon' />
+                                    <span>Add location</span>
+                                </Link>
+                            </li>
 
-                    <li className="nav-item">
-                        <Link to='/profile'>
-                            <FaIcons6.FaCircleUser className='nav-icon' />
-                            <span>Profile</span>
-                        </Link>
-                    </li>
-
-                    <li className='nav-item'>
-                        <Link to='/login'>
-                            <FiLogIn className="nav-icon" />
-                            <span>Login</span>
-                        </Link>
-                    </li>
+                            <li className="sidebar-item">
+                                <Link to='/profile'>
+                                    <FaCircleUser className='sidebar-icon' />
+                                    <span>Profile</span>
+                                </Link>
+                            </li>
+                            <li className='sidebar-item' onClick={handleLogout}>
+                                <Link to='/'>
+                                    <FiLogOut className="sidebar-icon" />
+                                    <span>Logout</span>
+                                </Link>
+                            </li>
+                        </>
+                    ) : (
+                        <li className='sidebar-item'>
+                            <Link to='/login'>
+                                <FiLogIn className="sidebar-icon" />
+                                <span>Login</span>
+                            </Link>
+                        </li>
+                    )}
                 </ul>
             </nav>
         </IconContext.Provider>
