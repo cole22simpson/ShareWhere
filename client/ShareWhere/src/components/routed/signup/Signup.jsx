@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 function Signup () {
     const [showBasicForm, setShowBasicForm] = useState(false);
     const [backgroundImage, setBackgroundImage] = useState("");
+    const [changeImages, setChangeImages] = useState(false);
 
     const handleBasicClick = () => {
         setShowBasicForm(true);
@@ -17,19 +18,38 @@ function Signup () {
       };
 
     useEffect(() => {
+        function handleResize() {
+            setChangeImages(window.innerWidth < 600);
+        }
 
-        const images = [
-            // TREE CAVE / YOSEMITE WALL
-            // ALPS SCOTLAND
-            // GERMANY SURF / BELGIUM PAINT
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+
+        const splitImages = [
             "url('/assets/images/tree-yosemite.PNG'",
             "url('/assets/images/mixed-chill.PNG'",
             "url('/assets/images/surf-paint.PNG'"
-        ]
+        ];
+    
+        const singleImages = [
+            "url('/assets/images/yosemite-wall.JPG')",
+            "url('/assets/images/tree-cave.jpg')",
+            "url('/assets/images/budapest-view.jpg')",
+            "url('/assets/images/joshua-tree.JPG')",
+            "url('/assets/images/belgium-paint.jpg')",
+            "url('/assets/images/hawaii.jpg')",
+        ];
+    
+        const images = !changeImages ? splitImages : singleImages;
 
         const randomImage = images[Math.floor(Math.random() * images.length)];
         setBackgroundImage(randomImage);
-    }, []);
+    }, [changeImages]);
 
     return (
         <div

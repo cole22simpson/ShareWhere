@@ -32,7 +32,7 @@ const Discover = () => {
     const [selectedPlace, setSelectedPlace] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [shrinkTags, setShrinkTags] = useState(false);
-    const [littleGuy, setLittleGuy] = useState(40);
+    const [littleGuySize, setLittleGuySize] = useState(window.innerWidth < 350 ? 30 : 40);
     const MAP_ID = import.meta.env.VITE_MAP_ID;
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
     const [isStreetView, setIsStreetView] = useState(false);
@@ -120,16 +120,13 @@ const Discover = () => {
 
     useEffect(() => {
         function handleResize() {
-            if (window.innerWidth < 350) {
-                setLittleGuy(30);
-            }
+            setLittleGuySize(window.innerWidth < 350 ? 30 : 40);
         }
-
-        window.addEventListener('resize', handleResize);
-        handleResize();
-
-        return () => window.removeEventListener('resize', handleResize);
+    
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
+    
 
     useEffect(() => {
         function handleResize() {
@@ -345,9 +342,7 @@ const Discover = () => {
         const activeTags = Object.values(selectedTags).filter(Boolean);
         if (activeTags.length > 0) {
             const pinTagNames = pin.tags.map((tag) => tag.tagName);
-            if (!activeTags.every((selectedTag) => pinTagNames.includes(selectedTag))) {
-                return false;
-            }
+            return activeTags.every((selectedTag) => pinTagNames.includes(selectedTag));
         }
     
         if (searchQuery && !pin.locationName.toLowerCase().includes(searchQuery.toLowerCase())) {
@@ -355,7 +350,11 @@ const Discover = () => {
         }
     
         return true;
-    }).slice(0, 5);
+    });
+
+    const searchResults = filteredPins.filter((pin) => 
+        searchQuery && pin.locationName.toLowerCase().includes(searchQuery.toLowerCase())
+    ).slice(0, 5);
 
     return (
         <>      
@@ -617,11 +616,11 @@ const Discover = () => {
                                 <AdvancedMarker position={{ lat: center.lat, lng: center.lng }}>
                                     {dragging ? (
                                         <div className="pick-up">
-                                            <GiHandOk className="hand" size={30} />
-                                            <BsPersonArmsUp className="person" size={30} />
+                                            <GiHandOk className="hand" size={littleGuySize} />
+                                            <BsPersonArmsUp className="person" size={littleGuySize} />
                                         </div>
                                     ) : (
-                                        <BsPersonRaisedHand size={littleGuy} />
+                                        <BsPersonRaisedHand size={littleGuySize} />
                                     )}
                                 </AdvancedMarker>
                                 {filteredPins.map((pin) => (
