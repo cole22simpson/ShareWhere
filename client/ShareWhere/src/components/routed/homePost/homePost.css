@@ -317,3 +317,43 @@
         height: 43px;
     }
 }
+
+@media (max-width: 300px) {
+    .home-post {
+        width: 79px;
+    }
+
+    .home-post-img {
+        width: 72px;
+        height: 72px;
+    }
+
+    .home-post-poster {
+        height: 15px;
+    }
+
+    .home-post-poster p {
+        font-size: 7px;
+    }
+
+    .home-post-poster img {
+        height: 15px;
+        width: 15px;
+    }
+
+    .home-post-info {
+        height: 32px;
+    }
+
+    .home-post-name {
+        font-size: 9px;
+    }
+
+    .home-post-city {
+        font-size: 7px;
+    }
+
+    .home-post-saves {
+        font-size: 7px;
+    }
+}

@@ -473,3 +473,21 @@
         gap: 7px;
     }
 }
+
+@media (max-width: 300px) {
+    .home-search-bar {
+        width: 250px;
+    }
+
+    .home-post-container {
+        width: 250px;
+    }
+
+    .favorites-title {
+        font-size: 16px;
+    }
+
+    .pagination button {
+        font-size: 18px;
+    }
+}
