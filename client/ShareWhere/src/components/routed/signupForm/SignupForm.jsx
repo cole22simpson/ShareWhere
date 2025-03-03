@@ -202,7 +202,6 @@ function SignupForm({ onBackToBasic }) {
                     </p> 
                 </div>
                 {errors.location && <p className="error">{errors.location}</p>}
-                <br />
                 <input
                     disabled={
                         !(name !== "" &&

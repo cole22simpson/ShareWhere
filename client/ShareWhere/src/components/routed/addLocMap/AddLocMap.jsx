@@ -95,7 +95,9 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
         }
     };
 
-    const openLocationModal  = async (pinId) => {
+    const openLocationModal  = async (pinId, event) => {
+        event.currentTarget.blur();
+
         const location_id = pinId;
         try {
             const response = await fetch(`http://localhost:8080/locations/${location_id}`, {
@@ -125,6 +127,12 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
     function closeLocationModal() {
         setShowModal(false);
     };
+
+    useEffect(() => {
+        if (showModal) {
+          document.getElementById("location-modal-container").focus();
+        }
+      }, [showModal]);
 
     const handleMapLoad = (map) => {
         setMapRef(map);
@@ -218,7 +226,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                 apiKey={API_KEY}
                 solutionChannel="GMP_devsite_samples_v3_rgmautocomplete"
             >
-                <div className="map-container">                
+                <div className="addloc-map-container">                
                     {!isStreetView && (
                         <div className="autocomplete-container">
                             <PlaceAutocomplete
@@ -284,6 +292,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                         mapId={MAP_ID}
                         minZoom={6}
                         fullscreenControl={false}
+                        cameraControl={false}
                         mapTypeControl={false}
                         mapTypeControlOptions={{ position: ControlPosition.TOP_RIGHT }}
                         onIdle={(map) => handleIdle(map)}
@@ -306,7 +315,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                                         className="pin-icon-container"
                                         onMouseOver={() => handlePinIconMouseOver(pin)}
                                         onMouseOut={handlePinIconMouseOut}
-                                        onClick={() => openLocationModal(pin.locationId)}>
+                                        onClick={(event) => openLocationModal(pin.locationId, event)}>
                                         <img className="pin-icon" src={"/assets/icons/marker.png"}/>
                                         <img className="pin-type" src={getPinIcon(pin.pinType)} />
                                     </div>
@@ -315,7 +324,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                                             anchor={markerRefs[pin.locationId]}                                                
                                             onCloseClick={() => handleCloseInfoWindow}>
                                             <div className="pin-card"
-                                                onClick={() => {openLocationModal(pin.locationId)}}>
+                                                onClick={(event) => {openLocationModal(pin.locationId, event)}}>
                                                 <div className="pin-info">
                                                     <p className="pin-top">{pin.locationName}</p>
                                                     <p className="pin-city">{pin.city}</p>

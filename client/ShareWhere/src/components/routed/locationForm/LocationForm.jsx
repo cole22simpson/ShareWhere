@@ -19,6 +19,18 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
     const GEOCODE_API_KEY = import.meta.env.VITE_GEOCODE_API;
     const [disabled, setDisabled] = useState(false);
     const navigate = useNavigate();
+    const [isRearranged, setIsRearranged] = useState(false);
+
+    useEffect(() => {
+        function handleResize() {
+            setIsRearranged(window.innerWidth < 850);
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         setDisabled(
@@ -102,45 +114,98 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
 
     return (
         <div className="addloc-container">
-            <div className="addloc-sidebar">
-                <div className="sidebar-section">
-                    <label className="addloc-label">Name your location</label>
-                    <input
-                        type="text"
-                        className="addloc-input"
-                        placeholder="Come up with something fun"
-                        maxLength="80"
-                        value={rawName}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                    <p className="char-count">{handleCharCount({ target: { value: rawName } }, 80)}</p>
+            {!isRearranged ? (
+                <>
+                    <div className="addloc-sidebar">
+                        <div className="sidebar-section">
+                            <label className="addloc-label top-label">Name your location</label>
+                            <input
+                                type="text"
+                                className="addloc-input"
+                                placeholder="Come up with something fun"
+                                maxLength="80"
+                                value={rawName}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                            <p className="char-count">{handleCharCount({ target: { value: rawName } }, 80)}</p>
 
-                    <label className="addloc-label">Include some details</label>
-                    <textarea
-                        className="addloc-input big-input"
-                        placeholder="You can include information like directions or tips"
-                        maxLength="1200"
-                        value={rawDetails}
-                        onChange={(e) => setDetails(e.target.value)}
-                    />
-                    <p className="char-count">{handleCharCount({ target: { value: rawDetails } }, 1200)}</p>
+                            <label className="addloc-label">Include some details</label>
+                            <textarea
+                                className="addloc-input big-input"
+                                placeholder="You can include information like directions or tips"
+                                maxLength="1200"
+                                value={rawDetails}
+                                onChange={(e) => setDetails(e.target.value)}
+                            />
+                            <p className="char-count">{handleCharCount({ target: { value: rawDetails } }, 1200)}</p>
 
-                    <ImageUploader images={images} setImages={setImages} />
-                    <TagSelector tags={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
-                    <PinSelector pinType={pinType} setPinType={setPinType} />
-                </div>
-                <button
-                    className="submit-location"
-                    disabled={disabled}
-                    onClick={handleSubmit}>
-                        {submitted ? (
-                            <UseAnimations animation={loading} size={30} />
-                        ) : (
-                            <p>Share Where</p>
-                        )}
-                </button>
-            </div>
-            <AddLocMap initialLatitude={initialLatitude} initialLongitude={initialLongitude} latitude={latitude} longitude={longitude} onLocationChange={handleLocationChange} />
+                            <ImageUploader images={images} setImages={setImages} />
+                            <TagSelector tags={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+                            <PinSelector pinType={pinType} setPinType={setPinType} />
+                        </div>
+                        <button
+                            className="submit-location"
+                            disabled={disabled}
+                            onClick={handleSubmit}>
+                                {submitted ? (
+                                    <UseAnimations animation={loading} size={30} />
+                                ) : (
+                                    <p>Share Where</p>
+                                )}
+                        </button>
+                    </div>
+                    <AddLocMap initialLatitude={initialLatitude} initialLongitude={initialLongitude} latitude={latitude} longitude={longitude} onLocationChange={handleLocationChange} />
+                </>
+            ) : (
+                <>
+                    <div className="addloc-sidebar">
+                        <div className="sidebar-section">
+                            <div className="sidebar-left">
+                                <label className="addloc-label top-label">Name your location</label>
+                                <input
+                                    type="text"
+                                    className="addloc-input"
+                                    placeholder="Come up with something fun"
+                                    maxLength="80"
+                                    value={rawName}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                                <p className="char-count">{handleCharCount({ target: { value: rawName } }, 80)}</p>
+
+                                <label className="addloc-label">Include some details</label>
+                                <textarea
+                                    className="addloc-input big-input"
+                                    placeholder="You can include information like directions or tips"
+                                    maxLength="1200"
+                                    value={rawDetails}
+                                    onChange={(e) => setDetails(e.target.value)}
+                                />
+                                <p className="char-count">{handleCharCount({ target: { value: rawDetails } }, 1200)}</p>
+                            </div>
+                            <div className="sidebar-middle">
+                                <TagSelector tags={tags} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
+                            </div>
+                            <div className="sidebar-right">
+                                <ImageUploader images={images} setImages={setImages} />
+                                <PinSelector pinType={pinType} setPinType={setPinType} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="addloc-vert-bottom">
+                        <AddLocMap initialLatitude={initialLatitude} initialLongitude={initialLongitude} latitude={latitude} longitude={longitude} onLocationChange={handleLocationChange} />
+                        <button
+                                    className="submit-location"
+                                    disabled={disabled}
+                                    onClick={handleSubmit}>
+                                        {submitted ? (
+                                            <UseAnimations animation={loading} size={20} />
+                                        ) : (
+                                            <p>Share Where</p>
+                                        )}
+                        </button>
+                    </div>
+                </>
+            )}
         </div>
     );
 };

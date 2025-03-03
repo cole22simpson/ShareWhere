@@ -7,12 +7,11 @@
 .custom-upload-button {
     background-color:var(--black-color);
     color: white;
-    padding: 10px 20px;
+    padding: 5px 14px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     margin-bottom: 10px;
-    border: 3px solid var(--black-color);
 }
 
 .custom-upload-button:hover {
@@ -26,7 +25,7 @@
     white-space: nowrap;
     gap: 10px;
     width: 90%;
-    padding: 10px;
+    padding: 0px;
 }
 
 /* Scrollbar for WebKit browsers (Chrome, Safari, Edge) */
@@ -62,6 +61,9 @@
 
 .remove-btn {
     position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     top: 5px;
     right: 5px;
     background: rgba(0, 0, 0, 0.7);
@@ -71,4 +73,129 @@
     width: 20px;
     height: 20px;
     cursor: pointer;
+}
+
+@media (max-height: 1100px) {
+    .image-wrapper img {
+        height: 90px;
+    }
+
+    .custom-upload-button {
+        font-size: 12px;
+        padding: 5px 7px;
+        margin-bottom: 3px;
+    }
+
+    .photo-count {
+        font-size: 10px;
+    }
+
+    .image-preview-container::-webkit-scrollbar {
+        height: 5px;
+    }
+}
+
+@media (max-width: 1700px) {
+    .image-wrapper img {
+        height: 90px;
+    }
+
+    .custom-upload-button {
+        font-size: 12px;
+        padding: 5px 7px;
+        margin-bottom: 3px;
+    }
+
+    .photo-count {
+        font-size: 10px;
+    }
+
+    .image-preview-container::-webkit-scrollbar {
+        height: 5px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .custom-upload-button {
+        padding: 4px 5px;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .image-preview-container {
+        gap: 3px;
+    }
+
+    .image-wrapper img {
+        height: 60px;
+    }
+
+    .remove-btn {
+        font-size: 8px;
+        width: 15px;
+        height: 15px;
+    }
+
+    .custom-upload-button {
+        padding: 3px 4px;
+        font-size: 8px;
+    }
+}
+
+@media (max-width: 920px) {
+    .image-wrapper img {
+        height: 50px;
+        border-radius: 3px;
+    }
+
+    .image-preview-container {
+        gap: 2px;
+    }
+
+    .remove-btn {
+        top: 3px;
+        right: 2px;
+    }
+}
+
+@media (max-width: 850px) {
+    .image-preview-container {
+        width: 100%;
+    }
+}
+
+@media (max-width: 725px) {
+
+    .image-wrapper img {
+        height: 35px;
+    }
+
+    .photo-count {
+        font-size: 7px;
+    }
+
+    .custom-upload-button {
+        border-radius: 3px;
+        font-size: 7px;
+    }
+}
+
+@media (max-width: 450px) {
+    .image-preview-container::-webkit-scrollbar {
+        height: 3px;
+    }
+
+    .image-wrapper {
+        height: 30px;
+        overflow: hidden;
+    }
+
+    .image-wrapper {
+        height: 30px;
+    }
+
+    .photo-count {
+        font-size: 6px;
+    }
 }

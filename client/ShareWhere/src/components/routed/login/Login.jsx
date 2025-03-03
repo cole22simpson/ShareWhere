@@ -14,18 +14,41 @@ function Login () {
     const [showPassword, setShowPassword] = useState("password");
     const { userLoggedIn, setUserLoggedIn } = useAuth();
     const [backgroundImage, setBackgroundImage] = useState("");
+    const [changeImages, setChangeImages] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
+        function handleResize() {
+            setChangeImages(window.innerWidth < 600);
+        }
 
-        const images = [
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+
+        const splitImages = [
             "url('/assets/images/login-background.PNG'",
             "url('/assets/images/mixed-nature.PNG'",
             "url('/assets/images/mixed-sunsets.PNG'"
-        ]
+        ];
+    
+        const singleImages = [
+            "url('/assets/images/sunset-cliff.jpg')",
+            "url('/assets/images/bird-sunset.jpg')",
+            "url('/assets/images/scotland-park.jpg')",
+            "url('/assets/images/surf-river.jpg')",
+            "url('/assets/images/kings-canyon.JPG')",
+        ];
+    
+        const images = !changeImages ? splitImages : singleImages;
+
         const randomImage = images[Math.floor(Math.random() * images.length)];
         setBackgroundImage(randomImage);
-    }, []);
+    }, [changeImages]);
     
 
     const handleLogin = async (event) => {
@@ -114,18 +137,19 @@ function Login () {
                         <div className="login-error-container">
                             <p className={`error ${error ? "shown" : ""}`}>Email or password does not match. Please try again.</p>
                         </div>
-                        <div>
+                        <div className="login-btn-container">
                             <input className="login-btn" type="submit" value="Log in"></input>
                         </div>
                     </form>
                     <div className="atag-forgot-password">
-                        <a href="/users/password/new"> <strong> Forgot your password? </strong> </a>
+                        <a href=""> <strong> Forgot your password? </strong> </a>
                     </div>
                     <div className="alternate-login">
-                        <button className="login-btn google-btn" type="submit">
-                            <span> <FcGoogle></FcGoogle> </span>
-                            <span> Continue with Google </span>
-                        </button>
+                        <div className="login-btn-container">
+                            <div className="login-btn google-btn" type="submit">
+                                <FcGoogle />&nbsp;Continue with Google - Disabled
+                            </div>
+                        </div>
                     </div>
                     <p className="no-account">
                         <span>Don&apos;t have an account?</span> <a href="/signup"> Sign up for free </a>

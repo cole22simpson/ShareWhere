@@ -3,6 +3,8 @@
     "browser-image-compression": "^2.0.2",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-useanimations": "^2.10.0"
   }
 }

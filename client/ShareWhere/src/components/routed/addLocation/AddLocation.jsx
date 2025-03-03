@@ -1,4 +1,3 @@
-import "./addLocation.css";
 import { useState, useEffect, useRef } from "react";
 import { getLocation } from "../../../assets/helpers/getLocation";
 import LocationForm from "../locationForm/LocationForm.jsx";

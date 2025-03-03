@@ -37,7 +37,7 @@ const Discover = () => {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
     const [isStreetView, setIsStreetView] = useState(false);
     const [selectedTags, setSelectedTags] = useState([]);
-    const [isRearranged, setIsRearranged] = useState(1);
+    const [isRearranged, setIsRearranged] = useState(false);
     const triggerElementRef = useRef(null); 
 
     const handleModalOpened = (action) => {
@@ -144,12 +144,7 @@ const Discover = () => {
 
     useEffect(() => {
         function handleResize() {
-            if (window.innerWidth < 850) {
-                setIsRearranged(2);
-            }
-            else {
-                setIsRearranged(1);
-            }
+            setIsRearranged(window.innerWidth < 850);
         }
 
         window.addEventListener('resize', handleResize);
@@ -184,7 +179,7 @@ const Discover = () => {
     }, []);
 
     const openLocationModal  = async (pinId, event) => {
-        triggerElementRef.current = event.currentTarget;
+        event.currentTarget.blur();
 
         const location_id = pinId;
         try {
@@ -214,11 +209,13 @@ const Discover = () => {
 
     function closeLocationModal() {
         setShowModal(false);
-        if (triggerElementRef.current) {
-            triggerElementRef.current.focus(); // Return focus
-            triggerElementRef.current = null; // Clear the ref
-        }
     };
+
+    useEffect(() => {
+        if (showModal) {
+          document.getElementById("location-modal-container").focus();
+        }
+      }, [showModal]);
 
     const handleMapLoad = (map) => {
         setMapRef(map);
@@ -367,7 +364,7 @@ const Discover = () => {
                 solutionChannel="GMP_devsite_samples_v3_rgmautocomplete"
             >
                 <div className="discover-container">
-                    {isRearranged === 1 ? (
+                    {!isRearranged ? (
                         <div className="search-sidebar">
                             <p className="discover-sidebar-header">Filter pins within map bounds</p>
                             <div className="search-name-container">
@@ -401,31 +398,31 @@ const Discover = () => {
                                     </div>
                                 )}
                             </div>
-                            <div className="filter-icon">
+                            <div className="disc-filter-icon">
                                 <p className="search-name-label">Filter by icon type</p>
-                                <div className="options-container">
+                                <div className="disc-options-container">
                                     {pinOptions.map((option) => (
                                         <div
-                                            className={`pin-option ${activePinTypes[option] ? "selected" : ""}`} 
+                                            className={`disc-pin-option ${activePinTypes[option] ? "selected" : ""}`} 
                                             key={option} 
                                             onClick={() => togglePinType(option)}
                                         >
-                                            <img className="pin-img" src={getPinIcon(option)} />
+                                            <img className="disc-pin-img" src={getPinIcon(option)} />
                                         </div>
                                     ))}
                                 </div>
                             </div>
-                            <div className="tags-container">
+                            <div className="disc-tags-container">
                                 <p className="search-name-label">Filter by tags</p>
                                 <>
                                     {!shrinkTags ? (
                                         <>
                                             {Object.entries(tags).map(([group, groupTags]) => (
-                                                <div key={group} className="tag-group">
+                                                <div key={group} className="disc-tag-group">
                                                     {groupTags.map((tag) => (
                                                         <button
                                                             key={tag.tagId}
-                                                            className={`tag-btn ${selectedTags[group] === tag.tagName ? "selected" : ""}`}
+                                                            className={`disc-tag-btn ${selectedTags[group] === tag.tagName ? "selected" : ""}`}
                                                             onClick={() => toggleTagSelection(group, tag.tagName)}
                                                         >
                                                             {tag.tagName}
@@ -443,7 +440,7 @@ const Discover = () => {
                                                 .map((tag) => (
                                                     <button
                                                         key={tag.tagId}
-                                                        className={`tag-btn ${selectedTags[tag.group] === tag.tagName ? "selected" : ""}`}
+                                                        className={`disc-tag-btn ${selectedTags[tag.group] === tag.tagName ? "selected" : ""}`}
                                                         onClick={() => toggleTagSelection(tag.group, tag.tagName)}
                                                     >
                                                         {tag.tagName}
@@ -454,7 +451,7 @@ const Discover = () => {
                                 </>
                             </div>
                         </div>
-                    ) : isRearranged === 2 ? (
+                    ) : (
                         <>
                             <p className="discover-sidebar-header">Filter pins within map bounds</p>
                             <div className="search-sidebar">
@@ -488,32 +485,32 @@ const Discover = () => {
                                             )}
                                         </div>
                                     )}
-                                    <div className="filter-icon">
+                                    <div className="disc-filter-icon">
                                         <p className="search-name-label">Filter by icon type</p>
-                                        <div className="options-container">
+                                        <div className="disc-options-container">
                                             {pinOptions.map((option) => (
                                                 <div
-                                                    className={`pin-option ${activePinTypes[option] ? "selected" : ""}`} 
+                                                    className={`disc-pin-option ${activePinTypes[option] ? "selected" : ""}`} 
                                                     key={option} 
                                                     onClick={() => togglePinType(option)}
                                                 >
-                                                    <img className="pin-img" src={getPinIcon(option)} />
+                                                    <img className="disc-pin-img" src={getPinIcon(option)} />
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
                                 </div>
-                                <div className="tags-container">
+                                <div className="disc-tags-container">
                                     <p className="search-name-label">Filter by tags</p>
                                     <>
                                         {!shrinkTags ? (
                                             <>
                                                 {Object.entries(tags).map(([group, groupTags]) => (
-                                                    <div key={group} className="tag-group">
+                                                    <div key={group} className="disc-tag-group">
                                                         {groupTags.map((tag) => (
                                                             <button
                                                                 key={tag.tagId}
-                                                                className={`tag-btn ${selectedTags[group] === tag.tagName ? "selected" : ""}`}
+                                                                className={`disc-tag-btn ${selectedTags[group] === tag.tagName ? "selected" : ""}`}
                                                                 onClick={() => toggleTagSelection(group, tag.tagName)}
                                                             >
                                                                 {tag.tagName}
@@ -523,7 +520,7 @@ const Discover = () => {
                                                 ))}
                                             </>
                                         ) : (
-                                            <div className="tags-only">
+                                            <div className="disc-tags-only">
                                                 {Object.entries(tags)
                                                     .flatMap(([group, groupTags]) =>
                                                         groupTags.map((tag) => ({ ...tag, group }))
@@ -531,7 +528,7 @@ const Discover = () => {
                                                     .map((tag) => (
                                                         <button
                                                             key={tag.tagId}
-                                                            className={`tag-btn ${selectedTags[tag.group] === tag.tagName ? "selected" : ""}`}
+                                                            className={`disc-tag-btn ${selectedTags[tag.group] === tag.tagName ? "selected" : ""}`}
                                                             onClick={() => toggleTagSelection(tag.group, tag.tagName)}
                                                         >
                                                             {tag.tagName}
@@ -543,10 +540,8 @@ const Discover = () => {
                                 </div>
                             </div>
                         </>
-                    ) : (
-                        <div>DEFAULT</div>
                     )}
-                        <div className="map-container">
+                        <div className="discover-map-container">
                             {!isStreetView && (
                                 <div className="autocomplete-container">
                                     <PlaceAutocomplete
@@ -651,7 +646,7 @@ const Discover = () => {
                                                     anchor={markerRefs[pin.locationId]}                                                
                                                     onCloseClick={() => handleCloseInfoWindow}>
                                                     <div className="pin-card"
-                                                        onClick={() => {openLocationModal(pin.locationId)}}>
+                                                        onClick={(event) => {openLocationModal(pin.locationId, event)}}>
                                                         <div className="pin-info">
                                                             <p className="pin-top">{pin.locationName}</p>
                                                             <p className="pin-city">{pin.city}</p>

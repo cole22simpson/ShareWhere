@@ -260,7 +260,7 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
     }
 
     return (
-        <div className="location-modal-container">
+        <div id="location-modal-container" className="location-modal-container">
             <div className="info-container">
                 <div className="back-btn-container">
                     {deletePost && (

@@ -45,17 +45,17 @@ function Nav() {
     return (
         <IconContext.Provider value={{ color: 'black' }}>
             <div className='navbar'>
-                <Link to='#' className='hamburger-menu-wrap'>
-                    <div className='hamburger-menu-img'  onClick={showSidebar}>
-                        <FaBars />
-                    </div>
-                </Link>
                 <a href="/" className="logo-link-container">
                     <div className="logo-container">
                         <GiTreeSwing className="logo" />
                         <p className="title">&nbsp;ShareWhere</p>
                     </div>
                 </a>
+                <Link to='#' className='hamburger-menu-wrap'>
+                    <div className='hamburger-menu-img'  onClick={showSidebar}>
+                        <FaBars />
+                    </div>
+                </Link>
 
                 <nav className='pc-nav'>
                     <ul className='nav-menu-items'>

@@ -241,6 +241,11 @@
     .upload-and-send {
         width: 30%;
     }
+
+    .no-comments {
+        font-size: 10px;
+        margin-bottom: 10px;
+    }
     
     .comment-input {
         min-height: 60px;

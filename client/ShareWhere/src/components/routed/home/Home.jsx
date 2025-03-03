@@ -131,7 +131,7 @@ function Home() {
                     <div className="home-form-container">
                         <input
                             className="home-search-bar"
-                            placeholder="Search by city or name"
+                            placeholder="Search by name, username, or location name"
                             value={searchQuery}
                             onChange={handleSearchChange}
                             autoComplete="off"
@@ -153,8 +153,8 @@ function Home() {
                                             </div>
                                         ) : (
                                             <div className="location-result">
-                                                <p className="location-result-name">{result.locationName}</p>
                                                 <img className="location-result-image" src={result.imageUrl} alt="Location Image" />
+                                                <p className="location-result-name">{result.locationName}</p>
                                             </div>
                                         )}
                                     </li>

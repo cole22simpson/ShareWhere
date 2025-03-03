@@ -14,7 +14,27 @@ const HomePostSection = ({ postType }) => {
     const [locationLoaded, setLocationLoaded] = useState(false); // Track location loading
 
     const [currentPage, setCurrentPage] = useState(1);
-    const postsPerPage = 4;
+    const [postsPerPage, setPostsPerPage] = useState(4);
+
+    useEffect(() => {
+        function handleResize() {
+            // if (window.innerWidth < 600 || window.innerHeight < 600) {
+            //     setPostsPerPage(2);
+            // }
+            // else 
+            if (window.innerWidth < 950) {
+                setPostsPerPage(3);
+            }
+            else {
+                setPostsPerPage(4);
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const noPostsMessage = postType === "FOLLOWING" ? (
         <>You don&apos;t follow anyone yet</>

@@ -5,24 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="094d4d6e-c9c5-4d5f-ab14-99a0d7800aef" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/public/assets/icons/building.svg" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/public/assets/icons/building.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/AddLocMap.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/AddLocMap.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/addLocMap.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/addLocMap.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/comment/Comment.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/comment/Comment.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/comment/comment.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/comment/comment.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocation/AddLocation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocation/AddLocation.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocation/addLocation.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/commentSection/commentSection.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/commentSection/commentSection.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/discover/Discover.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/discover/Discover.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/discover/discover.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/discover/discover.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/home/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/home/home.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationModal/LocationModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationModal/LocationModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationModal/locationModal.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationModal/locationModal.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/homePost/homePost.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/homePost/homePost.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/imageUploader/ImageUploader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/imageUploader/ImageUploader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/imageUploader/imageUploader.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/imageUploader/imageUploader.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationForm/LocationForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationForm/LocationForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationForm/locationForm.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationForm/locationForm.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/login/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/login/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/login/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/login/login.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/nav/Nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/nav/Nav.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/nav/nav.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/nav/nav.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/posts/posts.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/posts/posts.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profile/Profile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profile/Profile.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profile/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profile/profile.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profileModal/EditModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profileModal/EditModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profileModal/editModal.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/profileModal/editModal.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/pinSelector/pinSelector.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/pinSelector/pinSelector.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signup/Signup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signup/Signup.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signup/signup.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signup/signup.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signupForm/SignupForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signupForm/SignupForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signupForm/signupForm.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signupForm/signupForm.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/tagSelector/TagSelector.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/tagSelector/TagSelector.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/tagSelector/tagSelector.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/tagSelector/tagSelector.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,7 +177,8 @@
       <workItem from="1739996787477" duration="32760000" />
       <workItem from="1740196609323" duration="385000" />
       <workItem from="1740198867191" duration="58983000" />
-      <workItem from="1740678431970" duration="1976000" />
+      <workItem from="1740678431970" duration="4557000" />
+      <workItem from="1740941281473" duration="619000" />
     </task>
     <servers />
   </component>

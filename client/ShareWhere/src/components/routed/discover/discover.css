@@ -4,6 +4,14 @@
     height: 95vh;
 }
 
+.discover-map-container {
+    width: 80%;
+    border: 3px solid var(--black-color);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 0 10px 10px 10px;
+}
+
 .search-sidebar {
     display: flex;
     flex-direction: column;
@@ -214,8 +222,37 @@
     transform: scaleX(-1);
 }
 
-.pin-container {
+.disc-pin-container {
     display: flex;
+}
+
+.disc-options-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.disc-pin-option {
+    height: 40px;
+    margin: 5px;
+    background-color: var(--black-color);
+    padding: 5px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.disc-pin-option:hover {
+    cursor: pointer;
+    outline: 3px solid #6E9CED;
+}
+
+.disc-pin-option.selected {
+    outline: 3px solid #2273ff;
+}
+
+.disc-pin-img {
+    height: 100%;
 }
 
 @media (max-width: 1600px) {
@@ -227,12 +264,12 @@
         margin-top: 5px;
     }
 
-    .pin-option {
+    .disc-pin-option {
         height: 30px;
         margin: 3px;
     }
 
-    .pin-option.selected {
+    .disc-pin-option.selected {
         outline-width: 2px;
     }
 
@@ -255,13 +292,51 @@
 }
 
 @media (max-width: 1500px) {
-    .pin-option {
+    .disc-pin-option {
         height: 25px;
         border-radius: 5px;
     }
 
     .search-name-label {
         margin-left: 0;
+    }
+}
+
+@media (max-width: 1200px) { 
+    .pin-info {
+        height: 75px;
+        width: 125px;
+        border-radius: 7px 0 0 7px;
+    }
+    
+    .pin-card img {
+        height: 75px;
+        width: 80px;
+        border: 2px solid;
+        border-radius: 0 7px 7px 0;
+    }
+    
+    .pin-top {
+        padding: 2px;
+        font-size: 13px;
+    }
+    
+    .pin-bottom {
+        padding: 3px;
+        width: 80px;
+        font-size: 10px;
+    }
+
+    .pin-city {
+        font-size: 10px;
+    }
+    
+    .pin-icon-container {
+        height: 45px;
+    }
+    
+    .pin-type {
+        height: 21px;
     }
 }
 
@@ -308,7 +383,7 @@
         padding: 5px;
     }
 
-    .map-container {
+    .discover-map-container {
         width: 90%;
         height: 100%;
     }
@@ -330,18 +405,18 @@
         margin-bottom: 0;
     }
 
-    .filter-icon {
+    .disc-filter-icon {
         width: 100%;
         margin: 0;
     }
 
-    .pin-option {
+    .disc-pin-option {
         padding: 2px;
         height: 20px;
         margin-right: 3px;
     }
 
-    .pin-option.selected {
+    .disc-pin-option.selected {
         outline-width: 2px;
         outline-color: rgb(58, 72, 216);
     }
@@ -350,7 +425,7 @@
 
 @media (max-height: 700px) {
 
-    .map-container {
+    .discover-map-container {
         border-width: 2px;
     }
 
@@ -374,21 +449,45 @@
 }
 
 @media (max-width: 775px) {
-    .pin-option {
+    .disc-pin-option {
         padding: 1px;
         height: 18px;
         margin-right: 3px;
     }
 
-    .pin-option img {
+    .disc-pin-option img {
         height: 90%;
         width: 90%;
     }
 
-    .pin-option.selected {
+    .disc-pin-option.selected {
         outline-width: 1px;
         outline-color: rgb(58, 72, 216);
         filter: drop-shadow(0px 0px 2px rgb(58, 72, 216));
+    }
+}
+
+@media (max-width: 600px) {
+    .pin-info {
+        height: 60px;
+        width: 100px;
+    }
+    
+    .pin-card img {
+        height: 60px;
+        width: 65px;
+    }
+    
+    .pin-top {
+        font-size: 12px;
+    }
+    
+    .pin-bottom {
+        font-size: 9px;
+    }
+
+    .pin-city {
+        font-size: 9px;
     }
 }
 
