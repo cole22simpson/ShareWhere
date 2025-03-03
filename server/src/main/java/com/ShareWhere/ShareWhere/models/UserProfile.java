@@ -64,10 +64,6 @@ public class UserProfile {
 
     protected UserProfile() {}
 
-    // private List<User> followers = new ArrayList<>();
-    // private List<User> following = new ArrayList<>();
-
-
     public UserProfile(User user) {
         this.user = user;
     }

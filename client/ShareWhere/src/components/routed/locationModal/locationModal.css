@@ -1,5 +1,5 @@
 .location-modal-container {
-    position: absolute;
+    position: fixed;  /* Prevents modal from moving with page scroll */
     z-index: 1000;
     top: 0;
     left: 0;
@@ -9,14 +9,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow-y: auto;
+    overflow: auto;
 }
 
 .info-container {
     position: absolute;
     top: 0;
     height: auto;
-    width: 40%;
+    width: 1050px;
     background-color: var(--secondary-color);
     border-left: 2px solid var(--black-color);
     border-right: 2px solid var(--black-color);
@@ -24,6 +24,8 @@
     flex-direction: column;
     align-items: center;
 }
+
+
 
 .back-btn-container {
     width: 100%;
@@ -73,15 +75,29 @@
     font-weight: 700;
 }
 
+.creator-name:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .created-at {
 
 }
 
 .location-name {
-    width: 70%;
+    max-width: 70%;
     text-align: center;
     font-size: 45px;
     font-weight: 700;
+    overflow: hidden;
+    white-space: normal; /* Allow text to wrap */
+    word-wrap: break-word; /* Break long words */
+    word-break: break-word; /* Ensure long words break properly */
+}
+
+.location-city {
+    font-size: 22px;
+    margin: 5px;
 }
 
 .saves {
@@ -124,6 +140,24 @@
     margin-bottom: 10px;
 }
 
+.modal-pin-icon-container {
+    position: relative;
+    height: 50px;
+    filter: drop-shadow(0px 0px 3px black);
+}
+
+.modal-pin-icon {
+    height: 100%;
+}
+
+.modal-pin-type {
+    position: absolute;
+    height: 22px;
+    top: 17px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .location-images {
     display: flex;
     flex-direction: row;
@@ -135,10 +169,11 @@
 }
 
 .location-images img {
-    height: 40vh;
+    height: 500px;
     max-width: 100%;
     margin: 15px;
     border-radius: 15px;
+    cursor: pointer;
 }
 
 .img-arrow {
@@ -156,12 +191,16 @@
 
 .location-description span {
     font-weight: 700;
+    font-size: 23px;
 }
 
 .location-description {
-    font-size: 25px;
-    width: 70%;
+    font-size: 23px;
+    max-width: 70%;
     margin-bottom: 20px;
+    overflow: hidden;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
 .location-tags-container {
@@ -181,8 +220,8 @@
 }
 
 .modal-map-container {
-    height: 500px;
-    width: 500px;
+    height: 450px;
+    width: 450px;
     margin-bottom: 15px;
     border: 1px solid;
     border-radius: 15px;
@@ -212,142 +251,11 @@
 }
 
 .comments {
-    width: 50%;
-}
-
-.add-comment-container {
-    display: flex;
+    width: 70%;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 50%;
-    margin-top: 20px;
-}
-
-.comment-input {
-    border: 1px solid var(--black-color);
-    border-radius: 10px;
-    min-height: 100px;
-    font-family: inherit;
-    font-size: 15px;
-    padding: 3px 5px;
-    resize: vertical;
-    overflow: hidden;
-    overflow-y: auto;
-    width: 80%;
-    outline: none;
-}
-
-.comment-input::-webkit-scrollbar {
-    width: 8px;
-    height: 9%;
-}
-
-.comment-input::-webkit-scrollbar-track {
-    background: var(--secondary-color);
-    border-radius: 10px;
-}
-
-.comment-input::-webkit-scrollbar-thumb {
-    background: var(--black-color);
-    border-radius: 10px;
-}
-
-.comment-input::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.8);
-    cursor: pointer;
-}
-
-.upload-and-send {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 20%;
-}
-
-.upload-btn-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.comment-image-button {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: fit-content;
-    padding: 3px;
-    border-radius: 5px;
-    border: 2px solid var(--black-color);
-    margin: 5px;
-}
-
-.comment-image-button:hover {
-    background-color: var(--black-color);
-    color: var(--secondary-color);
-    cursor: pointer;
-}
-
-.comment-photo-count {
-}
-
-.comment-top-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 15px
-}
-
-.submit-comment {
-    display: flex;
-    width: 40px;
-    justify-content: center;
-    align-items: center;
-    height: fit-content;
-    padding: 5px;
-    border: 2px solid var(--black-color);
-    border-radius: 5px;
-    margin-top: 10px;
-}
-
-.submit-comment:hover {
-    background-color: #6E9CED;
-    cursor: pointer;
-}
-
-.uploaded-images {
-    width: 100%;
-    overflow-x: scroll;
-    max-height: 130px;
-    overflow-x: auto;
-    white-space: nowrap;
-}
-
-.uploaded-images::-webkit-scrollbar {
-    height: 8px;
-}
-
-.uploaded-images::-webkit-scrollbar-track {
-    background: var(--secondary-color);
-    border-radius: 10px;
-}
-
-.uploaded-images::-webkit-scrollbar-thumb {
-    background: var(--black-color);
-    border-radius: 10px;
-}
-
-.uploaded-images::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.8);
-    cursor: pointer;
-}
-
-.uploaded-images img {
-    max-height: 100px;
-    margin-right: 5px;
-    border-radius: 10px;
 }
 
 .back-to-top {
@@ -360,4 +268,510 @@
 .back-to-top:hover {
     color: rgb(61, 57, 57);
     cursor: pointer;
+}
+
+.delete-post-container {
+    display: flex;
+    align-items: center;
+}
+
+.delete-post {
+    cursor: pointer;
+    background-color: rgb(199, 73, 73);
+    border: 2px solid;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.delete-post:hover {
+    background-color: rgb(201, 16, 16);
+}
+
+.dots {
+    font-size: 20px;
+}
+
+.image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.image-modal-content {
+    position: relative;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.image-modal img {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 5px;
+}
+
+@media (max-width: 1500px) {
+    .info-container {
+        width: 850px;
+    }
+
+    .creator-profile-pic {
+        height: 100px;
+        width: 100px;
+    }
+
+    .creator-name.small {
+        font-size: 23px;
+    }
+
+    .location-name {
+        font-size: 40px;
+    }
+
+    .location-images {
+        margin: 0;
+        height: auto;
+    }
+
+    .location-description span {
+        font-size: 20px;
+    }
+
+    .location-description {
+        font-size: 20px;
+    }
+
+    .location-images img {
+        height: 400px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .info-container {
+        width: 700px;
+    }
+
+    .creator-profile-pic {
+        height: 80px;
+        width: 80px;
+    }
+
+    .creator-name.small {
+        font-size: 18px;
+    }
+
+    .location-name {
+        font-size: 30px;
+    }
+
+    .location-city {
+        font-size: 18px;
+    }
+
+    .save-btn {
+        font-size: 14px;
+    }
+
+    .unsave-btn {
+        font-size: 14px;
+    }
+
+    .saves {
+        font-size: 14px;
+    }
+
+    .location-images {
+        margin: 0;
+        height: auto;
+    }
+
+    .location-images img {
+        height: 350px;
+        border-radius: 10px;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .location-description span {
+        font-size: 16px;
+    }
+
+    .location-description {
+        font-size: 16px;
+    }
+
+    .top-row {
+        width: 80%;
+    }
+
+    .location-name {
+        width: 80%;
+    }
+
+    .info-container hr {
+        width: 80%;
+    }
+
+    .location-description {
+        width: 80%;
+        max-width: 100%;
+    }
+
+    .comments {
+        width: 80%;
+    }
+
+    .modal-map-container {
+        height: 400px;
+        width: 400px;
+    }
+
+    .location-tag {
+        font-size: 12px;
+        margin: 3px;
+    }
+}
+
+@media (max-width: 900px) {
+    .info-container {
+        width: 600px;
+    }
+
+    .creator-profile-pic {
+        height: 70px;
+        width: 70px;
+    }
+
+    .created-at {
+        font-size: 12px;
+    }
+
+    .location-name {
+        font-size: 28px;
+    }
+
+    .location-city {
+        font-size: 16px;
+    }
+
+    .location-images img {
+        height: 320px;
+        border-radius: 10px;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .location-header {
+        font-size: 26px;
+        margin-bottom: 10px;
+    }
+
+    .location-tag {
+        padding: 3px;
+        border-radius: 5px;
+    }
+}
+
+@media (max-width: 700px) {
+    .info-container {
+        width: 500px;
+    }
+
+    .creator-profile-pic {
+        height: 60px;
+        width: 60px;
+        margin-right: 10px;
+    }
+
+    .creator-name.small {
+        font-size: 15px;
+    }
+
+    .location-name {
+        font-size: 24px;
+    }
+
+    .location-city {
+        font-size: 14px;
+    }
+
+    .save-btn {
+        font-size: 12px;
+    }
+
+    .unsave-btn {
+        font-size: 12px;
+    }
+
+    .saves {
+        font-size: 12px;
+    }
+
+    .location-images img {
+        height: 260px;
+        border-radius: 7px;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .img-arrow {
+        font-size: 22px;
+    }
+
+    .location-header {
+        font-size: 23px;
+        margin-bottom: 10px;
+    }
+
+    .location-description span {
+        font-size: 12px;
+    }
+
+    .location-description {
+        font-size: 12px;
+    }
+
+    .location-tags-container {
+        width: 60%;
+    }
+
+    .location-tag {
+        font-size: 10px;
+    }
+
+    .modal-map-container {
+        height: 300px;
+        width: 300px;
+    }
+
+    .dots {
+
+    }
+
+    .delete-post-container {
+        margin-right: 0;
+    }
+
+    .delete-post {
+        font-size: 12px;
+        padding: 2px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .creator-profile-pic {
+        height: 50px;
+        width: 50px;
+    }
+
+    .creator-name.small {
+        font-size: 12px;
+    }
+
+    .location-name {
+        font-size: 20px;
+    }
+
+    .location-city {
+        font-size: 12px;
+        margin: 0;
+    }
+
+    .back-to-map {
+        font-size: 16px;
+        border: 1px solid black;
+    }
+
+    .dots {
+        font-size: 18px;
+    }
+
+    .location-images img {
+        height: 200px;
+        border-radius: 7px;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    
+    .creator-name.small {
+        font-size: 11px;
+    }
+
+    .creator-name.medium {
+        font-size: 18px;
+    }
+
+    .location-header {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .location-description span {
+        font-size: 10px;
+    }
+
+    .location-description {
+        font-size: 10px;
+    }
+
+    .location-tag {
+        padding: 2px;
+        margin: 2px;
+    }
+
+    .modal-map-container {
+        height: 250px;
+        width: 250px;
+        border-radius: 5px;
+    }
+}
+
+@media (max-width: 500px) {
+    .info-container {
+        width: 100%;
+    }
+
+    .creator-name.big {
+        font-size: 16px;
+    }
+
+    .top-row {
+        width: 90%;
+    }
+
+    .location-name {
+        width: 90%;
+    }
+
+    .info-container hr {
+        width: 90%;
+    }
+
+    .location-description {
+        width: 90%;
+    }
+
+    .comments {
+        width: 90%;
+    }
+
+}
+
+@media (max-width: 400px) {
+
+    .creator-name.big {
+        font-size: 14px;
+    }
+
+    .creator-profile-pic {
+        height: 30px;
+        width: 30px;
+    }
+
+    .location-name {
+        font-size: 16px;
+    }
+
+    .location-city {
+        font-size: 10px;
+        margin: 0;
+    }
+
+    .save-btn {
+        font-size: 10px;
+    }
+
+    .unsave-btn {
+        font-size: 10px;
+    }
+
+    .saves {
+        font-size: 10px;
+    }
+
+    .back-to-map {
+        font-size: 16px;
+        border: 1px solid black;
+    }
+
+    .creator-name.medium {
+        font-size: 14px;
+    }
+
+    .dots {
+        font-size: 14px;
+    }
+
+    .delete-post {
+        padding: 1px;
+        font-size: 10px;
+    }
+
+    .creator-name.small {
+        font-size: 10px;
+    }
+
+    .location-images img {
+        height: 150px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .location-header {
+        font-size: 16px;
+    }
+
+    .location-description span {
+        font-size: 8px;
+    }
+
+    .location-description {
+        font-size: 8px;
+        margin-bottom: 10px;
+    }
+
+    .location-tag {
+        padding: 2px;
+        font-size: 8px;
+    }
+
+    .modal-map-container {
+        height: 200px;
+        width: 200px;
+    }
+
+    .modal-pin-icon-container {
+        height: 40px;
+    }
+
+    .modal-pin-type {
+        height: 20px;
+        top: 13px;
+    }
+}
+
+@media (max-width: 300px) {
+    .creator-name.small {
+        font-size: 9px;
+    }
+
+    .location-description {
+        font-size: 7px;
+    }
+
+    
+    .creator-name.medium {
+        font-size: 13px;
+    }
 }

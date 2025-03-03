@@ -1,7 +1,8 @@
-import "./addLocation.css";
 import { useState, useEffect, useRef } from "react";
 import { getLocation } from "../../../assets/helpers/getLocation";
 import LocationForm from "../locationForm/LocationForm.jsx";
+import useAuth from "../authContext/useAuth";
+import { useNavigate } from "react-router-dom";
 
 function AddLocation() {
     const positionRef = useRef({ lat: 0.0, lng: 0.0 });
@@ -13,39 +14,20 @@ function AddLocation() {
     const [images, setImages] = useState([]);
 
     useEffect(() => {
-        const fetchLocation = async () => {
-            try {
-                const coords = await getLocation();
-                positionRef.current = coords;
-                setInitialLatitude(coords.lat);
-                setInitialLongitude(coords.lng);
-                localStorage.setItem("userCoordinates", JSON.stringify(coords));
-            } catch (error) {
-                console.error(error);
-            }
-            setIsLoading(false);
-        };
+        const storedCoords = JSON.parse(localStorage.getItem("coords"));
+        positionRef.current = storedCoords;
+        setInitialLatitude(storedCoords.lat);
+        setInitialLongitude(storedCoords.lng);
+        setIsLoading(false);
 
-        const storedCoords = localStorage.getItem("userCoordinates");
-        if (storedCoords) {
-            const coords = JSON.parse(storedCoords);
-            setInitialLatitude(coords.lat);
-            setInitialLongitude(coords.lng);
-
-
-            setIsLoading(false);
-        } else {
-            fetchLocation();
-        }
     }, []);
 
     useEffect(() => {
         const fetchTags = async () => {
             try {
-                const token = localStorage.getItem("jwtToken");
                 const response = await fetch("http://localhost:8080/tags", {
                     method: "GET",
-                    headers: { Authorization: `Bearer ${token}` },
+                    credentials: "include",
                 });
                 if (!response.ok) throw new Error("Failed to fetch tags");
 

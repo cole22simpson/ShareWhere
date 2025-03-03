@@ -2,11 +2,11 @@ import "./posts.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import LocationModal from "../locationModal/LocationModal";
-import PropTypes from "prop-types";
 import UseAnimations from "react-useanimations";
 import loading from 'react-useanimations/lib/loading';
+import PropTypes from "prop-types";
 
-const Posts = () => {
+const Posts = ({ userId }) => {
     
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -15,13 +15,11 @@ const Posts = () => {
     const navigate = useNavigate();
 
     const openLocationModal  = async (pinId) => {
-        const locationId = pinId;
+        const location_id = pinId;
         try {
-            const response = await fetch(`http://localhost:8080/locations/${locationId}`, {
+            const response = await fetch(`http://localhost:8080/locations/${location_id}`, {
                 method: "GET",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
+                credentials: "include",
             });
 
             if (!response.ok) {
@@ -55,12 +53,10 @@ const Posts = () => {
         setIsLoading(true);
 
         try {
-            const userId = localStorage.getItem("userId");
+            // const user_id = localStorage.getItem("userId");
             const response = await fetch(`http://localhost:8080/users/${userId}/posts`, {
                 method: "GET",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
+                credentials: "include",
             });
 
             if (!response.ok) {
@@ -88,6 +84,15 @@ const Posts = () => {
         loadPosts();
     }, [showModal]);
 
+    const handleModalOpened = (action) => {
+        if (action === true) {
+            document.body.classList.add("hidden");
+        }
+        else {
+            document.body.classList.remove("hidden");
+        }
+    };
+
     return (
 
         <>
@@ -113,6 +118,7 @@ const Posts = () => {
                     </div>
                     {showModal && (
                             <LocationModal
+                                handleModalOpened={handleModalOpened}
                                 selectedPost={selectedPost}
                                 closeLocationModal={closeLocationModal}
                             />
@@ -122,5 +128,9 @@ const Posts = () => {
         </>
     );
 };
+
+Posts.propTypes = {
+    userId: PropTypes.string.isRequired,
+}
 
 export default Posts;

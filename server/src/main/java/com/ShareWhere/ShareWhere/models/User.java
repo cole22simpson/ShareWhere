@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Data
@@ -41,6 +41,12 @@ public class User {
     @Column(nullable = false)
     private String city;
 
+//    @Column(nullable = false)
+//    private String latitudeHemisphere;
+//
+//    @Column(nullable = false)
+//    private String longitudeHemisphere;
+
     @Column(nullable = false)
     private String role;
 
@@ -52,6 +58,22 @@ public class User {
     @JsonIgnore
     private UserProfile profile;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_followers",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "follower_id")
+    )
+    private Set<User> followers = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_following",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "following_id")
+    )
+    private Set<User> following = new HashSet<>();
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
@@ -62,14 +84,6 @@ public class User {
 //    private String role;
 //    private LocalDateTime lastLogin;
 
-
-
-    // When it comes to constructors, you want to make constructors call other constructors in order to simplify
-    // the code. If you pass in 3 variables to a constructor, you should call the explicitly defined constructor
-    // with those three variables and three other default arguments in the function call.
-    // this() will call a constructor in that class, so if you call a constructor using this()
-    // with the three arguments passed in, then it will become an infinite loop.
-
     // Constructors
     protected User() {}
 
@@ -78,13 +92,15 @@ public class User {
     }
 
     public User(String email, String password, String username, String name, Double latitude, Double longitude, String city, String role) {
-        this.username = validateNotEmptyString(username, "Username");
+        this.username = validateNotEmptyString(username, "Username").toLowerCase();
         this.email = validateNotEmptyString(email, "Email");
         this.passwordHash = validateNotEmptyString(password, "Password");
         this.name = validateNotEmptyString(name, "Name");
         this.latitude = validateNotEmptyDouble(latitude, "Latitude");
         this.longitude = validateNotEmptyDouble(longitude, "Longitude");
         this.city = validateNotEmptyString(city, "City");
+//        this.latitudeHemisphere = this.getLatitudeHemisphere();
+//        this.longitudeHemisphere = this.getLongitudeHemisphere();
         this.role = validateNotEmptyString(role, "Role");
     }
 
@@ -120,4 +136,13 @@ public class User {
     public int hashCode() {
         return Objects.hash(userId);
     }
+
+//    public String getLatitudeHemisphere() {
+//        return latitude > 0 ? "N" : latitude < 0 ? "S" : "";
+//    }
+//
+//    public String getLongitudeHemisphere() {
+//        return longitude > 0 ? "E" : longitude < 0 ? "W" : "";
+//    }
+
 }

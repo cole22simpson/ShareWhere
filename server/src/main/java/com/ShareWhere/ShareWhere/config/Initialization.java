@@ -61,7 +61,7 @@ public class Initialization implements CommandLineRunner {
 
         System.out.println("Tags created");
 
-        String encodedPassword = passwordEncoder.encode("password");
+        String encodedPassword = passwordEncoder.encode("#49ersRulee");
 
         User user = new User(
                 "cole22simpson@gmail.com",
@@ -75,7 +75,19 @@ public class Initialization implements CommandLineRunner {
 
         userService.createUser(user);
 
-        System.out.println("User created");
+        User user1 = new User(
+                "legit.ninja16@gmail.com",
+                encodedPassword,
+                "cole22simpson",
+                "Cole Simpson",
+                32.93184,
+                -117.0669568,
+                "San Diego"
+        );
+
+        userService.createUser(user1);
+
+        System.out.println("Users created");
 //
     }
 }

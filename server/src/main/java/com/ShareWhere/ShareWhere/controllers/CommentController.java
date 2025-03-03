@@ -37,32 +37,32 @@ public class CommentController {
 
     @PostMapping(value = "/send", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CommentDTO> createComment(
-            @RequestParam("locationId") Integer locationId,
-            @RequestParam("userId") Integer userId,
-            @RequestParam("commentText") String commentText,
-            @RequestPart(value = "imageFiles", required = false) List<MultipartFile> imageFiles) throws IOException {
+            @RequestParam("location_id") Integer locationId,
+            @RequestParam("user_id") Integer userId,
+            @RequestParam("comment_text") String commentText,
+            @RequestPart(value = "image_files", required = false) List<MultipartFile> imageFiles) throws IOException {
         CommentDTO newComment = commentService.createComment(
                 locationId, userId, commentText, imageFiles
         );
         return ResponseEntity.status(HttpStatus.CREATED).body(newComment);
     }
 
-    @GetMapping("/{commentId}")
-    public ResponseEntity<Comment> getCommentById(@PathVariable("commentId") int commentId) {
+    @GetMapping("/{comment_id}")
+    public ResponseEntity<Comment> getCommentById(@PathVariable("comment_id") int commentId) {
         return commentService.getCommentById(commentId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{commentId}")
-    public ResponseEntity<Comment> updateComment(@PathVariable("commentId") int commentId, @RequestBody Comment updatedFields) {
+    @PutMapping("/{comment_id}")
+    public ResponseEntity<Comment> updateComment(@PathVariable("comment_id") int commentId, @RequestBody Comment updatedFields) {
         Optional<Comment> updatedComment = commentService.updateComment(commentId, updatedFields, false);
         return updatedComment.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PatchMapping("/{commentId}")
-    public ResponseEntity<Comment> updateCommentFields(@PathVariable("commentId") int commentId, @RequestBody Comment updatedFields) {
+    @PatchMapping("/{comment_id}")
+    public ResponseEntity<Comment> updateCommentFields(@PathVariable("comment_id") int commentId, @RequestBody Comment updatedFields) {
         Optional<Comment> updatedComment = commentService.updateComment(commentId, updatedFields, true);
         return updatedComment.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -70,8 +70,8 @@ public class CommentController {
 
     @PatchMapping("/like")
     public ResponseEntity<Set<Integer>> updateUserSavedPosts(
-            @RequestParam("userId") int userId,
-            @RequestParam("commentId") int commentId,
+            @RequestParam("user_id") int userId,
+            @RequestParam("comment_id") int commentId,
             @RequestParam("field") String field) {
         Comment comment = commentService.getCommentById(commentId).orElseThrow(
                 () -> new EntityNotFoundException("Comment not found")
@@ -81,8 +81,8 @@ public class CommentController {
 
         return ResponseEntity.ok(likedBy);
     }
-    @DeleteMapping("/{commentId}")
-    public ResponseEntity<Comment> deleteComment(@PathVariable("commentId") int commentId) {
+    @DeleteMapping("/{comment_id}")
+    public ResponseEntity<Comment> deleteComment(@PathVariable("comment_id") int commentId) {
         if (commentService.deleteComment(commentId)) {
             return ResponseEntity.noContent().build();
         }

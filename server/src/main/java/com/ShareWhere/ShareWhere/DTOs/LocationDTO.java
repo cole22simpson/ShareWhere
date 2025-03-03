@@ -23,6 +23,8 @@ public class LocationDTO {
     private Double latitude;
     private Double longitude;
     private String city;
+//    private String latitudeHemisphere;
+//    private String longitudeHemisphere;
     private String pinType;
     private List<ImageDTO> images = new ArrayList<>();
     private Integer saves;
@@ -32,7 +34,7 @@ public class LocationDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Set<Integer> savedBy = new HashSet<>();
-    private List<TagDTO> tags = new ArrayList<>();
+    private Set<TagDTO> tags = new HashSet<>();
     private List<CommentDTO> comments = new ArrayList<>();
 
     // Constructor
@@ -43,6 +45,8 @@ public class LocationDTO {
         this.latitude = location.getLatitude();
         this.longitude = location.getLongitude();
         this.city = location.getCity();
+//        this.latitudeHemisphere = location.getLatitudeHemisphere();
+//        this.longitudeHemisphere = location.getLongitudeHemisphere();
         this.pinType = location.getPinType();
         for (Image image : location.getImages()) {
             this.images.add(new ImageDTO(image));

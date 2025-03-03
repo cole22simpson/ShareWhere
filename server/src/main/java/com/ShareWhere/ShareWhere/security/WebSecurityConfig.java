@@ -1,6 +1,7 @@
 package com.ShareWhere.ShareWhere.security;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.filters.CorsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -40,28 +42,35 @@ public class WebSecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.sameOrigin()))
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
 //                .exceptionHandling(h -> h.authenticationEntryPoint(unauthorizedHandler))
-                .securityMatcher("/**")
+//                .securityMatcher("/**")
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers("/**").permitAll()
-                        .requestMatchers("/signup").permitAll()
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
-//                        .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/tags").permitAll()
+                                .requestMatchers("/search").permitAll()
+                        .requestMatchers("/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/locations/{location_id}").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/locations/{location_id}").permitAll()
+                                .requestMatchers("/locations/pins").permitAll()
+                        .requestMatchers("/locations").permitAll()
+                                .requestMatchers("/locations/home-posts").permitAll()
+                                .requestMatchers("/locations/home-posts/{tag_id}").permitAll()
+                                .requestMatchers("/").permitAll()
+                                .anyRequest().authenticated()
                 );
 
 
         return http.build();
     }
 
+
     UrlBasedCorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

@@ -1,7 +1,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
-<svg width="800px" height="800px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
+<svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800px" height="800px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve" fill="#000000">
 <g id="SVGRepo_bgCarrier" stroke-width="0"/>
 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
-<g id="SVGRepo_iconCarrier"> <title>building1-filled</title> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="icon" fill="#FFFFFF" transform="translate(42.666667, 64.000000)"> <path d="M320,1.42108547e-14 L319.999,341.333 L341.333,341.333 L341.333333,85.3333333 L405.333333,85.3333333 L405.333,341.333 L426.666667,341.333333 L426.666667,384 L319.999,383.999 L320,384 L106.666667,384 L106.666,383.999 L7.10542736e-15,384 L7.10542736e-15,341.333333 L21.333,341.333 L21.3333333,149.333333 L85.3333333,149.333333 L85.333,341.333 L106.666,341.333 L106.666667,1.42108547e-14 L320,1.42108547e-14 Z M234.666667,277.333333 L192,277.333333 L192,341.333333 L234.666667,341.333333 L234.666667,277.333333 Z M234.666667,170.666667 L192,170.666667 L192,213.333333 L234.666667,213.333333 L234.666667,170.666667 Z M234.666667,85.3333333 L192,85.3333333 L192,128 L234.666667,128 L234.666667,85.3333333 Z" id="Combined-Shape"> </path> </g> </g> </g>
+<g id="SVGRepo_iconCarrier"> <path fill="#FFFFFF" d="M56,0H8C5.789,0,4,1.789,4,4v56c0,2.211,1.789,4,4,4h20V48h8v16h20c2.211,0,4-1.789,4-4V4 C60,1.789,58.211,0,56,0z M28,40h-8v-8h8V40z M28,24h-8v-8h8V24z M44,40h-8v-8h8V40z M44,24h-8v-8h8V24z"/> </g>
 </svg>

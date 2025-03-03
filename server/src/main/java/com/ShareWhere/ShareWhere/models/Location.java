@@ -39,6 +39,12 @@ public class Location {
     @Column(nullable = false)
     private String city;
 
+//    @Column(nullable = false)
+//    private String latitudeHemisphere;
+//
+//    @Column(nullable = false)
+//    private String longitudeHemisphere;
+
     @Column(nullable = false)
     private int saves;
 
@@ -73,7 +79,7 @@ public class Location {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     @JsonIgnore
-    private List<Tag> tags = new ArrayList<>();
+    private Set<Tag> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -87,18 +93,20 @@ public class Location {
 
     public Location(String locationName, String locationDescription,
                     double latitude, double longitude, String city, String pinType,
-                    List<Tag> tags) {
+                    Set<Tag> tags) {
         this(locationName, locationDescription, latitude, longitude, city, pinType, tags, null);
     }
 
     public Location(String locationName, String locationDescription,
                     double latitude, double longitude, String city, String pinType,
-                    List<Tag> tags, UserProfile createdBy) {
+                    Set<Tag> tags, UserProfile createdBy) {
         this.locationName = locationName;
         this.locationDescription = locationDescription;
         this.latitude = latitude;
         this.longitude = longitude;
         this.city = city;
+//        this.latitudeHemisphere = this.getLatitudeHemisphere();
+//        this.longitudeHemisphere = this.getLongitudeHemisphere();
         this.pinType = pinType;
         this.tags = tags;
         this.saves = 0;
@@ -131,4 +139,12 @@ public class Location {
     public int hashCode() {
         return Objects.hash(locationId);
     }
+
+//    public String getLatitudeHemisphere() {
+//        return latitude > 0 ? "N" : latitude < 0 ? "S" : "";
+//    }
+//
+//    public String getLongitudeHemisphere() {
+//        return longitude > 0 ? "E" : longitude < 0 ? "W" : "";
+//    }
 }

@@ -9,6 +9,9 @@
     background-color: var(--black-color);
     padding: 5px;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .pin-option:hover {
@@ -24,3 +27,115 @@
     height: 100%;
 }
 
+@media (max-width: 2000px) {
+    .pin-option {
+        height: 35px;
+        margin: 3px;
+    }
+}
+
+@media (max-width: 1450px) {
+    .pin-option {
+        height: 30px;
+        margin: 2px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .pin-option {
+        height: 25px;
+        margin: 2px;
+        border-radius: 7px;
+    }
+
+    .pin-option.selected {
+        outline-width: 2px;
+    }
+}
+
+@media (max-width: 1050px) {
+    .pin-option {
+        height: 20px;
+        border-radius: 5px;
+        padding: auto;
+    }
+
+    .pin-img {
+        height: 13px;
+    }
+}
+
+@media (max-height: 950px) {
+    .pin-option {
+        height: 30px;
+        margin: 2px;
+    }
+}
+
+@media (max-height: 850px) {
+    .pin-option {
+        height: 25px;
+        margin: 2px;
+        border-radius: 7px;
+        padding: 3px;
+    }
+
+    .pin-img {
+        height: 100%;
+        width: 100%;
+    }
+
+    .pin-option.selected {
+        outline-width: 2px;
+    }
+}
+
+@media (max-height: 625px) {
+    .pin-option {
+        height: 20px;
+        border-radius: 5px;
+        padding: 2px;
+    }
+}
+
+@media (max-width: 725px) {
+    .pin-option {
+        height: 18px;
+        margin: 2px;
+    }
+}
+
+@media (max-width: 660px) {
+    .pin-option {
+        padding: 1px;
+        height: 18px;
+        width: 18px;
+        margin: 1px;
+    }
+
+    .pin-option img {
+        height: 90%;
+        width: 90%;
+    }
+
+    .pin-option.selected {
+        outline-width: 1px;
+        outline-color: rgb(58, 72, 216);
+        filter: drop-shadow(0px 0px 2px rgb(58, 72, 216));
+    }
+}
+
+@media (max-width: 450px) {
+    .pin-option {
+        padding: 1px;
+        height: 16px;
+        width: 16px;
+        margin: 1px;
+    }
+}
+
+@media (max-width: 350px) {
+    .pin-option {
+        padding: 2px;
+    }
+}

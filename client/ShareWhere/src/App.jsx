@@ -24,6 +24,7 @@ function App() {
               <Route path='/signup' element={<Signup />} />
               <Route path='/add-location' element={<AddLocation />} />
               <Route path='/profile' element={<Profile />} />
+              <Route path="/profile/:user_id" element={<Profile />} />
               <Route path='/discover' element={<Discover />} />
             </Routes>
           </Router>
