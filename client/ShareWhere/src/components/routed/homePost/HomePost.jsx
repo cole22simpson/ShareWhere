@@ -12,7 +12,7 @@ const HomePost = ({ post, handleModalOpened, setModalOpened }) => {
     const openLocationModal  = async (pinId) => {
         const location_id = pinId;
         try {
-            const response = await fetch(`http://localhost:8080/locations/${location_id}`, {
+            const response = await fetch(`https://sharewheresocial.com/locations/${location_id}`, {
                 method: "GET",
                 credentials: "include",
             });

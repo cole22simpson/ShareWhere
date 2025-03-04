@@ -61,7 +61,7 @@ function Profile() {
             setUserId(profileUserId);
             setOwnProfile(profileUserId === loggedInUserId);
 
-            const response = await fetch(`http://localhost:8080/users/${profileUserId}`, {
+            const response = await fetch(`https://sharewheresocial.com/users/${profileUserId}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -103,7 +103,7 @@ function Profile() {
         formData.append("action", type);
     
         try {
-            const response = await fetch(`http://localhost:8080/users/follow`, {
+            const response = await fetch(`https://sharewheresocial.com/users/follow`, {
                 method: "PATCH",
                 credentials: "include",
                 body: formData

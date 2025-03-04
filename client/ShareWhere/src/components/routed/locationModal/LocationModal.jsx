@@ -161,7 +161,7 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
         event.preventDefault();
 
         try {
-            const response = await fetch(`http://localhost:8080/locations/${postId}`, {
+            const response = await fetch(`https://sharewheresocial.com/locations/${postId}`, {
                 method: "DELETE",
                 credentials: "include",
             });
@@ -198,7 +198,7 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
         formData.append("field", type);
 
         try {
-            const response = await fetch(`http://localhost:8080/users/save`, {
+            const response = await fetch(`https://sharewheresocial.com/users/save`, {
                 method: "PATCH",
                 credentials: "include",
                 body: formData

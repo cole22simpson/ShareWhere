@@ -14,7 +14,7 @@ const Saved = () => {
     const openLocationModal  = async (pinId) => {
         const location_id = pinId;
         try {
-            const response = await fetch(`http://localhost:8080/locations/${location_id}`, {
+            const response = await fetch(`https://sharewheresocial.com/locations/${location_id}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -56,7 +56,7 @@ const Saved = () => {
 
         try {
             const user_id = localStorage.getItem("userId");
-            const response = await fetch(`http://localhost:8080/users/${user_id}/saved`, {
+            const response = await fetch(`https://sharewheresocial.com/users/${user_id}/saved`, {
                 method: "GET",
                 credentials: "include",
             });

@@ -20,7 +20,7 @@ function Nav() {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("http://localhost:8080/auth/logout", {
+            const response = await fetch("https://sharewheresocial.com/auth/logout", {
                 method: "POST",
                 credentials: "include", // Send the cookie with the request
             });

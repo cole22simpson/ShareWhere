@@ -49,11 +49,8 @@ public class WebSecurityConfig {
                                 .requestMatchers("/auth/**").permitAll()
                                 .requestMatchers("/tags").permitAll()
                                 .requestMatchers("/search").permitAll()
-                        .requestMatchers("/users").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/locations/{location_id}").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/locations/{location_id}").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/locations/{location_id}").permitAll()
                                 .requestMatchers("/locations/pins").permitAll()
-                        .requestMatchers("/locations").permitAll()
                                 .requestMatchers("/locations/home-posts").permitAll()
                                 .requestMatchers("/locations/home-posts/{tag_id}").permitAll()
                                 .requestMatchers("/").permitAll()
@@ -67,7 +64,7 @@ public class WebSecurityConfig {
 
     UrlBasedCorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+        configuration.setAllowedOrigins(Collections.singletonList("https://sharewheresocial.com"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));
         configuration.setAllowCredentials(true);

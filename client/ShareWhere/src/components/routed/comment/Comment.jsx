@@ -91,7 +91,7 @@ const Comment = ({ setCommentImageOpen, handleCommentDeleted, comment }) => {
         formData.append("field", type);
 
         try {
-            const response = await fetch(`http://localhost:8080/comments/like`, {
+            const response = await fetch(`https://sharewheresocial.com/comments/like`, {
                 method: "PATCH",
                 credentials: "include",
                 body: formData
@@ -114,7 +114,7 @@ const Comment = ({ setCommentImageOpen, handleCommentDeleted, comment }) => {
         event.preventDefault();
 
         try {
-            const response = await fetch(`http://localhost:8080/comments/${commentId}`, {
+            const response = await fetch(`https://sharewheresocial.com/comments/${commentId}`, {
                 method: "DELETE",
                 credentials: "include",
             });

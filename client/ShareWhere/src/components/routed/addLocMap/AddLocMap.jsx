@@ -100,7 +100,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
 
         const location_id = pinId;
         try {
-            const response = await fetch(`http://localhost:8080/locations/${location_id}`, {
+            const response = await fetch(`https://sharewheresocial.com/locations/${location_id}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -180,7 +180,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
 
     const loadPins = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/locations/pins?north=${bounds.north}&south=${bounds.south}&east=${bounds.east}&west=${bounds.west}`, {
+            const response = await fetch(`https://sharewheresocial.com/locations/pins?north=${bounds.north}&south=${bounds.south}&east=${bounds.east}&west=${bounds.west}`, {
                 method: "GET",
                 credentials: "include",
             });

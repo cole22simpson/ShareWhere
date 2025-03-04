@@ -133,7 +133,7 @@ const HomePostSection = ({ postType }) => {
         setIsLoading(true);
         try {
             const user_id = localStorage.getItem("userId");
-            const response = await fetch(`http://localhost:8080/users/${user_id}/following`, {
+            const response = await fetch(`https://sharewheresocial.com/users/${user_id}/following`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -160,12 +160,12 @@ const HomePostSection = ({ postType }) => {
             const lng = coords.lng;
             const { north, south, east, west } = getBoundingCoordinates(lat, lng, 30);
 
-            let url = `http://localhost:8080/locations/home-posts?north=${north}&south=${south}&east=${east}&west=${west}`;
+            let url = `https://sharewheresocial.com/locations/home-posts?north=${north}&south=${south}&east=${east}&west=${west}`;
 
             if (type === "WATER") {
-                url = `http://localhost:8080/locations/home-posts/16?north=${north}&south=${south}&east=${east}&west=${west}`;
+                url = `https://sharewheresocial.com/locations/home-posts/16?north=${north}&south=${south}&east=${east}&west=${west}`;
             } else if (type === "VIEW") {
-                url = `http://localhost:8080/locations/home-posts/21?north=${north}&south=${south}&east=${east}&west=${west}`;
+                url = `https://sharewheresocial.com/locations/home-posts/21?north=${north}&south=${south}&east=${east}&west=${west}`;
             }
 
             const response = await fetch(url, {

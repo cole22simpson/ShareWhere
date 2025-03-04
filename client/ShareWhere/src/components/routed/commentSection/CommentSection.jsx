@@ -75,7 +75,7 @@ const CommentSection = ({ setCommentImageOpen, comments, locationId }) => {
     });
 
         try {
-            const response = await fetch("http://localhost:8080/comments/send", {
+            const response = await fetch("https://sharewheresocial.com/comments/send", {
                 method: "POST",
                 body: formData,
                 credentials: "include",

@@ -22,8 +22,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtDecoder jwtDecoder;
     private final JwtToPrincipalConverter jwtToPrincipalConverter;
 
-//    private final List<String> publicEndpoints = List.of("/**", "/", "/signup", "/login");
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // Skip public endpoints
@@ -31,10 +29,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 request.getRequestURI().startsWith("/auth/") ||
                 request.getRequestURI().equals("/") ||
                 request.getRequestURI().equals("/tags") ||
-                        request.getRequestURI().equals("/search") ||
-                        request.getRequestURI().equals("/users") ||
+                request.getRequestURI().equals("/search") ||
                 request.getRequestURI().equals("/locations/home-posts") ||
-                        request.getRequestURI().equals("/locations") ||
                 request.getRequestURI().equals("/locations/home-posts/{tag_id}") ||
                 request.getRequestURI().equals("/locations/{location_id}") ||
                 request.getRequestURI().equals("/locations/pins")) {

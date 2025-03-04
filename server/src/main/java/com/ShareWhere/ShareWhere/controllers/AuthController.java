@@ -72,10 +72,10 @@ public class AuthController {
             // Create HTTP-only cookie
             ResponseCookie jwtCookie = ResponseCookie.from("jwt", token)
                     .httpOnly(true)
-//                    .secure(true) // Use secure(true) in production with HTTPS
+                    .secure(true)
                     .path("/")
-                    .maxAge(2 * 60 * 60) // Cookie valid for 7 days
-                    .sameSite("Lax") // Adjust based on your needs
+                    .maxAge(2 * 60 * 60)
+                    .sameSite("Lax")
                     .build();
 
             return ResponseEntity.ok()
@@ -152,7 +152,7 @@ public class AuthController {
 
         ResponseCookie jwtCookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-//                .secure(true) // Use secure(true) in production
+                .secure(true)
                 .path("/")
                 .maxAge(2 * 60 * 60)
                 .sameSite("Lax")
@@ -168,7 +168,7 @@ public class AuthController {
     public ResponseEntity<?> logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("jwt", null);
         cookie.setHttpOnly(true);
-//        cookie.setSecure(true);
+        cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setMaxAge(0); // Delete the cookie
 

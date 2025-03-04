@@ -59,7 +59,7 @@ const EditModal = ({ username, name, bio, profilePicUrl, backToProfile }) => {
             formData.append("new_username", lowerUsername);
     
             try {
-                const response = await fetch(`http://localhost:8080/users/${user_id}/names`, {
+                const response = await fetch(`https://sharewheresocial.com/users/${user_id}/names`, {
                     method: "PATCH",
                     credentials: "include",
                     body: formData
@@ -93,7 +93,7 @@ const EditModal = ({ username, name, bio, profilePicUrl, backToProfile }) => {
             formData.append("new_image", newImage);
     
             try {
-                const response = await fetch(`http://localhost:8080/users/${user_id}/profile`, {
+                const response = await fetch(`https://sharewheresocial.com/users/${user_id}/profile`, {
                     method: "PATCH",
                     credentials: "include",
                     body: formData

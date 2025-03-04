@@ -91,7 +91,7 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
         });
     
         try {
-            const response = await fetch("http://localhost:8080/locations/post", {
+            const response = await fetch("https://sharewheresocial.com/locations/post", {
                 method: "POST",
                 body: formData,
                 credentials: "include",

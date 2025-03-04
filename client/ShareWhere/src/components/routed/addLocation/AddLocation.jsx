@@ -25,7 +25,7 @@ function AddLocation() {
     useEffect(() => {
         const fetchTags = async () => {
             try {
-                const response = await fetch("http://localhost:8080/tags", {
+                const response = await fetch("https://sharewheresocial.com/tags", {
                     method: "GET",
                     credentials: "include",
                 });
