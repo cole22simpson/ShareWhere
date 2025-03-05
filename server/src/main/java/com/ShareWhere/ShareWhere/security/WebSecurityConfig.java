@@ -64,7 +64,9 @@ public class WebSecurityConfig {
 
     UrlBasedCorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("https://sharewheresocial.com"));
+        configuration.setAllowedOrigins(Arrays.asList(
+                "https://sharewheresocial.com",
+                "https://victorious-stone-03904841e.6.azurestaticapps.net"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));
         configuration.setAllowCredentials(true);
