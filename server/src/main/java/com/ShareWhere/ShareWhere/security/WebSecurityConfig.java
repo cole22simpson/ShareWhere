@@ -46,13 +46,13 @@ public class WebSecurityConfig {
 //                .exceptionHandling(h -> h.authenticationEntryPoint(unauthorizedHandler))
 //                .securityMatcher("/**")
                 .authorizeHttpRequests(registry -> registry
-                                .requestMatchers("/auth/**").permitAll()
-                                .requestMatchers("/tags").permitAll()
-                                .requestMatchers("/search").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/locations/{location_id}").permitAll()
-                                .requestMatchers("/locations/pins").permitAll()
-                                .requestMatchers("/locations/home-posts").permitAll()
-                                .requestMatchers("/locations/home-posts/{tag_id}").permitAll()
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/tags").permitAll()
+                                .requestMatchers("/api/search").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/locations/{location_id}").permitAll()
+                                .requestMatchers("/api/locations/pins").permitAll()
+                                .requestMatchers("/api/locations/home-posts").permitAll()
+                                .requestMatchers("/api/locations/home-posts/{tag_id}").permitAll()
                                 .requestMatchers("/").permitAll()
                                 .anyRequest().authenticated()
                 );
@@ -66,6 +66,7 @@ public class WebSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
                 "https://sharewheresocial.com",
+                "https://www.sharewheresocial.com",
                 "https://victorious-stone-03904841e.6.azurestaticapps.net"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));

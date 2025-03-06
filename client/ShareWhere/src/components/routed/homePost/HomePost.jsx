@@ -8,11 +8,12 @@ const HomePost = ({ post, handleModalOpened, setModalOpened }) => {
 
     const [showModal, setShowModal] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const openLocationModal  = async (pinId) => {
         const location_id = pinId;
         try {
-            const response = await fetch(`https://sharewheresocial.com/locations/${location_id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/locations/${location_id}`, {
                 method: "GET",
                 credentials: "include",
             });

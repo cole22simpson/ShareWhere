@@ -12,6 +12,7 @@ function AddLocation() {
     const [tags, setTags] = useState({});
     const [selectedTags, setSelectedTags] = useState({});
     const [images, setImages] = useState([]);
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         const storedCoords = JSON.parse(localStorage.getItem("coords"));
@@ -25,7 +26,7 @@ function AddLocation() {
     useEffect(() => {
         const fetchTags = async () => {
             try {
-                const response = await fetch("https://sharewheresocial.com/tags", {
+                const response = await fetch(`${API_BASE_URL}/api/tags`, {
                     method: "GET",
                     credentials: "include",
                 });

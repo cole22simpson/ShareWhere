@@ -16,6 +16,7 @@ function Profile() {
     const [userId, setUserId] = useState(null);
     const [ownProfile, setOwnProfile] = useState(false);
     const [username, setUsername] = useState("");
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
     const userNameClass = getUsernameClass(username);
     const [name, setName] = useState("");
     const [numPosts, setNumPosts] = useState(0);
@@ -61,7 +62,7 @@ function Profile() {
             setUserId(profileUserId);
             setOwnProfile(profileUserId === loggedInUserId);
 
-            const response = await fetch(`https://sharewheresocial.com/users/${profileUserId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/users/${profileUserId}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -103,7 +104,7 @@ function Profile() {
         formData.append("action", type);
     
         try {
-            const response = await fetch(`https://sharewheresocial.com/users/follow`, {
+            const response = await fetch(`${API_BASE_URL}/api/users/follow`, {
                 method: "PATCH",
                 credentials: "include",
                 body: formData

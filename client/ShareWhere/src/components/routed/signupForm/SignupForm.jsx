@@ -16,6 +16,7 @@ function SignupForm({ onBackToBasic }) {
     const [passwordHash, setPasswordHash] = useState('');
     const [location, setLocation] = useState(null);
     const [latitude, setLatitude] = useState(0.0);
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
     const [longitude, setLongitude] = useState(0.0);
     const [errors, setErrors] = useState({});
     const [nameError, setNameError] = useState(false);
@@ -62,7 +63,7 @@ function SignupForm({ onBackToBasic }) {
         );
 
         try {
-            const response = await fetch("https://sharewheresocial.com/auth/signup", {
+            const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

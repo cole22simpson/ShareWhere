@@ -29,6 +29,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
     const [selectedPlace, setSelectedPlace] = useState(null);
     const MAP_ID = import.meta.env.VITE_MAP_ID;
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const handleModalOpened = (action) => {
         if (action === true) {
@@ -100,7 +101,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
 
         const location_id = pinId;
         try {
-            const response = await fetch(`https://sharewheresocial.com/locations/${location_id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/locations/${location_id}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -180,7 +181,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
 
     const loadPins = async () => {
         try {
-            const response = await fetch(`https://sharewheresocial.com/locations/pins?north=${bounds.north}&south=${bounds.south}&east=${bounds.east}&west=${bounds.west}`, {
+            const response = await fetch(`${API_BASE_URL}/api/locations/pins?north=${bounds.north}&south=${bounds.south}&east=${bounds.east}&west=${bounds.west}`, {
                 method: "GET",
                 credentials: "include",
             });

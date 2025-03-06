@@ -14,6 +14,7 @@ function Login () {
     const [showPassword, setShowPassword] = useState("password");
     const { userLoggedIn, setUserLoggedIn } = useAuth();
     const [backgroundImage, setBackgroundImage] = useState("");
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
     const [changeImages, setChangeImages] = useState(false);
     const navigate = useNavigate();
 
@@ -57,7 +58,7 @@ function Login () {
         setError(false);
 
         try {
-            const response = await fetch("https://sharewheresocial.com/auth/login", {
+            const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

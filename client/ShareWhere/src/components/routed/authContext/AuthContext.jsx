@@ -5,11 +5,12 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [userLoggedIn, setUserLoggedIn] = useState(false);
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         const checkAuthStatus = async () => {
             try {
-                const response = await fetch("http://localhost:8080/auth/check", {
+                const response = await fetch(`${API_BASE_URL}/api/auth/check`, {
                     method: "GET",
                     credentials: "include",
                 });

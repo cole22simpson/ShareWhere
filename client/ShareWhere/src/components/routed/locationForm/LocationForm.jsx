@@ -18,6 +18,7 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
     const [submitted, setSubmitted] = useState(false);
     const GEOCODE_API_KEY = import.meta.env.VITE_GEOCODE_API;
     const [disabled, setDisabled] = useState(false);
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
     const [isRearranged, setIsRearranged] = useState(false);
 
@@ -91,7 +92,7 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
         });
     
         try {
-            const response = await fetch("https://sharewheresocial.com/locations/post", {
+            const response = await fetch(`${API_BASE_URL}/api/locations/post`, {
                 method: "POST",
                 body: formData,
                 credentials: "include",

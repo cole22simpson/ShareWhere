@@ -19,7 +19,7 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
     
     const MAP_ID = import.meta.env.VITE_MAP_ID;
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
-    
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
     const createdAtDate = dayjs(selectedPost.createdAt);
     const timeAgo = createdAtDate.fromNow();
     const comments = selectedPost.comments;
@@ -161,7 +161,7 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
         event.preventDefault();
 
         try {
-            const response = await fetch(`https://sharewheresocial.com/locations/${postId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/locations/${postId}`, {
                 method: "DELETE",
                 credentials: "include",
             });
@@ -198,7 +198,7 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
         formData.append("field", type);
 
         try {
-            const response = await fetch(`https://sharewheresocial.com/users/save`, {
+            const response = await fetch(`${API_BASE_URL}/api/users/save`, {
                 method: "PATCH",
                 credentials: "include",
                 body: formData

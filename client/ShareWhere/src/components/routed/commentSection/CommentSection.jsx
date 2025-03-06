@@ -17,6 +17,7 @@ const CommentSection = ({ setCommentImageOpen, comments, locationId }) => {
     const { userLoggedIn, setUserLoggedIn } = useAuth();
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [disabled, setDisabled] = useState(true);
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const handleCommentDeleted = (deletedCommentId) => {
         setLocationComments(prevComments => 
@@ -75,7 +76,7 @@ const CommentSection = ({ setCommentImageOpen, comments, locationId }) => {
     });
 
         try {
-            const response = await fetch("https://sharewheresocial.com/comments/send", {
+            const response = await fetch(`${API_BASE_URL}/api/comments/send`, {
                 method: "POST",
                 body: formData,
                 credentials: "include",

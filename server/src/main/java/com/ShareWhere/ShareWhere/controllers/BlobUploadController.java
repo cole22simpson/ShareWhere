@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/blob")
+@RequestMapping("/api/blob")
 public class BlobUploadController {
 
     private final AzureBlobStorageService azureBlobStorageService;

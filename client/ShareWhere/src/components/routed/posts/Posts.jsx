@@ -12,12 +12,13 @@ const Posts = ({ userId }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
 
     const openLocationModal  = async (pinId) => {
         const location_id = pinId;
         try {
-            const response = await fetch(`https://sharewheresocial.com/locations/${location_id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/locations/${location_id}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -54,7 +55,7 @@ const Posts = ({ userId }) => {
 
         try {
             // const user_id = localStorage.getItem("userId");
-            const response = await fetch(`https://sharewheresocial.com/users/${userId}/posts`, {
+            const response = await fetch(`${API_BASE_URL}/api/users/${userId}/posts`, {
                 method: "GET",
                 credentials: "include",
             });

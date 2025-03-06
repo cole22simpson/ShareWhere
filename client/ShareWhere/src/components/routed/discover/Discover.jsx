@@ -39,6 +39,7 @@ const Discover = () => {
     const [selectedTags, setSelectedTags] = useState([]);
     const [isRearranged, setIsRearranged] = useState(false);
     const triggerElementRef = useRef(null); 
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const handleModalOpened = (action) => {
         if (action === true) {
@@ -153,7 +154,7 @@ const Discover = () => {
     useEffect(() => {
         const fetchTags = async () => {
             try {
-                const response = await fetch("https://sharewheresocial.com/tags", {
+                const response = await fetch(`${API_BASE_URL}/api/tags`, {
                     method: "GET",
                     credentials: "include",
                 });
@@ -180,7 +181,7 @@ const Discover = () => {
 
         const location_id = pinId;
         try {
-            const response = await fetch(`https://sharewheresocial.com/locations/${location_id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/locations/${location_id}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -284,7 +285,7 @@ const Discover = () => {
 
     const loadPins = async () => {
         try {
-            const response = await fetch(`https://sharewheresocial.com/locations/pins?north=${bounds.north}&south=${bounds.south}&east=${bounds.east}&west=${bounds.west}`, {
+            const response = await fetch(`${API_BASE_URL}/api/locations/pins?north=${bounds.north}&south=${bounds.south}&east=${bounds.east}&west=${bounds.west}`, {
                 method: "GET",
                 credentials: "include",
             });

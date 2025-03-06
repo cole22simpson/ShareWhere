@@ -15,6 +15,7 @@ const EditModal = ({ username, name, bio, profilePicUrl, backToProfile }) => {
     const [errors, setErrors] = useState({});
     const [usernameError, setUsernameError] = useState(false);
     const [nameError, setNameError] = useState(false);
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
@@ -59,7 +60,7 @@ const EditModal = ({ username, name, bio, profilePicUrl, backToProfile }) => {
             formData.append("new_username", lowerUsername);
     
             try {
-                const response = await fetch(`https://sharewheresocial.com/users/${user_id}/names`, {
+                const response = await fetch(`${API_BASE_URL}/api/users/${user_id}/names`, {
                     method: "PATCH",
                     credentials: "include",
                     body: formData
@@ -93,7 +94,7 @@ const EditModal = ({ username, name, bio, profilePicUrl, backToProfile }) => {
             formData.append("new_image", newImage);
     
             try {
-                const response = await fetch(`https://sharewheresocial.com/users/${user_id}/profile`, {
+                const response = await fetch(`${API_BASE_URL}/api/users/${user_id}/profile`, {
                     method: "PATCH",
                     credentials: "include",
                     body: formData

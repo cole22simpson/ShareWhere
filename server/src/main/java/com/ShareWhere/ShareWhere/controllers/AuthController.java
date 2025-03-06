@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final JwtIssuer jwtIssuer;

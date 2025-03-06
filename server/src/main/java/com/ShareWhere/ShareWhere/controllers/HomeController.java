@@ -25,7 +25,7 @@ public class HomeController {
         this.locationService = locationService;
     }
 
-    @RequestMapping("/search")
+    @RequestMapping("/api/search")
     public ResponseEntity<List<HomeSearchResultDTO>> search(
             @RequestParam("query") String query
     ) {
@@ -50,7 +50,7 @@ public class HomeController {
         return ResponseEntity.ok(combinedResults);
     }
 
-    @GetMapping("/secured")
+    @GetMapping("/api/secured")
     public String secured(@AuthenticationPrincipal UserPrincipal principal) {
         return "If you see this, then you're logged in as user " + principal.getUsername()
                 + " User ID: " + principal.getUserId();

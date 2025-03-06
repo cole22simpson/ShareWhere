@@ -12,7 +12,7 @@ const HomePostSection = ({ postType }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [modalOpened, setModalOpened] = useState(false);
     const [locationLoaded, setLocationLoaded] = useState(false); // Track location loading
-
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(4);
 
@@ -133,7 +133,7 @@ const HomePostSection = ({ postType }) => {
         setIsLoading(true);
         try {
             const user_id = localStorage.getItem("userId");
-            const response = await fetch(`https://sharewheresocial.com/users/${user_id}/following`, {
+            const response = await fetch(`${API_BASE_URL}/api/users/${user_id}/following`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -160,12 +160,12 @@ const HomePostSection = ({ postType }) => {
             const lng = coords.lng;
             const { north, south, east, west } = getBoundingCoordinates(lat, lng, 30);
 
-            let url = `https://sharewheresocial.com/locations/home-posts?north=${north}&south=${south}&east=${east}&west=${west}`;
+            let url = `${API_BASE_URL}/api/locations/home-posts?north=${north}&south=${south}&east=${east}&west=${west}`;
 
             if (type === "WATER") {
-                url = `https://sharewheresocial.com/locations/home-posts/16?north=${north}&south=${south}&east=${east}&west=${west}`;
+                url = `${API_BASE_URL}/api/locations/home-posts/16?north=${north}&south=${south}&east=${east}&west=${west}`;
             } else if (type === "VIEW") {
-                url = `https://sharewheresocial.com/locations/home-posts/21?north=${north}&south=${south}&east=${east}&west=${west}`;
+                url = `${API_BASE_URL}/api/locations/home-posts/21?north=${north}&south=${south}&east=${east}&west=${west}`;
             }
 
             const response = await fetch(url, {

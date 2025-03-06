@@ -13,6 +13,7 @@ import useAuth from '../authContext/useAuth';
 function Nav() {
     const [sidebar, setSidebar] = useState(false);
     const { userLoggedIn, setUserLoggedIn } = useAuth();
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const showSidebar = () => {
         setSidebar(!sidebar);
@@ -20,7 +21,7 @@ function Nav() {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("https://sharewheresocial.com/auth/logout", {
+            const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
                 method: "POST",
                 credentials: "include", // Send the cookie with the request
             });

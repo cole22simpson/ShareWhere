@@ -10,11 +10,12 @@ const Saved = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [selectedPin, setSelectedPin] = useState(null);
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const openLocationModal  = async (pinId) => {
         const location_id = pinId;
         try {
-            const response = await fetch(`https://sharewheresocial.com/locations/${location_id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/locations/${location_id}`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -56,7 +57,7 @@ const Saved = () => {
 
         try {
             const user_id = localStorage.getItem("userId");
-            const response = await fetch(`https://sharewheresocial.com/users/${user_id}/saved`, {
+            const response = await fetch(`${API_BASE_URL}/api/users/${user_id}/saved`, {
                 method: "GET",
                 credentials: "include",
             });

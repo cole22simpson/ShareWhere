@@ -24,6 +24,7 @@ const Comment = ({ setCommentImageOpen, handleCommentDeleted, comment }) => {
     const [deleteComment, setDeleteComment] = useState(false);
     const ownedComment = comment.commenterId === parseInt(localStorage.getItem("userId"));
     const navigate = useNavigate();
+    const API_BASE_URL = import.meta.env.VITE_API_URL;
 
     const openImage = (imageUrl) => {
         setSelectedImage(imageUrl);
@@ -91,7 +92,7 @@ const Comment = ({ setCommentImageOpen, handleCommentDeleted, comment }) => {
         formData.append("field", type);
 
         try {
-            const response = await fetch(`https://sharewheresocial.com/comments/like`, {
+            const response = await fetch(`${API_BASE_URL}/api/comments/like`, {
                 method: "PATCH",
                 credentials: "include",
                 body: formData
@@ -114,7 +115,7 @@ const Comment = ({ setCommentImageOpen, handleCommentDeleted, comment }) => {
         event.preventDefault();
 
         try {
-            const response = await fetch(`https://sharewheresocial.com/comments/${commentId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/comments/${commentId}`, {
                 method: "DELETE",
                 credentials: "include",
             });
