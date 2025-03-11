@@ -85,9 +85,9 @@ public class Location {
     @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "savedLocations")
+    @ElementCollection
     @JsonIgnore
-    private Set<UserProfile> savedBy = new HashSet<>();
+    private Set<Integer> savedBy = new HashSet<>();
 
     public Location() {}
 

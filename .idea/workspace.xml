@@ -6,7 +6,31 @@
   <component name="ChangeListManager">
     <list default="true" id="094d4d6e-c9c5-4d5f-ab14-99a0d7800aef" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/.env" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/AddLocMap.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/addLocMap/AddLocMap.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/authContext/AuthContext.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/authContext/AuthContext.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/comment/Comment.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/comment/Comment.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/discover/Discover.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/discover/Discover.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/home/Home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/home/Home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/homePostSection/HomePostSection.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/homePostSection/HomePostSection.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationForm/LocationForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationForm/LocationForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationModal/LocationModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/locationModal/LocationModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/login/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/login/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/nav/Nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/nav/Nav.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signupForm/SignupForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/ShareWhere/src/components/routed/signupForm/SignupForm.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/server/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/LocationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/DTOs/LocationDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/models/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/security/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/security/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/LocationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/LocationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/ShareWhere/ShareWhere/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +89,9 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\cole2\Desktop\ShareWhere\server\src" />
@@ -164,7 +191,9 @@
       <workItem from="1741066058873" duration="312000" />
       <workItem from="1741066656268" duration="6565000" />
       <workItem from="1741117642467" duration="11202000" />
-      <workItem from="1741208534717" duration="10532000" />
+      <workItem from="1741208534717" duration="23501000" />
+      <workItem from="1741315746397" duration="15842000" />
+      <workItem from="1741419271977" duration="33085000" />
     </task>
     <servers />
   </component>

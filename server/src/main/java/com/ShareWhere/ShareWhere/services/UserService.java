@@ -62,6 +62,17 @@ public class UserService {
                 .map(UserDTO::new);
     }
 
+    public List<Double> getUserCoords(int userId) {
+        UserDTO user = this.getUserById(userId).orElseThrow(
+                () -> new EntityNotFoundException("User not found")
+        );
+
+        List<Double> coords = new ArrayList<>();
+        coords.add(user.getLatitude());
+        coords.add(user.getLongitude());
+        return coords;
+    }
+
     public List<LocationPreviewDTO> getUserPosts(int userId) {
         UserProfile profile = this.getUserProfileById(userId).orElseThrow(
                 () -> new EntityNotFoundException("User not found")
@@ -233,8 +244,8 @@ public class UserService {
                         saved.add(location);
                         profile.setSavedLocations(saved);
                         location.setSaves(location.getSaves() + 1);
-                        Set<UserProfile> savedBy = location.getSavedBy();
-                        savedBy.add(profile);
+                        Set<Integer> savedBy = location.getSavedBy();
+                        savedBy.add(profile.getProfileId());
                         location.setSavedBy(savedBy);
                     }
                 }
@@ -246,8 +257,8 @@ public class UserService {
                         saved.remove(location);
                         profile.setSavedLocations(saved);
                         location.setSaves(location.getSaves() - 1);
-                        Set<UserProfile> savedBy = location.getSavedBy();
-                        savedBy.remove(profile);
+                        Set<Integer> savedBy = location.getSavedBy();
+                        savedBy.remove(profile.getProfileId());
                         location.setSavedBy(savedBy);
                     }
                 }

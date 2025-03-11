@@ -10,8 +10,10 @@ import { GiHandOk } from "react-icons/gi";
 import "./discover.css";
 import { Map, AdvancedMarker, useMap, useAdvancedMarkerRef, APIProvider, useMapsLibrary, MapControl, InfoWindow, ControlPosition } from "@vis.gl/react-google-maps";
 import LocationModal from "../locationModal/LocationModal";
+import useAuth from "../authContext/useAuth";
 
 const Discover = () => {
+    const { userLoggedIn, setUserLoggedIn } = useAuth();
     const userCoords = JSON.parse(localStorage.getItem("coords"));
     const defaultCenter = {lat: userCoords.lat, lng: userCoords.lng};
     const [center, setCenter] = useState({ lat: defaultCenter.lat, lng: defaultCenter.lng });
@@ -268,8 +270,8 @@ const Discover = () => {
     const handleBoundsChanged = () => {
         if (mapRef) {
             const mapBounds = mapRef.map.getBounds();
-            const north = mapBounds.ji.hi;
-            const south = mapBounds.ji.lo;
+            const north = mapBounds.fi.hi;
+            const south = mapBounds.fi.lo;
             const east = mapBounds.Gh.lo;
             const west = mapBounds.Gh.hi;
             setBounds({ north: north, south: south, east: east, west: west });
@@ -631,28 +633,27 @@ const Discover = () => {
                                         position={{ lat: pin.latitude, lng: pin.longitude }}
                                         clickable="true"
                                         className="marker"
-                                        onClick={() => handleMarkerClick(pin)}
+                                        // onClick={() => handleMarkerClick(pin)}
                                         >
                                             <div
                                                 className="pin-icon-container"
-                                                onMouseOver={() => handlePinIconMouseOver(pin)}
-                                                onMouseOut={handlePinIconMouseOut}
-                                                onClick={(event) => openLocationModal(pin.locationId, event)}>
+                                                onClick={() => handlePinIconMouseOver(pin)}
+                                            >
                                                 <img className="pin-icon" src={"/assets/icons/marker.png"}/>
                                                 <img className="pin-type" src={getPinIcon(pin.pinType)} />
                                             </div>
                                             {infoWindowOpen && selectedPin && selectedPin.locationId === pin.locationId && (
                                                 <InfoWindow
-                                                    anchor={markerRefs[pin.locationId]}                                                
-                                                    onCloseClick={() => handleCloseInfoWindow}>
-                                                    <div className="pin-card"
-                                                        onClick={(event) => {openLocationModal(pin.locationId, event)}}>
-                                                        <div className="pin-info">
+                                                    anchor={markerRefs[pin.locationId]}
+                                                >
+                                                    <div className="pin-card">
+                                                        <MdClose className="close-preview" size={15} onClick={handleCloseInfoWindow} />
+                                                        <div className="pin-info" onClick={(event) => {openLocationModal(pin.locationId, event)}}>
                                                             <p className="pin-top">{pin.locationName}</p>
                                                             <p className="pin-city">{pin.city}</p>
                                                             <p className="pin-bottom"><IoBookmark/>{pin.saves}</p>
                                                         </div>
-                                                        <img src={pin.previewImage.imageUrl}></img>
+                                                        <img src={pin.previewImage.imageUrl} onClick={(event) => {openLocationModal(pin.locationId, event)}}></img>
                                                     </div>
                                                 </InfoWindow>
                                             )}

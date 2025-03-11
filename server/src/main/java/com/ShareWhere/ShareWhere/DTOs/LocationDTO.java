@@ -57,9 +57,7 @@ public class LocationDTO {
         this.creatorName = location.getCreatedBy().getUser().getUsername();
         this.createdAt = location.getCreatedAt();
         this.updatedAt = location.getUpdatedAt();
-        for (UserProfile profile : location.getSavedBy()) {
-            this.savedBy.add(profile.getProfileId());
-        }
+        this.savedBy.addAll(location.getSavedBy());
         for (Tag tag : location.getTags()) {
             this.tags.add(new TagDTO(tag));
         }

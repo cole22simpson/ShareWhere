@@ -13,6 +13,11 @@
 body {
   font-family: "Outfit", serif;
   background-color: var(--main-color);
+  color: black;
+}
+
+button {
+  color: black;
 }
 
 .page { 
@@ -24,4 +29,17 @@ body {
 
 body.hidden {
   overflow-y: hidden;
+}
+
+input:focus {
+  outline: none;
+}
+
+textarea:focus {
+  outline: none;
+}
+
+hr {
+  outline: none;
+  border: 1px solid black;
 }

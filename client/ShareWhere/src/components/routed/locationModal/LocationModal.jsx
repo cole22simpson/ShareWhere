@@ -57,7 +57,7 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
 
         dayjs.updateLocale('en', {
             relativeTime: {
-                future: "in %s",
+                future: "%s",
                 past: "%s",
                 s: '%ds',
                 m: "1m",
@@ -173,7 +173,7 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
                 }
             }
             else {
-                console.error("Delete location failed: ", await response.text());
+                console.error("Delete location failed: ", response.status);
             }
         } catch (error) {
             console.error("Error during delete: ", error);

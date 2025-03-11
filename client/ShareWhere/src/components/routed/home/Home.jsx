@@ -5,6 +5,7 @@ import HomePostSection from "../homePostSection/HomePostSection";
 import { MdClose } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import LocationModal from "../locationModal/LocationModal";
+import { getGeneralLocation } from "../../../assets/helpers/getLocation";
 
 
 function Home() {
@@ -16,6 +17,9 @@ function Home() {
     const [hasAccount, setHasAccount] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [selectedPost, setSelectedPost] = useState(null);
+    const [coords, setCoords] = useState({ lat: 0.0, lng: 0.0 });
+    const [locationLoaded, setLocationLoaded] = useState(false); // Track location loading
+
     const API_BASE_URL = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
 
@@ -117,6 +121,58 @@ function Home() {
         }
     };
 
+    const handleGetGeneralLocation = async () => {
+        try {
+            const response = await getGeneralLocation();
+            const newCoords = {
+                lat: parseFloat(response.latitude),
+                lng: parseFloat(response.longitude),
+            };
+            setCoords(newCoords); // Update the coords state
+            setCity(response.city);
+            setLocationLoaded(true);
+        } catch (error) {
+            console.error("Error getting general location:", error);
+        }
+    };
+
+    const handleGetLocation = async () => {
+        const userId = parseInt(localStorage.getItem("userId"));
+        const response = await fetch(`${API_BASE_URL}/api/users/${userId}/coords`, {
+            method: "GET",
+            credentials: "include",
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const newCoords = {
+                lat: parseFloat(data[0]),
+                lng: parseFloat(data[1]),
+            };
+            setCoords(newCoords);
+            setLocationLoaded(true);
+        }
+    };
+
+    useEffect(() => {
+        if (!userLoggedIn) {
+            handleGetGeneralLocation();
+        }
+        else {
+            handleGetLocation();
+        }
+    }, []);
+
+    useEffect(() => {
+        const handleCoordsChange = async () => {
+            if (coords.lat !== 0.0 && coords.lng !== 0.0) {
+                localStorage.setItem("coords", JSON.stringify(coords));
+            }
+        };
+    
+        handleCoordsChange();
+    }, [locationLoaded]);
+
     return (
               <>
                 <div className="banner-container">
@@ -177,7 +233,11 @@ function Home() {
                                 </p>
                             )}
                         </div>
-                        <HomePostSection postType={"NEARBY"}/>
+                        {locationLoaded ? (
+                            <HomePostSection postType={"NEARBY"} coords={coords}/>
+                        ) : (
+                            <div>Loading</div>
+                        )}
                     </div>
                     {userLoggedIn && (
                         <div className="local-post-container">
@@ -186,7 +246,7 @@ function Home() {
                                     Recents from your following
                                 </p>
                             </div>
-                            <HomePostSection postType={"FOLLOWING"}/>
+                            <HomePostSection postType={"FOLLOWING"} coords={coords}/>
                         </div>
                     )}
                     <div className="local-post-container">
@@ -195,7 +255,11 @@ function Home() {
                                 Great views
                             </p>
                         </div>
-                        <HomePostSection postType={"VIEW"}/>
+                        {locationLoaded ? (
+                            <HomePostSection postType={"VIEW"} coords={coords}/>
+                        ) : (
+                            <div>Loading</div>
+                        )}
                     </div>
                     <div className="local-post-container">
                         <div className="local-favorites">
@@ -203,7 +267,11 @@ function Home() {
                                 If you want to go swimming
                             </p>
                         </div>
-                        <HomePostSection postType={"WATER"}/>
+                        {locationLoaded ? (
+                            <HomePostSection postType={"WATER"} coords={coords}/>
+                        ) : (
+                            <div>Loading</div>
+                        )}
                     </div>
                 </div>
 

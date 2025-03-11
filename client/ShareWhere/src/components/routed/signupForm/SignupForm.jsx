@@ -31,17 +31,34 @@ function SignupForm({ onBackToBasic }) {
 
     const handleLocationPermission = async () => {
         try {
-            const coords = await getLocation();
-            setLocation(coords);
-            setLatitude(coords.lat);
-            setLongitude(coords.lng);
+            const data = await getLocation();
+            let latResponse;
+            let lngResponse;
+            if (data.city) {
+                setLocation(data.latitude, data.longitude);
+                setLatitude(data.latitude);
+                latResponse = data.latitude;
+                setLongitude(data.longitude);
+                lngResponse = data.longitude;
+            } else {
+                setLocation(data);
+                setLatitude(data.lat);
+                latResponse = data.lat;
+                setLongitude(data.lng);
+                lngResponse = data.lng;
+            }
             localStorage.setItem("coords", location);
-            const response = await fetch(`https://geocode.maps.co/reverse?lat=${coords.lat}&lon=${coords.lng}&api_key=${GEOCODE_API_KEY}`, {
+            const response = await fetch(`https://geocode.maps.co/reverse?lat=${latResponse}&lon=${lngResponse}&api_key=${GEOCODE_API_KEY}`, {
                 method: "GET"
             });
             if (response.ok) {
                 const data = await response.json(); 
-                setCity(data.address.city);
+                if (data.address.city) {
+                    setCity(data.address.city);
+                }
+                else if (data.address.town) {
+                    setCity(data.address.town);
+                }
             }
         } catch (error) {
             console.error(error.message);
@@ -57,10 +74,6 @@ function SignupForm({ onBackToBasic }) {
         setPasswordError(false);
 
         const username = rawUsername.toLowerCase();
-
-        console.log(
-            username, name, email, passwordHash, latitude, longitude, city
-        );
 
         try {
             const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {

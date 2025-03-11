@@ -28,7 +28,6 @@ public class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomUserDetailsService customUserDetailService;
-//    private final UnauthorizedHandler unauthorizedHandler;
 
     @Bean
     public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
@@ -53,6 +52,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/locations/pins").permitAll()
                                 .requestMatchers("/api/locations/home-posts").permitAll()
                                 .requestMatchers("/api/locations/home-posts/{tag_id}").permitAll()
+                                .requestMatchers("/actuator/health").permitAll()
                                 .requestMatchers("/").permitAll()
                                 .anyRequest().authenticated()
                 );
@@ -67,7 +67,9 @@ public class WebSecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                 "https://sharewheresocial.com",
                 "https://www.sharewheresocial.com",
-                "https://victorious-stone-03904841e.6.azurestaticapps.net"));
+                "https://api.sharewheresocial.com",
+                "http://localhost:5173",
+                "https://djy0ckatahxd5.cloudfront.net"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));
         configuration.setAllowCredentials(true);

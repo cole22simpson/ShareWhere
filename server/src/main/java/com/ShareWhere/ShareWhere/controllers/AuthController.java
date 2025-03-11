@@ -75,6 +75,7 @@ public class AuthController {
                     .secure(true)
                     .path("/")
                     .maxAge(2 * 60 * 60)
+                    .domain("sharewheresocial.com")
                     .sameSite("Lax")
                     .build();
 
@@ -154,6 +155,7 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
+                .domain("sharewheresocial.com")
                 .maxAge(2 * 60 * 60)
                 .sameSite("Lax")
                 .build();
@@ -169,6 +171,7 @@ public class AuthController {
         Cookie cookie = new Cookie("jwt", null);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
+        cookie.setDomain("sharewheresocial.com");
         cookie.setPath("/");
         cookie.setMaxAge(0); // Delete the cookie
 
@@ -177,28 +180,6 @@ public class AuthController {
         return ResponseEntity.ok(Map.of("message", "Logged out successfully"));
     }
 
-//    @GetMapping("/check")
-//    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String authorizationHeader) {
-//        try {
-//            String token = authorizationHeader.replace("Bearer ", "");
-//            DecodedJWT decodedJWT = jwtDecoder.decode(token);
-//            UserPrincipal userPrincipal = jwtToPrincipalConverter.convert(decodedJWT);
-//            Optional<User> user = userService.getUserByEmail(userPrincipal.getEmail());
-//            return ResponseEntity.ok(user); // Token is valid
-//        } catch (ExpiredJwtException ex) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token expired");
-//        } catch (SignatureException ex) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token signature");
-//        } catch (MalformedJwtException ex) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token format");
-//        } catch (UnsupportedJwtException ex) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unsupported JWT");
-//        } catch (IllegalArgumentException ex) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Empty token string");
-//        } catch (Exception ex) {
-//            // Catch any other unexpected exceptions
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while validating the token");
-//        }
 
         @GetMapping("/check")
         public ResponseEntity<?> validateToken(HttpServletRequest request) {

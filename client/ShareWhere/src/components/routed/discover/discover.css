@@ -123,12 +123,6 @@
     background-color: var(--secondary-color);
 }
 
-.pin-card {
-    display: none;
-    margin-bottom: 1px;
-
-}
-
 .marker {
     display: flex;
     flex-direction: column;
@@ -204,6 +198,16 @@
     transform: translate(-50%, -50%);
 }
 
+.close-preview {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+.close-preview:hover {
+    cursor: pointer;
+}
+
 .pin-city {
     font-weight: 700;
 }
@@ -221,13 +225,16 @@
 
 .gm-style .gm-style-iw-d {
     background: none !important;
-    padding: 20px;
-    overflow: hidden !important;
     padding: 0 !important;
+    overflow: hidden !important;
 }
 
 .gm-style-iw-tc {
     display: none;
+}
+
+.gm-style-iw-c {
+    padding: 0 !important;
 }
 
 .pick-up {
@@ -259,6 +266,7 @@
 
 .disc-pin-option {
     height: 40px;
+    width: 40px;
     margin: 5px;
     background-color: var(--black-color);
     padding: 5px;
@@ -292,6 +300,7 @@
 
     .disc-pin-option {
         height: 30px;
+        width: 30px;
         margin: 3px;
     }
 
@@ -320,6 +329,7 @@
 @media (max-width: 1500px) {
     .disc-pin-option {
         height: 25px;
+        width: 25px;
         border-radius: 5px;
     }
 
@@ -439,6 +449,7 @@
     .disc-pin-option {
         padding: 2px;
         height: 20px;
+        width: 20px;
         margin-right: 3px;
     }
 
@@ -478,6 +489,7 @@
     .disc-pin-option {
         padding: 1px;
         height: 18px;
+        width: 18px;
         margin-right: 3px;
     }
 

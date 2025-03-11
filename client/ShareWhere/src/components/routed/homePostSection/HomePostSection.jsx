@@ -4,10 +4,10 @@ import HomePost from "../homePost/HomePost";
 import PropTypes from "prop-types";
 import { RiArrowLeftCircleLine, RiArrowRightCircleLine } from "react-icons/ri";
 import { BsPersonPlusFill } from "react-icons/bs";
-import { getLocation } from "../../../assets/helpers/getLocation";
+import { getLocation, getGeneralLocation } from "../../../assets/helpers/getLocation";
 
-const HomePostSection = ({ postType }) => {
-    const { userLoggedIn } = useAuth(); // No need to set userLoggedIn here
+const HomePostSection = ({ postType, coords }) => {
+    const { userLoggedIn, setUserLoggedIn } = useAuth(); // No need to set userLoggedIn here
     const [postData, setPostData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [modalOpened, setModalOpened] = useState(false);
@@ -61,8 +61,7 @@ const HomePostSection = ({ postType }) => {
                     ))}
                 </div>
                 <hr />
-            </div>
-            
+            </div>      
         ) : (
             <div className="posts-housing">
                 <div className="no-following">
@@ -155,7 +154,6 @@ const HomePostSection = ({ postType }) => {
     const loadHomePosts = async (type) => {
         setIsLoading(true);
         try {
-            const coords = JSON.parse(localStorage.getItem("coords"));
             const lat = coords.lat;
             const lng = coords.lng;
             const { north, south, east, west } = getBoundingCoordinates(lat, lng, 30);
@@ -188,20 +186,9 @@ const HomePostSection = ({ postType }) => {
         }
     };
 
-    const handleGetLocation = async () => {
-        try {
-            const coords = await getLocation();
-            localStorage.setItem("coords", JSON.stringify(coords));
-            setLocationLoaded(true);
-        } catch (error) {
-            console.error("Error getting location:", error);
-            setLocationLoaded(true);
-        }
-    };
-
     useEffect(() => {
-        if (!localStorage.getItem("coords")) {
-            handleGetLocation();
+        if (coords.lat === 0 || coords.lng === 0) {
+            console.log("No coords");
         } else {
           setLocationLoaded(true);
         }
@@ -233,6 +220,7 @@ const HomePostSection = ({ postType }) => {
 
 HomePostSection.propTypes = {
     postType: PropTypes.string.isRequired,
+    coords: PropTypes.object
 }
 
 export default HomePostSection;

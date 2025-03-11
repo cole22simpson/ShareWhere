@@ -66,7 +66,12 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
             });
             if (response.ok) {
                 const data = await response.json();
-                city = data.address.city;
+                if (data.address.city) {
+                    city = data.address.city;
+                }
+                else if (data.address.town) {
+                    city = data.address.town;
+                }
             }
         } catch (error) {
             console.error(error.message);

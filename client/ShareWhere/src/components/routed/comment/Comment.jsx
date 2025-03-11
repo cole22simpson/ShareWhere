@@ -41,7 +41,7 @@ const Comment = ({ setCommentImageOpen, handleCommentDeleted, comment }) => {
 
         dayjs.updateLocale('en', {
             relativeTime: {
-                future: "in %s",
+                future: "%s",
                 past: "%s",
                 s: '%ds',
                 m: "1m",

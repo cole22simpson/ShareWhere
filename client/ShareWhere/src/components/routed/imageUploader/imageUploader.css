@@ -191,11 +191,20 @@
         overflow: hidden;
     }
 
-    .image-wrapper {
+    .image-wrapper img {
         height: 30px;
     }
 
     .photo-count {
         font-size: 6px;
+    }
+
+    .remove-btn {
+        top: 0;
+        right: 0;
+        height: fit-content;
+        width: fit-content;
+        padding: 1px;
+        font-size: 9px;
     }
 }

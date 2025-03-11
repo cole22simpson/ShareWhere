@@ -148,8 +148,8 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
     const handleBoundsChanged = () => {
         if (mapRef) {
             const mapBounds = mapRef.map.getBounds();
-            const north = mapBounds.ji.hi;
-            const south = mapBounds.ji.lo;
+            const north = mapBounds.fi.hi;
+            const south = mapBounds.fi.lo;
             const east = mapBounds.Gh.lo;
             const west = mapBounds.Gh.hi;
             setBounds({ north: north, south: south, east: east, west: west });
@@ -285,7 +285,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                     )}
                     {!mapLoading && ( 
                     <Map
-                        defaultZoom={15}
+                        defaultZoom={13}
                         center={{ lat: center.lat, lng: center.lng }}
                         defaultCenter={{ lat: center.lat, lng: center.lng }}
                         gestureHandling={"greedy"}
@@ -312,26 +312,22 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                                 className="marker"
                                 onClick={() => handleMarkerClick(pin)}
                                 >
-                                    <div
-                                        className="pin-icon-container"
-                                        onMouseOver={() => handlePinIconMouseOver(pin)}
-                                        onMouseOut={handlePinIconMouseOut}
-                                        onClick={(event) => openLocationModal(pin.locationId, event)}>
+                                    <div className="pin-icon-container">
                                         <img className="pin-icon" src={"/assets/icons/marker.png"}/>
                                         <img className="pin-type" src={getPinIcon(pin.pinType)} />
                                     </div>
                                     {infoWindowOpen && selectedPin && selectedPin.locationId === pin.locationId && (
                                         <InfoWindow
-                                            anchor={markerRefs[pin.locationId]}                                                
-                                            onCloseClick={() => handleCloseInfoWindow}>
-                                            <div className="pin-card"
-                                                onClick={(event) => {openLocationModal(pin.locationId, event)}}>
-                                                <div className="pin-info">
+                                            anchor={markerRefs[pin.locationId]}  
+                                        >
+                                            <div className="pin-card">
+                                                <MdClose className="close-preview" size={15} onClick={handleCloseInfoWindow} />
+                                                <div className="pin-info" onClick={(event) => {openLocationModal(pin.locationId, event)}}>
                                                     <p className="pin-top">{pin.locationName}</p>
                                                     <p className="pin-city">{pin.city}</p>
                                                     <p className="pin-bottom"><IoBookmark/>{pin.saves}</p>
                                                 </div>
-                                                <img src={pin.previewImage.imageUrl}></img>
+                                                <img src={pin.previewImage.imageUrl} onClick={(event) => {openLocationModal(pin.locationId, event)}}></img>
                                             </div>
                                         </InfoWindow>
                                     )}

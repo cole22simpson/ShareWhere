@@ -34,6 +34,12 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/{user_id}/coords")
+    public ResponseEntity<List<Double>> getUserCoords(@PathVariable("user_id") int userId) {
+        List<Double> coords = userService.getUserCoords(userId);
+        return ResponseEntity.ok(coords);
+    }
+
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User newUser = userService.createUser(user);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import "./nav.css"
 import { IconContext } from 'react-icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaGlobeAmericas, FaPlusCircle, FaSearch } from 'react-icons/fa';
 import { GiTreeSwing } from "react-icons/gi";
 import { FiLogIn, FiLogOut } from "react-icons/fi";
@@ -14,6 +14,7 @@ function Nav() {
     const [sidebar, setSidebar] = useState(false);
     const { userLoggedIn, setUserLoggedIn } = useAuth();
     const API_BASE_URL = import.meta.env.VITE_API_URL;
+    const navigate = useNavigate();
 
     const showSidebar = () => {
         setSidebar(!sidebar);
@@ -23,16 +24,16 @@ function Nav() {
         try {
             const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
                 method: "POST",
-                credentials: "include", // Send the cookie with the request
+                credentials: "include",
             });
+
+            console.log(response);
     
             if (response.ok) {
-                localStorage.removeItem("jwtToken");
-                localStorage.removeItem("userData");
+                localStorage.removeItem("user");
                 localStorage.removeItem("userId");
                 localStorage.removeItem("name");
                 localStorage.removeItem("city");
-                localStorage.removeItem("coords");
 
                 setUserLoggedIn(false);
             } else {

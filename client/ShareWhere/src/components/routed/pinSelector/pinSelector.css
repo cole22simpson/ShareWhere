@@ -5,6 +5,7 @@
 
 .pin-option {
     height: 40px;
+    width: 40px;
     margin: 5px;
     background-color: var(--black-color);
     padding: 5px;
@@ -30,6 +31,7 @@
 @media (max-width: 2000px) {
     .pin-option {
         height: 35px;
+        width: 35px;
         margin: 3px;
     }
 }
@@ -37,6 +39,7 @@
 @media (max-width: 1450px) {
     .pin-option {
         height: 30px;
+        width: 30px;
         margin: 2px;
     }
 }
@@ -44,6 +47,7 @@
 @media (max-width: 1200px) {
     .pin-option {
         height: 25px;
+        width: 25px;
         margin: 2px;
         border-radius: 7px;
     }
@@ -56,8 +60,8 @@
 @media (max-width: 1050px) {
     .pin-option {
         height: 20px;
+        width: 20px;
         border-radius: 5px;
-        padding: auto;
     }
 
     .pin-img {
@@ -67,7 +71,8 @@
 
 @media (max-height: 950px) {
     .pin-option {
-        height: 30px;
+        height: 20px;
+        width: 20px;
         margin: 2px;
     }
 }
@@ -75,6 +80,7 @@
 @media (max-height: 850px) {
     .pin-option {
         height: 25px;
+        width: 25px;
         margin: 2px;
         border-radius: 7px;
         padding: 3px;
@@ -93,6 +99,7 @@
 @media (max-height: 625px) {
     .pin-option {
         height: 20px;
+        width: 20px;
         border-radius: 5px;
         padding: 2px;
     }
@@ -101,7 +108,9 @@
 @media (max-width: 725px) {
     .pin-option {
         height: 18px;
+        width: 18px;
         margin: 2px;
+        border-radius: 3px;
     }
 }
 

@@ -72,12 +72,10 @@ function Login () {
     
             if (response.ok) {
                 const data = await response.json(); 
-
-                const coords = await getLocation();
-                localStorage.setItem("coords", JSON.stringify(coords));
-                localStorage.setItem("userData", JSON.stringify(data.user));
+                localStorage.setItem("user", JSON.stringify(data.user));
                 localStorage.setItem("userId", data.user.userId);
                 localStorage.setItem("name", data.user.name);
+                localStorage.setItem("city", data.user.city);
                 setUserLoggedIn(true);
     
                 setTimeout(() => {

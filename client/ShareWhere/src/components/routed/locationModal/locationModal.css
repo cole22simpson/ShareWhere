@@ -136,6 +136,8 @@
 
 .info-container hr {
     width: 70%;
+    outline: none;
+    border: 1px solid black;
     margin-top: 10px;
     margin-bottom: 10px;
 }
@@ -196,8 +198,9 @@
 
 .location-description {
     font-size: 23px;
-    max-width: 70%;
+    width: 70%;
     margin-bottom: 20px;
+    text-align: left;
     overflow: hidden;
     word-wrap: break-word;
     word-break: break-all;
@@ -244,6 +247,8 @@
 
 .comments-container hr {
     margin-top: 0px;
+    outline: none;
+    border: 1px solid black;
 }
 
 .no-comments {

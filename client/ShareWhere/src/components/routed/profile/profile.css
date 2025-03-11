@@ -142,7 +142,8 @@
 
 hr {
     width: 100%;
-    border-color: var(--black-color);
+    outline: none;
+    border: 1px solid black;
 }
 
 .pick-content-container {

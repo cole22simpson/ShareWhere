@@ -5,6 +5,7 @@ import com.ShareWhere.ShareWhere.models.*;
 //import com.ShareWhere.ShareWhere.models.LocationRequest;
 import com.ShareWhere.ShareWhere.repositories.LocationRepo;
 import com.ShareWhere.ShareWhere.repositories.TagRepo;
+import com.ShareWhere.ShareWhere.repositories.UserRepo;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class LocationService {
 
     private final LocationRepo locationRepo;
+    private final UserRepo userRepo;
     private final TagRepo tagRepo;
     private final String uploadDir = "uploads/locations/";
     private final TagService tagService;
@@ -31,10 +33,11 @@ public class LocationService {
     private final AzureBlobStorageService azureBlobStorageService;
     private final DataSourceTransactionManagerAutoConfiguration dataSourceTransactionManagerAutoConfiguration;
 
-    public LocationService(LocationRepo locationRepo, TagRepo tagRepo, TagService tagService, UserService userService, AzureBlobStorageService azureBlobStorageService, DataSourceTransactionManagerAutoConfiguration dataSourceTransactionManagerAutoConfiguration) {
+    public LocationService(LocationRepo locationRepo, TagRepo tagRepo, TagService tagService, UserRepo userRepo, UserService userService, AzureBlobStorageService azureBlobStorageService, DataSourceTransactionManagerAutoConfiguration dataSourceTransactionManagerAutoConfiguration) {
         this.locationRepo = locationRepo;
         this.tagRepo = tagRepo;
         this.tagService = tagService;
+        this.userRepo = userRepo;
         this.userService = userService;
         this.azureBlobStorageService = azureBlobStorageService;
         this.dataSourceTransactionManagerAutoConfiguration = dataSourceTransactionManagerAutoConfiguration;
@@ -193,8 +196,18 @@ public class LocationService {
         });
     }
 
+    @Transactional
     public boolean deleteLocation(int locationId) {
         if (locationRepo.existsById(locationId)) {
+            Location location = locationRepo.findById(locationId).orElseThrow();
+            Set<Integer> savedBy = location.getSavedBy();
+            for (Integer savedById : savedBy) {
+                User user = userRepo.findById(savedById).orElseThrow();
+                List<Location> saves = user.getProfile().getSavedLocations();
+                saves.remove(location);
+                user.getProfile().setSavedLocations(saves);
+                userRepo.save(user);
+            }
             locationRepo.deleteById(locationId);
             return true;
         }
