@@ -1,6 +1,6 @@
 # ShareWhere - A Location Sharing Web Application
 
-sharewheresocial.com
+[sharewheresocial.com](https://sharewheresocial.com)
 
 ShareWhere is a web application that allows users to discover, share, and save interesting locations. Built with a modern tech stack, ShareWhere provides a seamless experience for users to explore and contribute to a community-driven map of unique places. The application can be used to find new points of interest near the user in their home town or anywhere in the world.
 
