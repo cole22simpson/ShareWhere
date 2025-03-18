@@ -17,12 +17,15 @@ export const AuthProvider = ({ children }) => {
 
                 if (response.ok) {
                     setUserLoggedIn(true);
-                } else {
+                } else if (response.status === 401) { // Explicit 401 check
                     setUserLoggedIn(false);
                     localStorage.removeItem("user");
                     localStorage.removeItem("userId");
                     localStorage.removeItem("name");
                     localStorage.removeItem("city");
+                } else {
+                    console.error("Authentication check failed with status:", response.status);
+                    setUserLoggedIn(false);
                 }
             } catch (error) {
                 console.error("Error checking authentication:", error);

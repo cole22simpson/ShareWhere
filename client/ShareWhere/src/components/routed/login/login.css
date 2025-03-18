@@ -34,11 +34,24 @@
     font-family: inherit;
     background-color: var(--black-color);
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .login-btn:hover {
     opacity: 0.9;
     cursor: pointer;
+  }
+
+  .login-btn:disabled {
+    background-color: lightgray;
+    cursor: default;
+  }
+
+  .login:disabled:hover {
+    cursor: default;
+    opacity: 1;
   }
   
   .login-header {
@@ -133,14 +146,18 @@
   /* anchor tag forgot password */
   .atag-forgot-password {
     margin: 2rem 0;
-  }
-  
-  .atag-forgot-password a {
     color: #34495E;
-    text-decoration: none;
+  }
+
+  .atag-forgot-password:hover {
+    text-decoration: underline;
+    cursor: pointer;
   }
   /*  */
-  
+  .forgot-password-container {
+    height: 400px;
+    
+  }
   
   /* alternate login */
   .alternate-login {

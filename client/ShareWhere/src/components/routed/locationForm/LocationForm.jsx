@@ -72,6 +72,18 @@ const LocationForm = ({ initialLatitude, initialLongitude, tags, selectedTags, s
                 else if (data.address.town) {
                     city = data.address.town;
                 }
+                else if (data.address.village) {
+                    city = data.address.village;
+                }
+                else if (data.address.county) {
+                    city = data.address.county;
+                }
+                else if (data.address.state) {
+                    city = data.address.state;
+                }
+                else if (data.address.country) {
+                    city = data.address.country;
+                }
             }
         } catch (error) {
             console.error(error.message);

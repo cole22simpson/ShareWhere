@@ -26,18 +26,16 @@ function Nav() {
                 method: "POST",
                 credentials: "include",
             });
-
-            console.log(response);
     
             if (response.ok) {
-                localStorage.removeItem("user");
-                localStorage.removeItem("userId");
-                localStorage.removeItem("name");
-                localStorage.removeItem("city");
-
+                document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/; domain=.sharewheresocial.com";
+                // localStorage.removeItem("user");
+                // localStorage.removeItem("userId");
+                // localStorage.removeItem("name");
+                // localStorage.removeItem("city");
                 setUserLoggedIn(false);
             } else {
-                console.error("Logout failed");
+                console.error("Logout failed on the backend with status:", response.status);
             }
         } catch (error) {
             console.error("Error during logout:", error);
@@ -47,63 +45,50 @@ function Nav() {
     return (
         <IconContext.Provider value={{ color: 'black' }}>
             <div className='navbar'>
-                <a href="/" className="logo-link-container">
+                <div className="logo-link-container" onClick={() => navigate("/")}>
                     <div className="logo-container">
                         <GiTreeSwing className="logo" />
                         <p className="title">&nbsp;ShareWhere</p>
                     </div>
-                </a>
-                <Link to='#' className='hamburger-menu-wrap'>
+                </div>
+                <div className='hamburger-menu-wrap'>
                     <div className='hamburger-menu-img'  onClick={showSidebar}>
                         <FaBars />
                     </div>
-                </Link>
+                </div>
 
                 <nav className='pc-nav'>
                     <ul className='nav-menu-items'>
-                        <li className="nav-item">
-                            <Link to='/'>
-                                <AiFillHome className='nav-icon' />
-                                <span>Home</span>
-                            </Link>
+                        <li className="nav-item" onClick={() => navigate("/")}>
+                            <AiFillHome className='nav-icon' />
+                            <span>Home</span>
                         </li>
                     
-                        <li className="nav-item">
-                            <Link to='/discover'>
-                                <FaGlobeAmericas className='nav-icon' />
-                                <span>Discover</span>
-                            </Link>
+                        <li className="nav-item" onClick={() => navigate("/discover")}>
+                            <FaGlobeAmericas className='nav-icon' />
+                            <span>Discover</span>
+                        </li>
+                        <li className="nav-item" onClick={userLoggedIn ? () => navigate("/add-location") : () => navigate("/login")}>
+                                <FaPlusCircle className='nav-icon' />
+                                <span>Add location</span>
+                        </li>
+                        
+                        <li className="nav-item" onClick={userLoggedIn ? () => navigate("/profile") : () => navigate("/login")}>
+                                <FaCircleUser className='nav-icon' />
+                                <span>Profile</span>
                         </li>
 
                         {userLoggedIn ? (
                             <>
-                                <li className="nav-item">
-                                    <Link to='/add-location'>
-                                        <FaPlusCircle className='nav-icon' />
-                                        <span>Add location</span>
-                                    </Link>
-                                </li>
-                                
-                                <li className="nav-item">
-                                    <Link to='/profile'>
-                                        <FaCircleUser className='nav-icon' />
-                                        <span>Profile</span>
-                                    </Link>
-                                </li>
-
-                                <li className="nav-item">
-                                    <a href="/" onClick={handleLogout}>
-                                        <MdOutlineLogout className='nav-icon' />
-                                        <span>Logout</span>
-                                    </a>
+                                <li className="nav-item" onClick={handleLogout}>
+                                    <MdOutlineLogout className='nav-icon' />
+                                    <span>Logout</span>
                                 </li>
                             </>
                             ) : (
-                                <li className='nav-item'>
-                                    <Link to='/login'>
-                                        <FiLogIn className="nav-icon" />
-                                        <span>Login</span>
-                                    </Link>
+                                <li className='nav-item' onClick={() => {navigate("/login")}}>
+                                    <FiLogIn className="nav-icon" />
+                                    <span>Login</span>
                                 </li>
                             )} 
                     </ul>
@@ -115,46 +100,34 @@ function Nav() {
                     <li className="sidebar-item close-sidebar">
                         <MdClose onClick={() => setSidebar(false)} className='sidebar-icon' />
                     </li>
-                    <li className="sidebar-item">
-                        <Link to='/'>
-                            <FaSearch className='sidebar-icon' />
-                            <span>Home</span>
-                        </Link>
+                    <li className="sidebar-item" onClick={() => navigate("/")}>
+                        <FaSearch className='sidebar-icon' />
+                        <span>Home</span>
                     </li>
-                    <li className="sidebar-item">
-                        <Link to='/discover'>
+                    <li className="sidebar-item" onClick={() => navigate("/discover")}>
                             <FaGlobeAmericas className='sidebar-icon' />
                             <span>Discover</span>
-                        </Link>
+                    </li>
+                    <li className="sidebar-item" onClick={userLoggedIn ? () => navigate("/add-location") : () => navigate("/login")}>
+                            <FaPlusCircle className='sidebar-icon' />
+                            <span>Add location</span>
+                    </li>
+
+                    <li className="sidebar-item" onClick={userLoggedIn ? () => navigate("/profile") : () => navigate("/login")}>
+                            <FaCircleUser className='sidebar-icon' />
+                            <span>Profile</span>
                     </li>
                     {userLoggedIn ? (
                         <>
-                            <li className="sidebar-item">
-                                <Link to='/add-location'>
-                                    <FaPlusCircle className='sidebar-icon' />
-                                    <span>Add location</span>
-                                </Link>
-                            </li>
-
-                            <li className="sidebar-item">
-                                <Link to='/profile'>
-                                    <FaCircleUser className='sidebar-icon' />
-                                    <span>Profile</span>
-                                </Link>
-                            </li>
                             <li className='sidebar-item' onClick={handleLogout}>
-                                <Link to='/'>
                                     <FiLogOut className="sidebar-icon" />
                                     <span>Logout</span>
-                                </Link>
                             </li>
                         </>
                     ) : (
-                        <li className='sidebar-item'>
-                            <Link to='/login'>
+                        <li className='sidebar-item' onClick={() => navigate("/login")}>
                                 <FiLogIn className="sidebar-icon" />
                                 <span>Login</span>
-                            </Link>
                         </li>
                     )}
                 </ul>

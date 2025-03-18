@@ -53,6 +53,7 @@
     height: 250px;
     width: 250px;
     border-radius: 300px;
+    object-fit: cover;
 }
 
 .attributes {
@@ -85,7 +86,7 @@
 
 .edit-profile {
     color: var(--black-color);
-    border: 2px solid var(--black-color);
+    border: 1px solid var(--black-color);
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
@@ -131,8 +132,8 @@
 .bio {
     margin-top: 5px;
     font-size: 20px;
-    word-break: break-all; 
-    overflow-wrap: break-word;
+    word-break: normal; 
+    overflow-wrap: normal;
     white-space: pre-wrap;
 }
 

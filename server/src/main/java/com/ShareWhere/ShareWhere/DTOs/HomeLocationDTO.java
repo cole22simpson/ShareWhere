@@ -4,6 +4,7 @@ import com.ShareWhere.ShareWhere.models.Location;
 import com.ShareWhere.ShareWhere.models.Tag;
 import lombok.Data;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +23,7 @@ public class HomeLocationDTO {
     private Set<TagDTO> tags = new HashSet<>();
     private String creatorUsername;
     private ImageDTO previewImage;
-    private LocalDateTime createdAt;
+    private Instant createdAt;
     private Integer saves;
 
     public HomeLocationDTO(Location location) {

@@ -66,6 +66,7 @@
 .creator-profile-pic {
     height: 150px;
     width: 150px;
+    object-fit: cover;
     border-radius: 100px;
     margin-right: 20px;
 }
@@ -202,8 +203,10 @@
     margin-bottom: 20px;
     text-align: left;
     overflow: hidden;
-    word-wrap: break-word;
-    word-break: break-all;
+    word-wrap: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    white-space: pre-wrap;
 }
 
 .location-tags-container {
@@ -348,11 +351,11 @@
     }
 
     .location-description span {
-        font-size: 20px;
+        /* font-size: 20px; */
     }
 
     .location-description {
-        font-size: 20px;
+        /* font-size: 20px; */
     }
 
     .location-images img {
@@ -407,11 +410,11 @@
     }
 
     .location-description span {
-        font-size: 16px;
+        font-size: 20px;
     }
 
     .location-description {
-        font-size: 16px;
+        font-size: 20px;
     }
 
     .top-row {
@@ -538,11 +541,11 @@
     }
 
     .location-description span {
-        font-size: 12px;
+        font-size: 16px;
     }
 
     .location-description {
-        font-size: 12px;
+        font-size: 16px;
     }
 
     .location-tags-container {
@@ -623,11 +626,11 @@
     }
 
     .location-description span {
-        font-size: 10px;
+        font-size: 14px;
     }
 
     .location-description {
-        font-size: 10px;
+        font-size: 14px;
     }
 
     .location-tag {
@@ -728,7 +731,7 @@
     }
 
     .location-images img {
-        height: 150px;
+        height: 200px;
         margin-left: 5px;
         margin-right: 5px;
     }
@@ -738,11 +741,11 @@
     }
 
     .location-description span {
-        font-size: 8px;
+        font-size: 13px;
     }
 
     .location-description {
-        font-size: 8px;
+        font-size: 13px;
         margin-bottom: 10px;
     }
 

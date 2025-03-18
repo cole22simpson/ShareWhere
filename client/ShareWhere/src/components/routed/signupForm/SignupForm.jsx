@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { useAuth } from "../authContext/useAuth";
 import { getLocation } from "../../../assets/helpers/getLocation";
+import UseAnimations from "react-useanimations";
+import loading from 'react-useanimations/lib/loading';
 import { FaArrowLeft } from "react-icons/fa";
 // import { useUser } from "../userContext/useUser";
 
@@ -25,6 +27,7 @@ function SignupForm({ onBackToBasic }) {
     const [passwordError, setPasswordError] = useState(false);
     const [showPassword, setShowPassword] = useState("password");
     const [city, setCity] = useState("");
+    const [isSubmitted, setIsSubmitted] = useState(false);
     const navigate = useNavigate();
     const { userLoggedIn, setUserLoggedIn } = useAuth();
     const GEOCODE_API_KEY = import.meta.env.VITE_GEOCODE_API;
@@ -47,7 +50,6 @@ function SignupForm({ onBackToBasic }) {
                 setLongitude(data.lng);
                 lngResponse = data.lng;
             }
-            localStorage.setItem("coords", location);
             const response = await fetch(`https://geocode.maps.co/reverse?lat=${latResponse}&lon=${lngResponse}&api_key=${GEOCODE_API_KEY}`, {
                 method: "GET"
             });
@@ -59,7 +61,20 @@ function SignupForm({ onBackToBasic }) {
                 else if (data.address.town) {
                     setCity(data.address.town);
                 }
+                else if (data.address.village) {
+                    setCity(data.address.village);
+                }
+                else if (data.address.county) {
+                    setCity(data.address.county);
+                }
+                else if (data.address.state) {
+                    setCity(data.address.state);
+                }
+                else if (data.address.country) {
+                    setCity(data.address.country);
+                }
             }
+            localStorage.setItem('coords', JSON.stringify({ lat: latResponse, lng: lngResponse }));
         } catch (error) {
             console.error(error.message);
         }
@@ -67,6 +82,7 @@ function SignupForm({ onBackToBasic }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setIsSubmitted(true);
         setErrors({});
         setEmailError(false);
         setNameError(false);
@@ -81,6 +97,7 @@ function SignupForm({ onBackToBasic }) {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify({
                     username,
                     name,
@@ -101,7 +118,6 @@ function SignupForm({ onBackToBasic }) {
                 localStorage.setItem("city", data.user.city);
 
                 setUserLoggedIn(true);
-
                 setTimeout(() => {
                     navigate("/");
                 }, 1500);
@@ -113,9 +129,11 @@ function SignupForm({ onBackToBasic }) {
                 } else {
                     console.error("Signup failed: ", errorData.message || "Unknown error");
                 }
+                setIsSubmitted(false);
             }
         } catch (error) {
             console.error("Error during signup: ", error);
+            setIsSubmitted(false);
         }
     };
 
@@ -216,18 +234,24 @@ function SignupForm({ onBackToBasic }) {
                     </p> 
                 </div>
                 {errors.location && <p className="error">{errors.location}</p>}
-                <input
-                    disabled={
-                        !(name !== "" &&
-                          rawUsername !== "" &&
-                          email !== "" &&
-                          passwordHash !== "" && 
-                          location !== null) 
-                    }
+                <button
                     className="signup-modal-btn"
                     type="submit"
-                    value="Submit"
-                />
+                    disabled={
+                        isSubmitted || // Disable if already submitted
+                        !(name !== "" &&
+                        rawUsername !== "" &&
+                        email !== "" &&
+                        passwordHash !== "" &&
+                        location !== null)
+                    }
+                    >
+                        {isSubmitted ? (
+                            <UseAnimations animation={loading} size={25} />
+                        ) : (
+                            "Submit"
+                        )}
+                </button>
             </form>
         </div>
     );

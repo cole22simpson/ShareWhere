@@ -8,20 +8,23 @@ import { IoBookmarkOutline, IoBookmark  } from "react-icons/io5";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from 'dayjs/plugin/updateLocale';
+import utc from 'dayjs/plugin/utc';
 import useAuth from "../authContext/useAuth";
 import { BsThreeDots } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { Map, AdvancedMarker, APIProvider} from "@vis.gl/react-google-maps";
 
 dayjs.extend(relativeTime);
+dayjs.extend(utc);
 
 const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) => {
     
     const MAP_ID = import.meta.env.VITE_MAP_ID;
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_KEY;
     const API_BASE_URL = import.meta.env.VITE_API_URL;
-    const createdAtDate = dayjs(selectedPost.createdAt);
-    const timeAgo = createdAtDate.fromNow();
+    const createdAtDateUTC = dayjs.utc(selectedPost.createdAt); // Parse as UTC
+    const createdAtDateLocal = createdAtDateUTC.local(); // convert to local time.
+    const timeAgo = createdAtDateLocal.fromNow();
     const comments = selectedPost.comments;
     const locationId = selectedPost.locationId;
     const multipleImages = selectedPost.images.length > 1;
@@ -57,7 +60,7 @@ const LocationModal = ({ selectedPost, handleModalOpened, closeLocationModal }) 
 
         dayjs.updateLocale('en', {
             relativeTime: {
-                future: "%s",
+                future: "in %s",
                 past: "%s",
                 s: '%ds',
                 m: "1m",

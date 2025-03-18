@@ -10,10 +10,8 @@ import { GiHandOk } from "react-icons/gi";
 import "./discover.css";
 import { Map, AdvancedMarker, useMap, useAdvancedMarkerRef, APIProvider, useMapsLibrary, MapControl, InfoWindow, ControlPosition } from "@vis.gl/react-google-maps";
 import LocationModal from "../locationModal/LocationModal";
-import useAuth from "../authContext/useAuth";
 
 const Discover = () => {
-    const { userLoggedIn, setUserLoggedIn } = useAuth();
     const userCoords = JSON.parse(localStorage.getItem("coords"));
     const defaultCenter = {lat: userCoords.lat, lng: userCoords.lng};
     const [center, setCenter] = useState({ lat: defaultCenter.lat, lng: defaultCenter.lng });
@@ -385,10 +383,14 @@ const Discover = () => {
                                             {filteredPins.map((pin) => (
                                                 <li
                                                     key={pin.id}
-                                                    className="result"
+                                                    className="location-result"
                                                     onClick={() => handleResultClick(pin)}
                                                 >
-                                                    {pin.locationName}
+                                                    <img className="location-result-image" src={pin.previewImage.imageUrl} alt="Location Image" />
+                                                    <div className="location-result-info">
+                                                        <p className="user-result-username">{pin.locationName}</p>
+                                                        <p className="user-result-name">{pin.city}</p>
+                                                    </div>
                                                 </li>
                                             ))}
                                             </ul>
@@ -473,10 +475,14 @@ const Discover = () => {
                                                 {filteredPins.map((pin) => (
                                                     <li
                                                         key={pin.id}
-                                                        className="result"
+                                                        className="small-location-result"
                                                         onClick={() => handleResultClick(pin)}
                                                     >
-                                                        {pin.locationName}
+                                                        <img className="small-location-result-image" src={pin.previewImage.imageUrl} alt="Location Image" />
+                                                        <div className="small-location-result-info">
+                                                            <p className="small-user-result-username">{pin.locationName}</p>
+                                                            <p className="small-user-result-name">{pin.city}</p>
+                                                        </div>
                                                     </li>
                                                 ))}
                                                 </ul>

@@ -70,11 +70,7 @@
 }
 
 @media (max-height: 950px) {
-    .pin-option {
-        height: 20px;
-        width: 20px;
-        margin: 2px;
-    }
+
 }
 
 @media (max-height: 850px) {

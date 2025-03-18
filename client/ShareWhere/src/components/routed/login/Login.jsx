@@ -5,6 +5,9 @@ import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../authContext/useAuth";
 import { getLocation } from "../../../assets/helpers/getLocation";
+import UseAnimations from "react-useanimations";
+import loading from 'react-useanimations/lib/loading';
+import ForgotPassword from "../forgotPassword/ForgotPassword";
 // import { useUser } from "../userContext/useUser";
 
 function Login () {
@@ -15,7 +18,9 @@ function Login () {
     const { userLoggedIn, setUserLoggedIn } = useAuth();
     const [backgroundImage, setBackgroundImage] = useState("");
     const API_BASE_URL = import.meta.env.VITE_API_URL;
+    const [isSubmitted, setIsSubmitted] = useState(false);
     const [changeImages, setChangeImages] = useState(false);
+    const [forgotPassword, setForgotPassword] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -54,7 +59,7 @@ function Login () {
 
     const handleLogin = async (event) => {
         event.preventDefault();
-
+        setIsSubmitted(true);
         setError(false);
 
         try {
@@ -77,7 +82,6 @@ function Login () {
                 localStorage.setItem("name", data.user.name);
                 localStorage.setItem("city", data.user.city);
                 setUserLoggedIn(true);
-    
                 setTimeout(() => {
                     navigate("/");
                 }, 1500);
@@ -85,13 +89,17 @@ function Login () {
             else if (response.status === 401) {
                 console.error("Unauthorized: Invalid email or password.");
                 setError(true);
+                setIsSubmitted(false);
             }
             else {
                 console.error("Login failed: ", await response.text());
                 setError(true);
+                setIsSubmitted(false);
             }
         } catch (error) {
             console.error("Error during login: ", error);
+            setError(true);
+            setIsSubmitted(false);
         }
     };
     
@@ -99,63 +107,74 @@ function Login () {
     return (
         <div
             className="page page-login"
-            style={{backgroundImage: backgroundImage}}>
-
+            style={{backgroundImage: backgroundImage}}
+        >
+            {!forgotPassword ? (
                 <div className="login-component">
-                    <h2 className="login-header">
-                        Welcome.
-                        <br></br>
-                        Log in to find new spots.
-                    </h2>
-                    <form className="login-container" onSubmit={ handleLogin }>
-                        <input
-                            id="email-input-el"
-                            className={`login-container-input ${error ? "input-error" : ""}`}
-                            type="text"
-                            name="email"
-                            placeholder="Email address"
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <div className="password-input-container">
+                    <>
+                        <h2 className="login-header">
+                            Welcome.
+                            <br></br>
+                            Log in to find new spots.
+                        </h2>
+                        <form className="login-container" onSubmit={ handleLogin }>
                             <input
-                                id="password-input-el"
+                                id="email-input-el"
                                 className={`login-container-input ${error ? "input-error" : ""}`}
-                                type={showPassword}
-                                name="password"
-                                placeholder="Password"
-                                onChange={(e) => setPassword(e.target.value)}
+                                type="text"
+                                name="email"
+                                placeholder="Email address"
+                                onChange={(e) => setEmail(e.target.value)}
                             />
-                            <div className="show-password">
-                                {showPassword === "password" ? (
-                                    <FaRegEyeSlash className="eyeball" onClick={() => setShowPassword("text")} />
+                            <div className="password-input-container">
+                                <input
+                                    id="password-input-el"
+                                    className={`login-container-input ${error ? "input-error" : ""}`}
+                                    type={showPassword}
+                                    name="password"
+                                    placeholder="Password"
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                                <div className="show-password">
+                                    {showPassword === "password" ? (
+                                        <FaRegEyeSlash className="eyeball" onClick={() => setShowPassword("text")} />
+                                    ) : (
+                                        <FaRegEye className="eyeball" onClick={() => setShowPassword("password")} />
+                                    )}
+                                </div>
+                            </div>
+                            <div className="login-error-container">
+                                <p className={`error ${error ? "shown" : ""}`}>Email or password does not match. Please try again.</p>
+                            </div>
+                            <div className="login-btn-container">
+                            <button className="login-btn" disabled={isSubmitted} type="submit">
+                                {isSubmitted ? (
+                                    <UseAnimations animation={loading} size={25} />
                                 ) : (
-                                    <FaRegEye className="eyeball" onClick={() => setShowPassword("password")} />
+                                    "Log in"
                                 )}
+                            </button>
+                            </div>
+                        </form>
+                        <div className="atag-forgot-password" onClick={() => setForgotPassword(true)}>
+                            <strong> Forgot your password? </strong>
+                        </div>
+                        <div className="alternate-login">
+                            <div className="login-btn-container">
+                                <div className="login-btn google-btn" type="submit">
+                                    <FcGoogle />&nbsp;Continue with Google - Disabled
+                                </div>
                             </div>
                         </div>
-                        <div className="login-error-container">
-                            <p className={`error ${error ? "shown" : ""}`}>Email or password does not match. Please try again.</p>
-                        </div>
-                        <div className="login-btn-container">
-                            <input className="login-btn" type="submit" value="Log in"></input>
-                        </div>
-                    </form>
-                    <div className="atag-forgot-password">
-                        <a href=""> <strong> Forgot your password? </strong> </a>
-                    </div>
-                    <div className="alternate-login">
-                        <div className="login-btn-container">
-                            <div className="login-btn google-btn" type="submit">
-                                <FcGoogle />&nbsp;Continue with Google - Disabled
-                            </div>
-                        </div>
-                    </div>
-                    <p className="no-account">
-                        <span>Don&apos;t have an account?</span> <a href="/signup"> Sign up for free </a>
-                    </p>
-                    <p className="terms">By continuing to use ShareWhere, you agree to our <span>Terms of Service</span> and <span>Privacy Policy</span>. Personal data added to ShareWhere is public by default — refer to our <span>Privacy FAQs</span> to make changes.</p>
-
+                        <p className="no-account">
+                            <span>Don&apos;t have an account?</span> <a href="/signup"> Sign up for free </a>
+                        </p>
+                        <p className="terms">By continuing to use ShareWhere, you agree to our <span>Terms of Service</span> and <span>Privacy Policy</span>. Personal data added to ShareWhere is public by default — refer to our <span>Privacy FAQs</span> to make changes.</p>
+                    </>
                 </div>
+            ) : (
+                <ForgotPassword />
+            )}
 
         </div>
     )

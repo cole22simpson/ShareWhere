@@ -150,8 +150,7 @@ public class LocationService {
                 filteredLocations.add(new HomeSearchResultDTO(
                         location.getLocationName(), location.getLocationId(),
                         location.getImages().get(0).getImageUrl(),
-                        "LOCATION"
-
+                        "LOCATION", location.getCity()
                 ));
             }
         }
@@ -234,7 +233,7 @@ public class LocationService {
             return locLat > south && locLat < north && locLon > west && locLon < east;
         }
         else {
-            return locLat > south && locLat < north && (locLon > west || locLon < east);
+            return locLat > south && locLat < north && !(locLon > west || locLon < east);
         }
     }
 }

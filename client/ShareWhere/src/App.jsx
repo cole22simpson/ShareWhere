@@ -9,6 +9,8 @@ import Profile from "./components/routed/profile/Profile.jsx"
 import Discover from "./components/routed/discover/Discover.jsx"
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import PasswordChange from "./components/routed/passwordChange/PasswordChange.jsx"
+import ForgotPassword from "./components/routed/forgotPassword/ForgotPassword.jsx"
 
 function App() {
 
@@ -25,6 +27,7 @@ function App() {
               <Route path='/add-location' element={<AddLocation />} />
               <Route path='/profile' element={<Profile />} />
               <Route path="/profile/:user_id" element={<Profile />} />
+              <Route path='/forgot-password/:token' element={<PasswordChange />} />
               <Route path='/discover' element={<Discover />} />
             </Routes>
           </Router>

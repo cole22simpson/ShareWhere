@@ -36,40 +36,45 @@ const HomePostSection = ({ postType, coords }) => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const noPostsMessage = postType === "FOLLOWING" ? (
-        <>You don&apos;t follow anyone yet</>
-    ) : (
-        "No posts nearby"
-    );
-
     const renderPosts = (posts) => {
         const startIndex = (currentPage - 1) * postsPerPage;
         const endIndex = Math.min(startIndex + postsPerPage, posts.length); // Handle last page
 
         const currentPosts = posts.slice(startIndex, endIndex);
 
-        return currentPosts.length > 0 ? (
-            <div className="posts-housing">
-                <div className="local-posts">
-                    {currentPosts.map((post) => (
-                        <HomePost
-                            key={post.locationId}
-                            post={post}
-                            handleModalOpened={handleModalOpened}
-                            setModalOpened={setModalOpened}
-                        />
-                    ))}
+        if (currentPosts.length > 0) {
+            return (
+                <div className="posts-housing">
+                    <div className="local-posts">
+                        {currentPosts.map((post) => (
+                            <HomePost
+                                key={post.locationId}
+                                post={post}
+                                handleModalOpened={handleModalOpened}
+                                setModalOpened={setModalOpened}
+                            />
+                        ))}
+                    </div>
+                    <hr />
+                </div>   
+            );   
+         } else {
+            
+            const noPostsMessage = postType === "FOLLOWING" ? (
+                <>No posts yet</>
+            ) : (
+                "No posts nearby"
+            );
+
+            return (
+                <div className="posts-housing">
+                    <div className="no-following">
+                        {noPostsMessage}
+                    </div>
+                    <hr />
                 </div>
-                <hr />
-            </div>      
-        ) : (
-            <div className="posts-housing">
-                <div className="no-following">
-                    {noPostsMessage}
-                </div>
-                <hr />
-            </div>
-        );
+            );
+         };
     };
 
     const handlePageChange = (pageNumber) => {

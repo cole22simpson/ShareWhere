@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import LocationModal from "../locationModal/LocationModal";
 import UseAnimations from "react-useanimations";
 import loading from 'react-useanimations/lib/loading';
+import { IoBookmark  } from "react-icons/io5";
 import PropTypes from "prop-types";
 
 const Posts = ({ userId }) => {
@@ -103,11 +104,18 @@ const Posts = ({ userId }) => {
                 <>
                     <div className={`posts-container ${posts.length === 0 ? 'none' : ''}`}>
                         {posts.map((post) => (
-                            <div key={post.locationId} className="post" onClick={() => {openLocationModal(post.locationId)}}>
-                                {post.previewImage && ( // Conditional rendering of the image
-                                <img src={post.previewImage.imageUrl} alt="Post" />
-                                )}
-                                <p>{post.locationName}</p>
+                            <div key={post.locationId} onClick={() => openLocationModal(post.locationId)} className="profile-post">
+                                <div className="profile-post-poster">
+                                    <img src={post.creatorProfilePic.imageUrl} />
+                                    <p>{post.creatorUsername}</p>
+                                    <div></div>
+                                </div>
+                                <img src={post.previewImage.imageUrl} className="profile-post-img"></img>
+                                <div className="profile-post-info">
+                                    <p className="profile-post-name">{post.locationName}</p>
+                                    <p className="profile-post-city">{post.city}</p>
+                                    <p className="profile-post-saves"><IoBookmark/>{post.saves}</p>
+                                </div>
                             </div>
                         ))}
                         {posts.length === 0 && (
@@ -117,6 +125,8 @@ const Posts = ({ userId }) => {
                             </div>
                         )}
                     </div>
+
+                    
                     {showModal && (
                             <LocationModal
                                 handleModalOpened={handleModalOpened}
@@ -131,7 +141,21 @@ const Posts = ({ userId }) => {
 };
 
 Posts.propTypes = {
-    userId: PropTypes.string.isRequired,
+    post: PropTypes.shape({
+        locationId: PropTypes.number,
+        creatorProfilePic: PropTypes.shape({
+            imageUrl: PropTypes.string,
+            }),
+        previewImage: PropTypes.shape({
+            imageUrl: PropTypes.string,
+            }),
+        locationName: PropTypes.string,
+        creatorUsername: PropTypes.string,
+        city: PropTypes.string,
+        images: PropTypes.arrayOf(PropTypes.object), 
+        likedBy: PropTypes.arrayOf(PropTypes.number),
+        saves: PropTypes.number,
+    }),
 }
 
 export default Posts;

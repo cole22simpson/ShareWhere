@@ -13,6 +13,9 @@ function AddLocation() {
     const [selectedTags, setSelectedTags] = useState({});
     const [images, setImages] = useState([]);
     const API_BASE_URL = import.meta.env.VITE_API_URL;
+    const { userLoggedIn, setUserLoggedIn } = useAuth();
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const storedCoords = JSON.parse(localStorage.getItem("coords"));

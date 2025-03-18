@@ -29,6 +29,8 @@ function Profile() {
     const [showPosts, setShowPosts] = useState(true);
     const [isFollowed, setIsFollowed] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth < 450);
+    const { userLoggedIn, setUserLoggedIn } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         function handleResize() {

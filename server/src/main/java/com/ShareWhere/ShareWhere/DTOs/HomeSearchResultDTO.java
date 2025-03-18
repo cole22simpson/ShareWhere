@@ -8,6 +8,7 @@ public class HomeSearchResultDTO {
     private String username;
     private String name;
     private String locationName;
+    private String city;
     private int resultId;
     private String imageUrl;
     private String resultType;
@@ -20,8 +21,9 @@ public class HomeSearchResultDTO {
         this.resultType = resultType;
     }
 
-    public HomeSearchResultDTO(String locationName, int resultId, String imageUrl, String resultType) {
+    public HomeSearchResultDTO(String locationName, int resultId, String imageUrl, String resultType, String city) {
         this.locationName = locationName;
+        this.city = city;
         this.resultId = resultId;
         this.imageUrl = imageUrl;
         this.resultType = resultType;

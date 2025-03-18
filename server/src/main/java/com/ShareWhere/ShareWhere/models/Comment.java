@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -41,7 +42,7 @@ public class Comment {
     private Set<Integer> likedBy = new HashSet<>();
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime timeCreated = LocalDateTime.now();
+    private Instant timeCreated = Instant.now();
 
     public Comment() {}
 

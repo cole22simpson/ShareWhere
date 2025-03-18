@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import LocationModal from "../locationModal/LocationModal";
 import UseAnimations from "react-useanimations";
 import loading from 'react-useanimations/lib/loading';
+import { IoBookmark  } from "react-icons/io5";
 
 const Saved = () => {
 
@@ -96,12 +97,19 @@ const Saved = () => {
                 <>
                     <div className={`posts-container ${saved.length === 0 ? 'none' : ''}`}>
                         {saved.map((post) => (
-                            <div key={post.locationId} className="post" onClick={() => {openLocationModal(post.locationId)}}>
-                                {post.previewImage && ( // Conditional rendering of the image
-                                    <img src={post.previewImage.imageUrl} alt="Saved post" />
-                                )}
-                                <p>{post.locationName}</p>
+                            <div key={post.locationId} onClick={() => openLocationModal(post.locationId)} className="profile-post">
+                            <div className="profile-post-poster">
+                                <img src={post.creatorProfilePic.imageUrl} />
+                                <p>{post.creatorUsername}</p>
+                                <div></div>
                             </div>
+                            <img src={post.previewImage.imageUrl} className="profile-post-img"></img>
+                            <div className="profile-post-info">
+                                <p className="profile-post-name">{post.locationName}</p>
+                                <p className="profile-post-city">{post.city}</p>
+                                <p className="profile-post-saves"><IoBookmark/>{post.saves}</p>
+                            </div>
+                        </div>
                         ))}
                         {saved.length === 0 && (
                             <div className="no-posts-container">

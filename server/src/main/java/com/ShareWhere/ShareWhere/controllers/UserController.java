@@ -54,12 +54,12 @@ public class UserController {
     }
 
     @GetMapping("/{user_id}/posts")
-    public ResponseEntity<List<LocationPreviewDTO>> getUserPosts(@PathVariable("user_id") int userId) {
+    public ResponseEntity<List<HomeLocationDTO>> getUserPosts(@PathVariable("user_id") int userId) {
         return ResponseEntity.ok(userService.getUserPosts(userId));
     }
 
     @GetMapping("/{user_id}/saved")
-    public ResponseEntity<List<LocationPreviewDTO>> getUserSavedPosts(@PathVariable("user_id") int userId) {
+    public ResponseEntity<List<HomeLocationDTO>> getUserSavedPosts(@PathVariable("user_id") int userId) {
         return ResponseEntity.ok(userService.getUserSavedPosts(userId));
     }
 

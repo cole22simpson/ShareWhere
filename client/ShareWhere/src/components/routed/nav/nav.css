@@ -55,19 +55,20 @@
     margin-right: 15px;
 }
 
-.nav-item a {
+.nav-item {
     text-decoration: none;
     color: black;
     font-size: 18px;
-    width: 100%;
+    width: fit-content;
     height: 100%;
     display: flex;
     align-items: center;
     padding: 16px;
     transition: 250ms ease-in;
+    cursor: pointer;
 }
 
-.nav-item a:hover {
+.nav-item:hover {
     background-color: var(--secondary-color);
     border-radius: 10px;
 }
@@ -139,6 +140,11 @@
 .sidebar-item {
     padding: 7px;
     border-bottom: 1px solid #ddd;
+    text-decoration: none;
+    color: black;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
 }
 
 .sidebar-item:hover {
@@ -150,16 +156,17 @@
     text-decoration: underline;
 }
 
-.sidebar-item a {
+/* .sidebar-item a {
     text-decoration: none;
     color: black;
     font-size: 12px;
     display: flex;
     align-items: center;
-}
+} */
 
 .sidebar-icon {
     margin-right: 10px;
+
 }
 
 .hamburger-menu-img {
@@ -170,9 +177,10 @@
 }
 
 .close-sidebar {
+    display: flex;
+    align-items: center;
     text-align: end;
-    padding: 0;
-    padding-top: 15px;
+    padding: 7px;
 }
 
 @media (max-width: 1100px) {
@@ -181,7 +189,7 @@
         gap: 15px;
     }
 
-    .nav-item a {
+    .nav-item {
         padding: 5px;
     }
 
@@ -235,7 +243,7 @@
         width: 110px;
     }
     
-    .sidebar-item a {
+    .sidebar-item {
         font-size: 10px;
     }
 }
@@ -286,7 +294,7 @@
         padding: 3px;
     }
     
-    .sidebar-item a {
+    .sidebar-item {
         font-size: 10px;
     }
 }

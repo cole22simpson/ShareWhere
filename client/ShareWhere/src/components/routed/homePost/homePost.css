@@ -45,6 +45,7 @@
     width: 30px;
     border-radius: 100%;
     flex-shrink: 0;
+    object-fit: cover;
 }
 
 .home-post-info {
@@ -76,6 +77,7 @@
     width: 280px;
     border-radius: 10px;
     border: 1px solid gray;
+    object-fit: cover;
 }
 
 .home-post-saves {

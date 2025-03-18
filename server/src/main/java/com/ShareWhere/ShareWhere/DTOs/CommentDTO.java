@@ -6,6 +6,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,7 +24,7 @@ public class CommentDTO {
     private List<ImageDTO> images = new ArrayList<>();
     private Set<Integer> likedBy = new HashSet<>();
     private int likes;
-    private LocalDateTime timeCreated;
+    private Instant timeCreated;
 
     public CommentDTO(Comment comment) {
         this.commentId = comment.getCommentId();

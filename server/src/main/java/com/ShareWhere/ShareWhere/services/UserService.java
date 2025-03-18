@@ -3,6 +3,7 @@ package com.ShareWhere.ShareWhere.services;
 import com.ShareWhere.ShareWhere.DTOs.*;
 import com.ShareWhere.ShareWhere.models.*;
 import com.ShareWhere.ShareWhere.repositories.LocationRepo;
+import com.ShareWhere.ShareWhere.repositories.PasswordResetTokenRepo;
 import com.ShareWhere.ShareWhere.repositories.UserRepo;
 import com.ShareWhere.ShareWhere.utils.FileUtils;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,12 +23,14 @@ public class UserService {
     private final UserRepo userRepo;
     private final LocationRepo locationRepo;
     private final FileUtils fileUtils;
+    private final PasswordResetTokenRepo passwordResetTokenRepo;
     private final AzureBlobStorageService azureBlobStorageService;
 
     // Constructor Injection
-    public UserService(UserRepo userRepo, LocationRepo locationRepo, FileUtils fileUtils, AzureBlobStorageService azureBlobStorageService) {
+    public UserService(UserRepo userRepo, PasswordResetTokenRepo passwordResetTokenRepo, LocationRepo locationRepo, FileUtils fileUtils, AzureBlobStorageService azureBlobStorageService) {
         this.userRepo = userRepo;
         this.locationRepo = locationRepo;
+        this.passwordResetTokenRepo = passwordResetTokenRepo;
         this.fileUtils = fileUtils;
         this.azureBlobStorageService = azureBlobStorageService;
     }
@@ -73,13 +76,13 @@ public class UserService {
         return coords;
     }
 
-    public List<LocationPreviewDTO> getUserPosts(int userId) {
+    public List<HomeLocationDTO> getUserPosts(int userId) {
         UserProfile profile = this.getUserProfileById(userId).orElseThrow(
                 () -> new EntityNotFoundException("User not found")
         );
-        List<LocationPreviewDTO> posts = new ArrayList<>();
+        List<HomeLocationDTO> posts = new ArrayList<>();
         for (Location post : profile.getUserPosts()) {
-            posts.add(new LocationPreviewDTO(post));
+            posts.add(new HomeLocationDTO(post));
         }
         return posts;
     }
@@ -103,13 +106,13 @@ public class UserService {
         return filteredUsers;
     };
 
-    public List<LocationPreviewDTO> getUserSavedPosts(int userId) {
+    public List<HomeLocationDTO> getUserSavedPosts(int userId) {
         UserProfile profile = this.getUserProfileById(userId).orElseThrow(
                 () -> new EntityNotFoundException("User not found")
         );
-        List<LocationPreviewDTO> saved = new ArrayList<>();
+        List<HomeLocationDTO> saved = new ArrayList<>();
         for (Location save : profile.getSavedLocations()) {
-            saved.add(new LocationPreviewDTO(save));
+            saved.add(new HomeLocationDTO(save));
         }
         return saved;
     }
@@ -152,11 +155,53 @@ public class UserService {
         return userRepo.existsByUsername(username);
     }
 
-    // The transactional annotation signifies that the entire transaction must be completed in order to execute
-    // If something goes wrong in the middle, everything will be rolled back.
-    // This code formatting below is the lambda expression setup. Lambda uses functional programming.
-    // This setup is calle optional chaining. The optional Object can be null.
-    // Optional.map() ensures the code executes only if the value (User) exsists, preventing a NullPointerException
+    public void saveResetToken(String email, String resetToken) {
+        LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(15);
+        Optional<PasswordResetToken> existingToken = passwordResetTokenRepo.findByEmail(email);
+
+        if (existingToken.isPresent()) {
+            // Replace existing token
+            PasswordResetToken token = existingToken.get();
+            token.setToken(resetToken);
+            token.setExpiryDate(expiryDate);
+            passwordResetTokenRepo.save(token);
+        } else {
+            // Create new token
+            PasswordResetToken token = new PasswordResetToken(resetToken, email, expiryDate);
+            passwordResetTokenRepo.save(token);
+        }
+    }
+
+    public String getEmailByResetToken(String token) {
+        Optional<PasswordResetToken> tokenOptional = passwordResetTokenRepo.findByToken(token);
+        if (tokenOptional.isPresent()) {
+            PasswordResetToken passwordResetToken = tokenOptional.get();
+            if (passwordResetToken.getExpiryDate().isAfter(LocalDateTime.now())) {
+                return passwordResetToken.getEmail();
+            } else {
+                passwordResetTokenRepo.delete(passwordResetToken);
+                return null; // Token expired
+            }
+        }
+        return null; // Token not found
+    }
+
+    public void updatePassword(String email, String encodedPassword) {
+        Optional<User> userOptional = userRepo.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setPasswordHash(encodedPassword);
+            userRepo.save(user);
+        } else {
+            throw new RuntimeException("User not found with email: " + email);
+        }
+    }
+
+    public void clearResetToken(String email) {
+        Optional<PasswordResetToken> tokenOptional = passwordResetTokenRepo.findByEmail(email);
+        tokenOptional.ifPresent(passwordResetTokenRepo::delete);
+    }
+
     @Transactional
     public Optional<User> updateUser(int userId, User updatedFields, boolean isPartial) {
         return userRepo.findById(userId).map(existingUser -> { // Fetch user, get Optional<User>. The map says if user is found, map it

@@ -17,7 +17,7 @@
 
 .cancel {
     width: fit-content;
-    border: 2px solid var(--black-color);
+    border: 1px solid var(--black-color);
     padding: 5px;
     font-family: inherit;
     border-radius: 10px;
@@ -32,6 +32,7 @@
 .profile-pic {
     height: 250px;
     width: 250px;
+    object-fit: cover;
     border-radius: 300px;
     margin: 5px;
 }
@@ -43,11 +44,10 @@
 }
 
 .change-btn {
-    border: 2px solid var(--black-color);
+    border: 1px solid var(--black-color);
     padding: 5px;
     font-family: inherit;
     border-radius: 10px;
-    font-weight: 700;
 }
 
 .change-btn:hover {
@@ -83,7 +83,7 @@
 }
 
 .attribute input {
-    border: 2px solid var(--black-color);
+    border: 1px solid var(--black-color);
     border-radius: 10px;
     font-family: inherit;
     font-size: 25px;
@@ -99,7 +99,7 @@
 }
 
 .attribute textarea {
-    border: 2px solid var(--black-color);
+    border: 1px solid var(--black-color);
     border-radius: 10px;
     font-family: inherit;
     font-size: 20px;

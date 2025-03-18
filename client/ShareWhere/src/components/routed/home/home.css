@@ -12,9 +12,16 @@
 }
 
 .greeting {
+    max-width: 90%;
     font-size: 5vh;
     font-weight: 600;
     color: white;
+}
+
+.tag-line {
+    font-size: 22px;
+    font-weight: 500;
+    color: rgb(255, 219, 197);
 }
 
 .home-form-container {
@@ -84,6 +91,7 @@
 
 .user-result img {
     width: 30px;
+    object-fit: cover;
     height: 30px;
     border-radius: 100%;
 }
@@ -130,6 +138,7 @@
     width: 50px;
     height: 50px;
     min-width: 50px;
+    object-fit: cover;
     min-height: 50px;
     border-radius: 10px;
 }
@@ -296,6 +305,10 @@
         font-size: 45px;
     }
 
+    .tag-line {
+        font-size: 19px;
+    }
+
     .home-post-container {
         width: 900px;
     }
@@ -326,7 +339,7 @@
 
 @media (max-width: 1200px) {
     .greeting {
-        font-size: 28px;
+        font-size: 41px;
     }
 }
 
@@ -378,7 +391,11 @@
     }
 
     .greeting {
-        font-size: 20px;
+        font-size: 35px;
+    }
+
+    .tag-line {
+        font-size: 16px;
     }
 
     .favorites-title {
@@ -400,8 +417,14 @@
 
 @media (max-width: 700px) {
     .greeting {
-        font-size: 20px;
+        font-size: 30px;
         text-align: center;
+    }
+
+    .tag-line {
+        text-align: center;
+        font-size: 16px;
+        max-width: 40%;
     }
 }
 
@@ -422,11 +445,21 @@
         width: 300px;
         font-size: 12px;
     }
+
+    .tag-line {
+        text-align: center;
+        font-size: 16px;
+        max-width: 50%;
+    }
 }
 
 @media (max-width: 500px) {
     .greeting {
-        font-size: 18px;
+        font-size: 24px;
+    }
+
+    .tag-line {
+        font-size: 12px;
     }
 
     .home-post-container {
@@ -444,7 +477,11 @@
 
 @media (max-width: 450px) {
     .greeting {
-        font-size: 16px;
+        font-size: 24px;
+    }
+
+    .tag-line {
+        font-size: 14px;
     }
 
     .home-post-container {
@@ -458,7 +495,11 @@
 
 @media (max-width: 400px) {
     .greeting {
-        font-size: 14px;
+        font-size: 22px;
+    }
+
+    .tag-line {
+        font-size: 11px;
     }
 
     .home-post-container {
@@ -477,6 +518,14 @@
 }
 
 @media (max-width: 300px) {
+    .greeting {
+        font-size: 17px;
+    }
+
+    .tag-line {
+        font-size: 10px;
+    }
+
     .home-search-bar {
         width: 250px;
     }

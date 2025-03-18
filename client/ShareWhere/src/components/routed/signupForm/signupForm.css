@@ -97,6 +97,9 @@
     font-family: inherit;
     background-color: rgb(41, 41, 156);
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .signup-modal-btn:hover {

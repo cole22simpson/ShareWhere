@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,8 +32,8 @@ public class LocationDTO {
     private int createdByProfileID;
     private ImageDTO creatorProfilePic;
     private String creatorName;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
     private Set<Integer> savedBy = new HashSet<>();
     private Set<TagDTO> tags = new HashSet<>();
     private List<CommentDTO> comments = new ArrayList<>();

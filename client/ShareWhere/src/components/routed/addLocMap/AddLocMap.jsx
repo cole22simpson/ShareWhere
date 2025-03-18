@@ -222,11 +222,12 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
     }, [mapRef, latitude, longitude, mapLoading]);
 
     return (
-        <>
+        <div className="map-section">
             <APIProvider
                 apiKey={API_KEY}
                 solutionChannel="GMP_devsite_samples_v3_rgmautocomplete"
             >
+                <p className="addloc-label">Place pin directly on location</p>
                 <div className="addloc-map-container">                
                     {!isStreetView && (
                         <div className="autocomplete-container">
@@ -346,7 +347,7 @@ const AddLocMap = ({ initialLatitude, initialLongitude, latitude, longitude, onL
                     closeLocationModal={closeLocationModal}
                 />
             )}
-        </>
+        </div>
     );
 };
 
