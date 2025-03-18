@@ -31,6 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 request.getRequestURI().equals("/api/tags") ||
                 request.getRequestURI().equals("/api/search") ||
                 request.getRequestURI().equals("/api/locations/home-posts") ||
+                request.getRequestURI().equals("/api/locations/global") ||
                 request.getRequestURI().equals("/api/locations/home-posts/{tag_id}") ||
                 request.getRequestURI().equals("/api/locations/{location_id}") ||
                 request.getRequestURI().equals("/actuator/health") ||

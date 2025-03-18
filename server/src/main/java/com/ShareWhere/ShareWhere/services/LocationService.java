@@ -124,21 +124,46 @@ public class LocationService {
         return locationsOnMap;
     }
 
-    public List<HomeLocationDTO> getHomePosts(Double north, Double south, Double east, Double west) {
-        List<HomeLocationDTO> homePosts = new ArrayList<>(); // Initialize as an empty list
-        List<HomeLocationDTO> allLocations = getAllHomeLocations(); // Get all locations
+    public List<HomeLocationDTO> getGlobalPosts() {
+        List<HomeLocationDTO> allLocations = getAllHomeLocations();
 
+        if (allLocations == null || allLocations.isEmpty()) {
+            return new ArrayList<>(); // Return empty list if no locations
+        }
+
+        List<HomeLocationDTO> randomLocations = new ArrayList<>(allLocations); // Create a copy
+
+        Collections.shuffle(randomLocations, new Random()); // Shuffle the list
+
+        return randomLocations.stream()
+                .limit(8).sorted(Comparator.comparing(HomeLocationDTO::getSaves).reversed()).collect(Collectors.toList());
+    }
+
+    public List<HomeLocationDTO> getHomePosts(Double north, Double south, Double east, Double west) {
+        List<HomeLocationDTO> homePosts = new ArrayList<>();
+        List<HomeLocationDTO> allLocations = getAllHomeLocations();
+        List<HomeLocationDTO> boundedLocations = new ArrayList<>();
+
+        // Filter locations within bounds
         for (HomeLocationDTO location : allLocations) {
             if (withinBounds(location, north, south, east, west)) {
-                homePosts.add(location);
+                boundedLocations.add(location);
             }
         }
 
-        homePosts.sort(Comparator.comparing(HomeLocationDTO::getSaves));
+        // Get up to 8 random posts
+        Random random = new Random();
+        int numPosts = Math.min(8, boundedLocations.size()); // Ensure we don't exceed the list size
 
-        return homePosts.stream()
-                .limit(8)
-                .collect(Collectors.toList());
+        for (int i = 0; i < numPosts; i++) {
+            int randomIndex = random.nextInt(boundedLocations.size());
+            homePosts.add(boundedLocations.remove(randomIndex)); // Remove to prevent duplicates
+        }
+
+        // Sort by saves (descending)
+        homePosts.sort(Comparator.comparing(HomeLocationDTO::getSaves).reversed());
+
+        return homePosts;
     }
 
     public List<HomeSearchResultDTO> getAllLocationNames(String query) {

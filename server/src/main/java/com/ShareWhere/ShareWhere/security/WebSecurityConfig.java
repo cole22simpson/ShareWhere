@@ -51,6 +51,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/tags").permitAll()
                                 .requestMatchers("/api/search").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/locations/{location_id}").permitAll()
+                                .requestMatchers("/api/locations/global").permitAll()
                                 .requestMatchers("/api/locations/pins").permitAll()
                                 .requestMatchers("/api/locations/home-posts").permitAll()
                                 .requestMatchers("/api/locations/home-posts/{tag_id}").permitAll()

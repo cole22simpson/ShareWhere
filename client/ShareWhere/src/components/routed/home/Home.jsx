@@ -255,15 +255,21 @@ function Home() {
                 <div className="home-post-container">
                     <div className="local-post-container">
                         <div className="local-favorites">
-                            {city !== "" ? (
-                                <p className="favorites-title">
-                                    Local favorites near <span>{city}</span>
-                                </p>
-                            ) : (
-                                <p className="favorites-title">
-                                    Nearby favorites
-                                </p>
-                            )}
+                            <p className="favorites-title">
+                                Global favorites
+                            </p>
+                        </div>
+                        {locationLoaded ? (
+                            <HomePostSection postType={"GLOBAL"} coords={coords}/>
+                        ) : (
+                            <div><UseAnimations animation={loading} size={25} /></div>
+                        )}
+                    </div>
+                    <div className="local-post-container">
+                        <div className="local-favorites">
+                            <p className="favorites-title">
+                                Nearby favorites
+                            </p>
                         </div>
                         {locationLoaded ? (
                             <HomePostSection postType={"NEARBY"} coords={coords}/>

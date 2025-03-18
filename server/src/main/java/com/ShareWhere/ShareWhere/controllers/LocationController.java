@@ -103,6 +103,12 @@ public class LocationController {
         return ResponseEntity.ok(locations);
     }
 
+    @GetMapping("/global")
+    public ResponseEntity<List<HomeLocationDTO>> getHomePosts() {
+        List<HomeLocationDTO> locations = locationService.getGlobalPosts();
+        return ResponseEntity.ok(locations);
+    }
+
     @GetMapping("/home-posts")
     public ResponseEntity<List<HomeLocationDTO>> getHomePosts(
             @RequestParam(value = "north") Double north,

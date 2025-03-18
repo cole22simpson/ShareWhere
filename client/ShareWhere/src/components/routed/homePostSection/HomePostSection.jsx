@@ -169,6 +169,8 @@ const HomePostSection = ({ postType, coords }) => {
                 url = `${API_BASE_URL}/api/locations/home-posts/16?north=${north}&south=${south}&east=${east}&west=${west}`;
             } else if (type === "VIEW") {
                 url = `${API_BASE_URL}/api/locations/home-posts/21?north=${north}&south=${south}&east=${east}&west=${west}`;
+            } else if (type === "GLOBAL") {
+                url = `${API_BASE_URL}/api/locations/global`;
             }
 
             const response = await fetch(url, {
